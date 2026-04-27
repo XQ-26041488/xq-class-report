@@ -3,424 +3,480 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <title>XQ 週末特訓班 成效概況</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Fira Sans', 'Microsoft JhengHei', 'PingFang TC', sans-serif; background: #f0f2f5; color: #1a1a2e; font-size: 14px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --primary: #2563eb;
+  --primary-light: #eff6ff;
+  --accent: #e94560;
+  --accent-light: #fff1f3;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.08);
+  --header-h: 60px;
+  --tab-h: 48px;
+  --filter-h: 56px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
 
-/* ══ Sidebar ══ */
-.sidebar {
-  position: fixed; top: 0; left: 0; bottom: 0;
-  width: 200px; background: #1a1a2e;
-  display: flex; flex-direction: column;
-  z-index: 200; overflow-y: auto;
-  box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+/* ══ HEADER ══ */
+.site-header {
+  position: sticky; top: 0; z-index: 300;
+  height: var(--header-h);
+  background: #fff; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 12px;
+  box-shadow: var(--shadow);
 }
-.sidebar-logo {
-  padding: 20px 18px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+.header-logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -1px; flex-shrink: 0;
 }
-.sidebar-logo .logo-title { color: #e94560; font-size: 13px; font-weight: 700; letter-spacing: 1px; }
-.sidebar-logo .logo-sub   { color: #718096; font-size: 10px; margin-top: 4px; }
+.logo-text { line-height: 1.2; }
+.logo-text .t1 { font-size: 14px; font-weight: 700; color: var(--text); }
+.logo-text .t2 { font-size: 11px; color: var(--text-3); }
+.header-spacer { flex: 1; }
+.header-meta { text-align: right; }
+.header-meta .hm-badge {
+  display: inline-block; background: var(--accent-light); color: var(--accent);
+  font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-bottom: 2px;
+}
+.header-meta .hm-sub { font-size: 11px; color: var(--text-3); }
+.burger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px;
+  background: none; border: none; margin-left: 8px;
+}
+.burger span { display: block; width: 22px; height: 2px; background: var(--text-2); border-radius: 2px; transition: .2s; }
 
-.nav-section-title {
-  padding: 16px 18px 6px;
-  font-size: 9px; font-weight: 700; letter-spacing: 2px;
-  color: #4a5568; text-transform: uppercase;
+/* ══ TAB NAV ══ */
+.tab-nav {
+  position: sticky; top: var(--header-h); z-index: 200;
+  background: #fff; border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto; scrollbar-width: none;
+  padding: 0 20px;
 }
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 18px; color: #a0aec0; font-size: 12px;
-  text-decoration: none; cursor: pointer;
-  border-left: 3px solid transparent;
-  transition: all .15s;
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0; padding: 0 16px; height: var(--tab-h);
+  font-size: 13px; font-weight: 500; color: var(--text-2);
+  border: none; background: none; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all .2s;
+  display: flex; align-items: center; gap: 6px; font-family: inherit;
 }
-.nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); border-left-color: #4361ee; }
-.nav-item.active { color: #fff; background: rgba(76,110,245,0.12); border-left-color: #4361ee; }
-.nav-item .nav-icon { width: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.nav-svg { width: 14px; height: 14px; }
+.tab-btn:hover { color: var(--primary); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+.tab-btn .tab-icon { font-size: 14px; }
 
-.sidebar-footer {
-  margin-top: auto; padding: 14px 18px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  font-size: 10px; color: #4a5568; line-height: 1.6;
-}
-
-/* ══ Layout shell ══ */
-.page-shell { margin-left: 200px; display: flex; flex-direction: column; min-height: 100vh; }
-
-/* ══ Header ══ */
-.header {
-  background: #16213e;
-  padding: 12px 28px; display: flex; align-items: center; justify-content: flex-end;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.header-right { text-align: right; }
-.header-right .session-badge {
-  background: #e94560; color: #fff; font-size: 11px; font-weight: 700;
-  padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 4px;
-}
-.header-right .session-info { color: #718096; font-size: 11px; }
-
-/* ══ Filter bar ══ */
+/* ══ FILTER BAR ══ */
 .filter-bar {
-  background: #fff; border-bottom: 1px solid #e2e8f0;
-  padding: 11px 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  position: sticky; top: calc(var(--header-h) + var(--tab-h)); z-index: 100;
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 10px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
 }
-.filter-group { display: flex; align-items: center; gap: 7px; }
-.filter-label { font-size: 11px; color: #718096; font-weight: 600; white-space: nowrap; }
-.preset-btns  { display: flex; gap: 4px; }
+.filter-group { display: flex; align-items: center; gap: 8px; }
+.filter-label { font-size: 12px; color: var(--text-3); font-weight: 600; white-space: nowrap; }
+.preset-btns { display: flex; gap: 4px; }
 .preset-btn {
-  padding: 4px 11px; border-radius: 20px; border: 1.5px solid #e2e8f0;
-  background: #fff; color: #4a5568; font-size: 11px; cursor: pointer;
-  font-family: inherit; transition: all .15s;
+  padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: #fff; color: var(--text-2); font-size: 12px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap;
 }
-.preset-btn:hover  { border-color: #4361ee; color: #4361ee; }
-.preset-btn.active { background: #4361ee; color: #fff; border-color: #4361ee; }
-select {
-  padding: 4px 24px 4px 9px; border-radius: 8px; border: 1.5px solid #e2e8f0;
-  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23718096'/%3E%3C/svg%3E") no-repeat right 8px center;
-  color: #4a5568; font-size: 11px; cursor: pointer; font-family: inherit; appearance: none;
+.preset-btn:hover  { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.preset-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.filter-select {
+  padding: 5px 28px 5px 10px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E") no-repeat right 9px center;
+  color: var(--text); font-size: 12px; cursor: pointer; font-family: inherit; appearance: none;
+  transition: border-color .15s;
 }
-.filter-divider { width: 1px; height: 20px; background: #e2e8f0; }
-.filter-result { margin-left: auto; font-size: 11px; color: #718096; }
-.filter-result strong { color: #e94560; }
+.filter-select:focus { outline: none; border-color: var(--primary); }
+.filter-sep { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+.filter-result { margin-left: auto; font-size: 12px; color: var(--text-3); }
+.filter-result strong { color: var(--accent); font-weight: 700; }
 
-/* ══ Summary bar ══ */
-.summary-bar {
-  background: #f7fafc; border-bottom: 1px solid #e2e8f0;
-  padding: 7px 28px; display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: #718096; flex-wrap: wrap;
+/* ══ SUMMARY STRIP ══ */
+.summary-strip {
+  background: var(--primary-light); border-bottom: 1px solid #dbeafe;
+  padding: 8px 24px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  font-size: 12px; color: #1e40af;
 }
-.summary-bar .s-item { display: flex; align-items: center; gap: 5px; }
-.summary-bar .s-val  { font-weight: 700; color: #2d3748; }
-.summary-bar .s-div  { color: #cbd5e0; margin: 0 2px; }
+.summary-strip .ss-val { font-weight: 700; }
+.summary-strip .ss-sep { color: #93c5fd; margin: 0 3px; }
 
-/* ══ Container ══ */
-.container { max-width: 1280px; margin: 0 auto; padding: 24px 24px; }
-
-/* ══ Section label ══ */
-.section-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  color: #718096; text-transform: uppercase; margin-bottom: 12px;
-  display: flex; align-items: center; gap: 8px;
-  scroll-margin-top: 58px;
+/* ══ LAYOUT ══ */
+.main-wrap { max-width: 1320px; margin: 0 auto; padding: 24px 20px 40px; }
+.section-sep { height: 8px; }
+.sec-heading {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  scroll-margin-top: calc(var(--header-h) + var(--tab-h) + var(--filter-h) + 16px);
 }
-.section-label::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+.sec-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ══ Current session hero ══ */
-.hero-section {
-  background: linear-gradient(135deg, #16213e, #0f3460);
-  border-radius: 14px; padding: 24px 28px; margin-bottom: 18px;
-  box-shadow: 0 4px 20px rgba(15,52,96,0.3);
-}
-.hero-meta { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-.hero-no   { background: #e94560; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; }
-.hero-date { color: #718096; font-size: 12px; }
-.hero-cat  { color: #a0aec0; font-size: 11px; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 6px; }
-.hero-title { color: #fff; font-size: 17px; font-weight: 700; margin-bottom: 20px; line-height: 1.4; }
-.hero-title span { color: #e94560; }
-.hero-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.hero-kpi  {
-  background: rgba(255,255,255,0.06); border-radius: 10px; padding: 14px 16px; text-align: center;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-.hero-kpi .hk-val   { font-size: 30px; font-weight: 800; color: #fff; line-height: 1; font-family: 'Fira Code', monospace; font-variant-numeric: tabular-nums; }
-.hero-kpi .hk-label { font-size: 11px; color: #a0aec0; margin-top: 5px; }
-.hero-kpi .hk-badge { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
-.hk-red    .hk-val { color: #fc8181; }
-.hk-blue   .hk-val { color: #76e4f7; }
-.hk-green  .hk-val { color: #68d391; }
-.hk-purple .hk-val { color: #d6bcfa; }
-.hk-red    .hk-badge { background: rgba(252,129,129,.15); color: #fc8181; }
-.hk-blue   .hk-badge { background: rgba(118,228,247,.15); color: #76e4f7; }
-.hk-green  .hk-badge { background: rgba(104,211,145,.15); color: #68d391; }
-.hk-purple .hk-badge { background: rgba(214,188,250,.15); color: #d6bcfa; }
+/* ══ CARD ══ */
+.card { background: var(--card); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); }
+.card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: baseline; gap: 8px; }
+.card-title .sub { font-size: 11px; font-weight: 400; color: var(--text-3); }
 
-/* ══ KPI row ══ */
-.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
-.kpi-card {
-  background: #fff; border-radius: 12px; padding: 16px 14px; text-align: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-top: 4px solid var(--accent);
-}
-.kpi-value { font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1.1; font-family: 'Fira Code', monospace; font-variant-numeric: tabular-nums; }
-.kpi-label { font-size: 11px; color: #718096; margin-top: 5px; }
-.kpi-sub   { font-size: 10px; color: #a0aec0; margin-top: 3px; }
-.kpi-badge { display:inline-block; margin-top:6px; background:var(--accent-bg); color:var(--accent); padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700; }
-
-/* ══ Cards ══ */
-.card { background: #fff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
-.card-title { font-size: 13px; font-weight: 700; color: #2d3748; margin-bottom: 12px; }
-.card-title span { color: #718096; font-weight: 400; font-size: 11px; margin-left: 6px; }
-
-/* ══ Grid ══ */
+/* ══ GRID ══ */
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
 .grid-full { margin-bottom: 16px; }
-.grid-2    { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-.grid-3    { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
 
-/* ══ Table ══ */
-.table-wrap { overflow-x: auto; }
-table.dt { width: 100%; border-collapse: collapse; font-size: 12px; }
-table.dt th {
-  background: #f7fafc; color: #718096; font-weight: 600;
-  padding: 7px 9px; text-align: left; font-size: 10px; letter-spacing: .4px;
-  cursor: pointer; white-space: nowrap; user-select: none;
+/* ══ HERO / KPI ══ */
+.hero-banner {
+  background: linear-gradient(120deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+  border-radius: 16px; padding: 24px 28px 20px; margin-bottom: 16px;
+  box-shadow: 0 4px 24px rgba(30,58,138,.2);
 }
-table.dt th:hover { color: #4361ee; }
-table.dt th.sorted-asc::after  { content: ' ↑'; color: #4361ee; }
-table.dt th.sorted-desc::after { content: ' ↓'; color: #4361ee; }
-table.dt td { padding: 7px 9px; border-bottom: 1px solid #f0f2f5; vertical-align: middle; font-variant-numeric: tabular-nums; }
+.hero-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.hero-no   { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
+.hero-date { color: #93c5fd; font-size: 12px; }
+.hero-cat  { color: #bfdbfe; font-size: 11px; background: rgba(255,255,255,.08); padding: 3px 10px; border-radius: 6px; }
+.hero-title { color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 22px; line-height: 1.4; }
+.hero-title .expert { color: #93c5fd; }
+
+/* ══ KPI CARDS ══ */
+.kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.kpi-card {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px; padding: 16px; text-align: center; backdrop-filter: blur(4px);
+}
+.kpi-val   { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+.kpi-lbl   { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+.kpi-tag   { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.kpi-reg   .kpi-val { color: #fca5a5; } .kpi-reg   .kpi-tag { background: rgba(252,165,165,.15); color: #fca5a5; }
+.kpi-att   .kpi-val { color: #7dd3fc; } .kpi-att   .kpi-tag { background: rgba(125,211,252,.15); color: #7dd3fc; }
+.kpi-surv  .kpi-val { color: #6ee7b7; } .kpi-surv  .kpi-tag { background: rgba(110,231,183,.15); color: #6ee7b7; }
+.kpi-score .kpi-val { color: #c4b5fd; } .kpi-score .kpi-tag { background: rgba(196,181,253,.15); color: #c4b5fd; }
+
+/* ══ TABLE ══ */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.dt { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.dt th {
+  background: #f8fafc; color: var(--text-3); font-weight: 600; font-size: 11px;
+  padding: 10px 12px; text-align: left; white-space: nowrap; cursor: pointer;
+  user-select: none; letter-spacing: .3px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+}
+table.dt th:hover { color: var(--primary); }
+table.dt th.sorted-asc::after  { content: ' ↑'; color: var(--primary); }
+table.dt th.sorted-desc::after { content: ' ↓'; color: var(--primary); }
+table.dt td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
 table.dt tr:last-child td { border-bottom: none; }
-table.dt tr.latest-row { background: #fff8f8; }
-table.dt tr:hover td { background: #f7fafc; }
-.pill { display:inline-block; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700; }
-.pill-green  { background:#c6f6d5; color:#276749; }
-.pill-yellow { background:#fefcbf; color:#744210; }
-.pill-red    { background:#fed7d7; color:#822727; }
-.pill-gray   { background:#edf2f7; color:#718096; }
-.rate-bar { display:flex; align-items:center; gap:5px; }
-.rate-fill { height:5px; border-radius:3px; background:linear-gradient(90deg,#4361ee,#748ffc); min-width:2px; }
-.latest-badge { background:#e94560; color:#fff; font-size:9px; padding:1px 5px; border-radius:3px; margin-left:4px; }
-.cat-tag { display:inline-block; padding:2px 6px; border-radius:4px; font-size:10px; background:var(--cat-bg); color:var(--cat-color); }
+table.dt tr:hover td { background: #f8fafc; }
+table.dt tr.latest-row td { background: #fff7f7; }
+.pill { display:inline-block; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; }
+.pill-green  { background:#dcfce7; color:#166534; }
+.pill-yellow { background:#fef9c3; color:#854d0e; }
+.pill-red    { background:#fee2e2; color:#991b1b; }
+.pill-gray   { background:#f1f5f9; color:#94a3b8; }
+.rate-bar { display:flex; align-items:center; gap:6px; }
+.rate-fill { height:4px; border-radius:2px; background: linear-gradient(90deg,var(--primary),#93c5fd); min-width:2px; }
+.latest-badge { background:var(--accent); color:#fff; font-size:9px; padding:1px 6px; border-radius:3px; margin-left:5px; font-weight:700; }
+.cat-tag { display:inline-block; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:600; background:var(--cat-bg); color:var(--cat-color); }
 
-/* ══ Source / tag ══ */
-.src-row  { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
-.src-name { font-size:11px; color:#4a5568; width:115px; flex-shrink:0; }
-.src-bg   { flex:1; background:#f0f2f5; border-radius:4px; height:13px; }
+/* ══ SURVEY ══ */
+.big-score { text-align:center; margin-top:12px; }
+.big-score .bs-num { font-size:36px; font-weight:800; color:var(--purple); line-height:1; }
+.big-score .bs-den { font-size:14px; color:var(--text-3); }
+.big-score .bs-stars { font-size:20px; margin-top:6px; }
+
+.src-row  { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.src-name { font-size:12px; color:var(--text-2); width:120px; flex-shrink:0; }
+.src-bg   { flex:1; background:#f1f5f9; border-radius:4px; height:8px; overflow:hidden; }
 .src-fill { height:100%; border-radius:4px; }
-.src-ct   { font-size:11px; color:#718096; width:28px; text-align:right; flex-shrink:0; }
-.tag-cloud { display:flex; flex-wrap:wrap; gap:6px; }
-.tag { padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; }
-.comment-list { list-style:none; }
-.comment-list li { padding:8px 12px; background:#f7fafc; border-radius:7px; margin-bottom:6px; font-size:12px; color:#4a5568; border-left:3px solid #e94560; line-height:1.6; }
-.survey-notice { background:#fffbeb; border:1px solid #f6e05e; border-radius:7px; padding:7px 13px; margin-bottom:12px; font-size:11px; color:#744210; }
+.src-ct   { font-size:12px; font-weight:700; color:var(--text-2); width:28px; text-align:right; flex-shrink:0; }
 
+.tag-cloud { display:flex; flex-wrap:wrap; gap:7px; }
+.tag { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; }
 
-/* ══ Accent vars — 4-color palette ══ */
-.a-blue   { --accent:#4361ee; --accent-bg:#eef2ff; }
-.a-red    { --accent:#e94560; --accent-bg:#fff0f3; }
-.a-green  { --accent:#2b9e7a; --accent-bg:#f0faf5; }
-.a-purple { --accent:#7048e8; --accent-bg:#f3f0ff; }
-.a-blue2  { --accent:#2c5fb3; --accent-bg:#e8f0ff; }
+.comment-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.comment-list li {
+  padding:10px 14px; background:#f8fafc; border-radius:8px;
+  font-size:12px; color:var(--text-2); border-left:3px solid var(--accent); line-height:1.7;
+}
 
-.footer { text-align:center; padding:18px; color:#a0aec0; font-size:11px; }
+.survey-notice {
+  background:#fffbeb; border:1px solid #fde68a; border-radius:8px;
+  padding:8px 14px; margin-bottom:14px; font-size:12px; color:#92400e;
+  display:flex; align-items:center; gap:7px;
+}
+
+/* ══ MOBILE DRAWER ══ */
+.drawer-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:400; }
+.drawer {
+  display:none; position:fixed; top:0; left:0; bottom:0; width:240px;
+  background:#fff; z-index:500; box-shadow: 4px 0 24px rgba(0,0,0,.12);
+  flex-direction:column; padding:20px 0;
+  transform: translateX(-100%); transition: transform .25s;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-logo { padding:4px 20px 16px; border-bottom:1px solid var(--border); margin-bottom:10px; }
+.drawer-logo .t1 { font-size:14px; font-weight:700; }
+.drawer-logo .t2 { font-size:11px; color:var(--text-3); }
+.drawer-item {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 20px; font-size:13px; color:var(--text-2);
+  cursor:pointer; transition:all .15s; border:none; background:none;
+  font-family:inherit; text-align:left; width:100%;
+}
+.drawer-item:hover { background:#f8fafc; color:var(--primary); }
+.drawer-item.active { color:var(--primary); font-weight:600; background:var(--primary-light); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  .grid-4   { grid-template-columns: repeat(2,1fr); }
+  .grid-3   { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .main-wrap { padding: 16px 12px 32px; }
+  .site-header { padding: 0 16px; }
+  .filter-bar { padding: 10px 16px; gap: 8px; }
+  .hero-banner { padding: 18px 16px; }
+  .hero-title  { font-size: 15px; }
+  .kpi-grid    { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .kpi-val     { font-size: 26px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .burger      { display: flex; }
+  .header-meta { display: none; }
+  .filter-sep  { display: none; }
+  .drawer-overlay, .drawer { display: flex; }
+}
+@media (min-width: 641px) {
+  .drawer-overlay, .drawer { display: none !important; }
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════ SIDEBAR ══════════ -->
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-title">XQ 週末特訓班</div>
-    <div class="logo-sub">長期監控看板</div>
+<!-- ══ HEADER ══ -->
+<header class="site-header">
+  <div class="header-logo">
+    <div class="logo-mark">XQ</div>
+    <div class="logo-text">
+      <div class="t1">週末特訓班</div>
+      <div class="t2">成效監控看板</div>
+    </div>
   </div>
-
-  <div class="nav-section-title">本期</div>
-  <a class="nav-item active" onclick="jumpTo('sec-current')" id="nav-current">
-    <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> 本期焦點
-  </a>
-  <a class="nav-item" onclick="jumpTo('sec-survey')" id="nav-survey">
-    <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> 問卷分析
-  </a>
-
-  <div class="nav-section-title">長期趨勢</div>
-  <a class="nav-item" onclick="jumpTo('sec-filter')" id="nav-filter">
-    <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><circle cx="12" cy="4" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="14" cy="20" r="2"/></svg></span> 篩選 &amp; 摘要
-  </a>
-  <a class="nav-item" onclick="jumpTo('sec-trend')" id="nav-trend">
-    <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span> 趨勢圖
-  </a>
-  <a class="nav-item" onclick="jumpTo('sec-score')" id="nav-score">
-    <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> 滿意度走勢
-  </a>
-  <a class="nav-item" onclick="jumpTo('sec-table')" id="nav-table">
-    <span class="nav-icon"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span> 各期數據表
-  </a>
-
-  <div class="sidebar-footer">
-    資料截至<br>2026 / 04 / 25<br>共 82 期
+  <div class="header-spacer"></div>
+  <div class="header-meta">
+    <div class="hm-badge">最新 ▪ 第 82 期</div>
+    <div class="hm-sub">院長 ▪ 2026/04/25（六）&nbsp;·&nbsp;共 82 期</div>
   </div>
+  <button class="burger" id="burgerBtn" aria-label="選單">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ══ MOBILE DRAWER ══ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<nav class="drawer" id="drawer">
+  <div class="drawer-logo">
+    <div class="t1">XQ 週末特訓班</div>
+    <div class="t2">共 82 期 ▪ 資料截至 2026/04/25</div>
+  </div>
+  <button class="drawer-item active" onclick="drawerJump('sec-current')">★ 本期焦點</button>
+  <button class="drawer-item" onclick="drawerJump('sec-trend')">📈 長期趨勢</button>
+  <button class="drawer-item" onclick="drawerJump('sec-score')">⭐ 滿意度走勢</button>
+  <button class="drawer-item" onclick="drawerJump('sec-survey')">📋 問卷分析</button>
+  <button class="drawer-item" onclick="drawerJump('sec-table')">📊 數據表格</button>
 </nav>
 
-<!-- ══════════ PAGE SHELL ══════════ -->
-<div class="page-shell">
+<!-- ══ TAB NAV ══ -->
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="jumpTo('sec-current',this)"><span class="tab-icon">★</span>本期焦點</button>
+  <button class="tab-btn" onclick="jumpTo('sec-trend',this)"><span class="tab-icon">📈</span>長期趨勢</button>
+  <button class="tab-btn" onclick="jumpTo('sec-score',this)"><span class="tab-icon">⭐</span>滿意度走勢</button>
+  <button class="tab-btn" onclick="jumpTo('sec-survey',this)"><span class="tab-icon">📋</span>問卷分析</button>
+  <button class="tab-btn" onclick="jumpTo('sec-table',this)"><span class="tab-icon">📊</span>數據表格</button>
+</nav>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="header-right">
-      <div class="session-badge">最新 ▪ 第 82 期</div>
-      <div class="session-info">院長 ▪ 2026/04/25（六）</div>
+<!-- ══ FILTER BAR ══ -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-group">
+    <span class="filter-label">時間範圍</span>
+    <div class="preset-btns">
+      <button class="preset-btn" onclick="setPreset(10,this)">近 10 期</button>
+      <button class="preset-btn" onclick="setPreset(20,this)">近 20 期</button>
+      <button class="preset-btn" onclick="setPreset(40,this)">近 40 期</button>
+      <button class="preset-btn active" onclick="setPreset(0,this)">全部</button>
+    </div>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    <span class="filter-label">分類</span>
+    <select class="filter-select" id="sel-cat" onchange="applyFilter()"><option value="">全部</option></select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">達人</span>
+    <select class="filter-select" id="sel-exp" onchange="applyFilter()"><option value="">全部</option></select>
+  </div>
+  <div class="filter-result">篩選結果：<strong id="filter-count">—</strong> 期</div>
+</div>
+
+<!-- ══ SUMMARY STRIP ══ -->
+<div class="summary-strip" id="summaryBar"></div>
+
+<!-- ══ MAIN ══ -->
+<div class="main-wrap">
+
+  <!-- 本期焦點 -->
+  <div class="sec-heading" id="sec-current">本期焦點</div>
+  <div class="hero-banner">
+    <div class="hero-meta">
+      <span class="hero-no">第 82 期</span>
+      <span class="hero-date">2026 / 04 / 25（六）09:00 — 11:00</span>
+      <span class="hero-cat">策略開發 / 優化</span>
+    </div>
+    <div class="hero-title"><span class="expert">院長</span> ▪ 程式不難，難的是你沒找對門｜新手也能寫出第一支程式</div>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-reg">
+        <div class="kpi-val">559</div>
+        <div class="kpi-lbl">報名人數</div>
+        <div class="kpi-tag">本期</div>
+      </div>
+      <div class="kpi-card kpi-att">
+        <div class="kpi-val">408</div>
+        <div class="kpi-lbl">實際到課人數</div>
+        <div class="kpi-tag">到課率 73%</div>
+      </div>
+      <div class="kpi-card kpi-surv">
+        <div class="kpi-val">103</div>
+        <div class="kpi-lbl">回覆問卷人數</div>
+        <div class="kpi-tag">回收率 18.4%</div>
+      </div>
+      <div class="kpi-card kpi-score">
+        <div class="kpi-val">4.72</div>
+        <div class="kpi-lbl">課程滿意度</div>
+        <div class="kpi-tag">滿分 5 分</div>
+      </div>
     </div>
   </div>
 
-  <!-- Filter bar (sticky) -->
-  <div class="filter-bar" id="sec-filter">
-    <div class="filter-group">
-      <span class="filter-label">時間範圍</span>
-      <div class="preset-btns">
-        <button class="preset-btn" onclick="setPreset(10,this)">近 10 期</button>
-        <button class="preset-btn" onclick="setPreset(20,this)">近 20 期</button>
-        <button class="preset-btn" onclick="setPreset(40,this)">近 40 期</button>
-        <button class="preset-btn active" onclick="setPreset(0,this)">全部</button>
-      </div>
-    </div>
-    <div class="filter-divider"></div>
-    <div class="filter-group">
-      <span class="filter-label">分類</span>
-      <select id="sel-cat" onchange="applyFilter()"><option value="">全部</option></select>
-    </div>
-    <div class="filter-group">
-      <span class="filter-label">達人</span>
-      <select id="sel-exp" onchange="applyFilter()"><option value="">全部</option></select>
-    </div>
-    <div class="filter-result">篩選結果：<strong id="filter-count">—</strong> 期</div>
+  <!-- 長期趨勢 -->
+  <div class="sec-heading" id="sec-trend">到課趨勢</div>
+  <div class="card grid-full">
+    <div class="card-title">實際到課人數 ＆ 到課率 <span class="sub" id="trend-subtitle"></span></div>
+    <canvas id="trendChart" height="70"></canvas>
   </div>
 
-  <!-- 摘要列 -->
-  <div class="summary-bar" id="summaryBar"></div>
+  <!-- 滿意度 + 分類 -->
+  <div class="sec-heading" id="sec-score">滿意度走勢 ＆ 分類分析</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">滿意度趨勢 <span class="sub">（各期，含平均線）</span></div>
+      <canvas id="scoreChart" height="170"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">各分類平均到課人數 <span class="sub">（篩選範圍）</span></div>
+      <canvas id="catChart" height="170"></canvas>
+    </div>
+  </div>
 
-  <div class="container">
-
-    <!-- ══ 本期焦點 ══ -->
-    <div class="section-label" id="sec-current">本期焦點</div>
-    <div class="hero-section" style="margin-bottom:18px;">
-      <div class="hero-meta">
-        <span class="hero-no">第 82 期</span>
-        <span class="hero-date">2026 / 04 / 25（六）09:00 — 11:00</span>
-        <span class="hero-cat">策略開發 / 優化</span>
-      </div>
-      <div class="hero-title">
-        <span>院長</span> ▪ 程式不難，難的是你沒找對門｜新手也能寫出第一支程式
-      </div>
-      <div class="hero-kpis">
-        <div class="hero-kpi hk-red">
-          <div class="hk-val">559</div>
-          <div class="hk-label">報名人數</div>
-        </div>
-        <div class="hero-kpi hk-blue">
-          <div class="hk-val">408</div>
-          <div class="hk-label">實際到課人數</div>
-          <div class="hk-badge">到課率 73%</div>
-        </div>
-        <div class="hero-kpi hk-green">
-          <div class="hk-val">103</div>
-          <div class="hk-label">回覆問卷人數</div>
-          <div class="hk-badge">回收率 18.4%</div>
-        </div>
-        <div class="hero-kpi hk-purple">
-          <div class="hk-val">4.72</div>
-          <div class="hk-label">課程滿意度</div>
-          <div class="hk-badge">滿分 5 分</div>
-        </div>
+  <!-- 問卷分析 -->
+  <div class="sec-heading" id="sec-survey">
+    問卷分析
+    <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3);">固定顯示最新一期：第 82 期 ▪ 院長 ▪ 2026/04/25（103 份）</span>
+  </div>
+  <div class="survey-notice">ℹ️ 本區固定顯示最新一期問卷數據，不受上方篩選器影響。</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">滿意度分佈</div>
+      <canvas id="ratingChart" height="180"></canvas>
+      <div class="big-score">
+        <div><span class="bs-num">4.72</span><span class="bs-den"> / 5.0</span></div>
+        <div class="bs-stars">★★★★★</div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-title">課程收穫面向</div>
+      <canvas id="topicChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">學員得知管道</div>
+      <div id="sourceList" style="margin-top:8px;"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">希望增開課程類型 <span class="sub">（字體大小 = 需求熱度）</span></div>
+      <div class="tag-cloud" id="tagCloud" style="margin-top:10px;"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">精選學員留言</div>
+      <ul class="comment-list">
+        <li>「今日課程價值連城，千金難換」</li>
+        <li>「院長內容充實，程式不鎖碼，很好的參考」</li>
+        <li>「滿滿乾貨，要多吸收幾次。院長就是佛心」</li>
+        <li>「很實用的「集保二分法」邏輯，謝謝院長！」</li>
+        <li>「很實用，希望可以多分幾次上課」</li>
+      </ul>
+    </div>
+  </div>
 
-    <!-- ══ 趨勢圖 ══ -->
-    <div class="section-label" id="sec-trend">到課趨勢</div>
-    <div class="card grid-full" style="margin-bottom:16px;">
-      <div class="card-title">實際到課人數 ＆ 到課率<span id="trend-subtitle"></span></div>
-      <canvas id="trendChart" height="65"></canvas>
+  <!-- 數據表格 -->
+  <div class="sec-heading" id="sec-table">各期詳細數據</div>
+  <div class="card grid-full">
+    <div class="table-wrap">
+      <table class="dt" id="mainTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable('no')" data-col="no">#</th>
+            <th onclick="sortTable('date')" data-col="date">日期</th>
+            <th onclick="sortTable('expert')" data-col="expert">達人</th>
+            <th>主題</th>
+            <th>分類</th>
+            <th onclick="sortTable('registered')" data-col="registered" style="text-align:right;">報名</th>
+            <th onclick="sortTable('attended')" data-col="attended" style="text-align:right;">到課</th>
+            <th onclick="sortTable('rate')" data-col="rate">到課率</th>
+            <th onclick="sortTable('surveyed')" data-col="surveyed" style="text-align:right;">問卷</th>
+            <th onclick="sortTable('score')" data-col="score">滿意度</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
     </div>
+  </div>
 
-    <!-- ══ 滿意度 + 分類 ══ -->
-    <div class="section-label" id="sec-score">滿意度走勢 ＆ 分類分析</div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">滿意度趨勢<span>（各期，含平均線）</span></div>
-        <canvas id="scoreChart" height="160"></canvas>
-      </div>
-      <div class="card">
-        <div class="card-title">各分類 平均到課人數<span>（篩選範圍）</span></div>
-        <canvas id="catChart" height="160"></canvas>
-      </div>
-    </div>
+</div><!-- /main-wrap -->
 
-    <!-- ══ 數據表 ══ -->
-    <div class="section-label" id="sec-table">各期詳細數據</div>
-    <div class="card grid-full" style="margin-bottom:16px;">
-      <div class="table-wrap">
-        <table class="dt" id="mainTable">
-          <thead>
-            <tr>
-              <th onclick="sortTable('no')" data-col="no">期次</th>
-              <th onclick="sortTable('date')" data-col="date">日期</th>
-              <th onclick="sortTable('expert')" data-col="expert">達人</th>
-              <th>主題</th>
-              <th>分類</th>
-              <th onclick="sortTable('registered')" data-col="registered" style="text-align:right;">報名</th>
-              <th onclick="sortTable('attended')" data-col="attended" style="text-align:right;">到課</th>
-              <th onclick="sortTable('rate')" data-col="rate">到課率</th>
-              <th onclick="sortTable('surveyed')" data-col="surveyed" style="text-align:right;">問卷</th>
-              <th onclick="sortTable('score')" data-col="score">滿意度</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ══ 問卷分析 ══ -->
-    <div class="section-label" id="sec-survey">問卷分析
-      <span style="font-size:10px; font-weight:400; text-transform:none; letter-spacing:0; color:#a0aec0;">固定顯示最新一期：第 82 期 ▪ 院長 ▪ 2026/04/25（103 份）</span>
-    </div>
-    <div class="survey-notice">本區固定顯示最新一期問卷數據，不受上方篩選器影響。</div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-title">滿意度分佈</div>
-        <canvas id="ratingChart" height="190"></canvas>
-        <div style="text-align:center; margin-top:10px;">
-          <span style="font-size:28px;font-weight:800;color:#7048e8;">4.72</span>
-          <span style="font-size:12px;color:#718096;"> / 5.0</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">課程收穫面向</div>
-        <canvas id="topicChart" height="230"></canvas>
-      </div>
-      <div class="card">
-        <div class="card-title">學員得知管道</div>
-        <div id="sourceList" style="margin-top:6px;"></div>
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">希望增開課程類型<span>（字體大小 = 需求熱度）</span></div>
-        <div class="tag-cloud" id="tagCloud" style="margin-top:8px;"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">精選學員留言</div>
-        <ul class="comment-list">
-          <li>「今日課程價值連城，千金難換」</li>
-          <li>「院長內容充實，程式不鎖碼，很好的參考」</li>
-          <li>「滿滿乾貨，要多吸收幾次。院長就是佛心」</li>
-          <li>「很實用的「集保二分法」邏輯，謝謝院長！」</li>
-          <li>「很實用，希望可以多分幾次上課」</li>
-        </ul>
-      </div>
-    </div>
-
-  </div><!-- /container -->
-  <div class="footer">XQ 週末特訓班 長期監控看板 ▪ 資料截至 2026/04/25 ▪ 共 82 期</div>
-</div><!-- /page-shell -->
+<footer style="text-align:center;padding:20px;color:var(--text-3);font-size:11px;">
+  XQ 週末特訓班 成效監控看板 ▪ 資料截至 2026/04/25 ▪ 共 82 期
+</footer>
 
 <script>
 // ══ Category styles ══
 const CAT_STYLE = {
-  '策略開發 / 優化':     { bg:'#eef2ff', color:'#4361ee' },  // 藍
-  '主觀交易 / 操作技巧': { bg:'#fff0f3', color:'#e94560' },  // 紅
-  '自動交易 / 程式交易': { bg:'#f0faf5', color:'#2b9e7a' },  // 綠
-  '投資理念 / 名師經驗': { bg:'#f3f0ff', color:'#7048e8' },  // 紫
-  '籌碼分析 / 主力追蹤': { bg:'#e8f0ff', color:'#2c5fb3' },  // 深藍
-  '看盤工具 / 介面建構': { bg:'#edfaf5', color:'#1e8a64' },  // 深綠
-  '量化體驗':            { bg:'#f5f0ff', color:'#9c6fe4' },  // 淺紫
+  '策略開發 / 優化':     { bg:'#eff6ff', color:'#2563eb' },
+  '主觀交易 / 操作技巧': { bg:'#fff1f3', color:'#e94560' },
+  '自動交易 / 程式交易': { bg:'#ecfdf5', color:'#059669' },
+  '投資理念 / 名師經驗': { bg:'#f5f3ff', color:'#7c3aed' },
+  '籌碼分析 / 主力追蹤': { bg:'#eff6ff', color:'#1d4ed8' },
+  '看盤工具 / 介面建構': { bg:'#f0fdf4', color:'#15803d' },
+  '量化體驗':            { bg:'#faf5ff', color:'#9333ea' },
 };
+const CAT_COLORS = ['#2563eb','#e94560','#059669','#7c3aed','#1d4ed8','#15803d','#9333ea'];
 
-// ══ All 81 sessions ══
+// ══ Data ══
 const RAW = [
   [1,'2024-06-15','江加宏','MSCI 長線交易策略','策略開發 / 優化',215,110,51,13,null],
   [2,'2024-06-29','鄧哥','利用量化積木打造你的可轉債交易策略','策略開發 / 優化',406,223,55,57,4.83],
@@ -440,95 +496,100 @@ const RAW = [
   [16,'2024-10-19','貓老大','價量秘密 (2)：從營收角度解析飆股的關鍵','主觀交易 / 操作技巧',706,489,69,132,4.92],
   [17,'2024-10-26','三寶爸','精準選出 A5 潛力股','籌碼分析 / 主力追蹤',867,542,63,117,4.85],
   [18,'2024-11-02','老墨','打開天窗談量化：阿嬤都會的量化交易','策略開發 / 優化',1030,625,61,82,4.75],
-  [19,'2024-11-09','鄭詩翰','小資可轉債－探索有錢人的礦山，跟上大戶獲利新藍海','主觀交易 / 操作技巧',663,471,71,48,3.75],
+  [19,'2024-11-09','鄭詩翰','小資可轉債','主觀交易 / 操作技巧',663,471,71,48,3.75],
   [20,'2024-11-16','I.L.','解鎖潛力股：菲利普.費雪的交易法則','投資理念 / 名師經驗',595,395,66,35,4.91],
-  [21,'2024-11-23','尼克萊','用不同的角度看市場：相對強度 RS 如何快速找出強勢股','主觀交易 / 操作技巧',598,444,74,38,4.68],
+  [21,'2024-11-23','尼克萊','用相對強度 RS 快速找出強勢股','主觀交易 / 操作技巧',598,444,74,38,4.68],
   [22,'2024-11-30','斜槓姐姐','秒懂量化：選股後的全自動投資術','自動交易 / 程式交易',573,394,69,45,4.73],
   [23,'2024-12-07','鄧哥','可轉債指南！自組專屬可轉債看盤頁','看盤工具 / 介面建構',552,396,72,159,4.86],
   [24,'2024-12-14','Vincent','打造 ETF：運用財報數據優化你的選股組合','策略開發 / 優化',476,333,70,81,4.96],
   [25,'2024-12-21','G 股團長','AI 與 XQ 的邂逅','自動交易 / 程式交易',719,475,66,96,4.74],
   [26,'2024-12-28','老墨','破解主力布局：從籌碼表看穿大盤走勢','籌碼分析 / 主力追蹤',708,467,66,47,4.85],
   [27,'2025-01-04','I.L.','祖魯法則：小型成長股的超額報酬秘訣','投資理念 / 名師經驗',495,354,72,62,4.93],
-  [28,'2025-01-11','江加宏','從 0 到 1：小資族快速上手量化交易的致勝秘訣','自動交易 / 程式交易',597,446,75,255,4.91],
+  [28,'2025-01-11','江加宏','從 0 到 1：小資族快速上手量化交易','自動交易 / 程式交易',597,446,75,255,4.91],
   [29,'2025-01-18','張教授','時間投資術：用數據找出最佳投資時機','策略開發 / 優化',572,391,68,94,4.81],
-  [30,'2025-02-15','許教授','程式交易邏輯排錯：帶你避開策略設計中的陷阱','自動交易 / 程式交易',592,426,72,38,4.42],
+  [30,'2025-02-15','許教授','程式交易邏輯排錯','自動交易 / 程式交易',592,426,72,38,4.42],
   [31,'2025-02-22','賽恩斯','當沖獲利關鍵：決策解析與實戰運用','主觀交易 / 操作技巧',922,633,69,72,4.30],
-  [32,'2025-03-08','Alan','交易聖杯解密：從學術論文提煉市場中的黃金策略','投資理念 / 名師經驗',529,373,71,55,4.55],
-  [33,'2025-03-15','許教授','程式交易邏輯除錯｜打破腳本與安控的錯誤迷思','自動交易 / 程式交易',514,366,71,37,4.81],
-  [34,'2025-03-22','貓老大','飆股的起點｜盤中鎖定強勢股，精準卡位飆點','策略開發 / 優化',672,488,71,41,4.74],
-  [35,'2025-03-29','鄭詩翰','精準發現盤面主流股｜辨別風口豬與領頭羊','主觀交易 / 操作技巧',710,465,65,69,4.10],
+  [32,'2025-03-08','Alan','交易聖杯解密：從學術論文提煉市場黃金策略','投資理念 / 名師經驗',529,373,71,55,4.55],
+  [33,'2025-03-15','許教授','程式交易邏輯除錯','自動交易 / 程式交易',514,366,71,37,4.81],
+  [34,'2025-03-22','貓老大','飆股的起點｜盤中鎖定強勢股','策略開發 / 優化',672,488,71,41,4.74],
+  [35,'2025-03-29','鄭詩翰','精準發現盤面主流股','主觀交易 / 操作技巧',710,465,65,69,4.10],
   [36,'2025-04-12','XQ 雨青','贏家籌碼｜揭開市場大戶的關鍵布局','籌碼分析 / 主力追蹤',641,458,71,110,4.73],
   [37,'2025-04-19','I.L.','神奇公式投資法｜財務比率挑出贏家股','投資理念 / 名師經驗',502,372,74,34,4.54],
-  [38,'2025-04-26','KK','選擇權決勝關鍵｜從零開始建立市場趨勢判斷力','主觀交易 / 操作技巧',658,475,72,40,4.10],
-  [39,'2025-05-03','院長','多空判斷指標｜教你打出一套反彈行情專屬策略','看盤工具 / 介面建構',555,394,71,70,4.13],
-  [40,'2025-05-10','G 股團長','Vibe Coding 實戰｜讓 AI 為你寫出交易策略','策略開發 / 優化',588,431,73,46,4.49],
-  [41,'2025-05-17','41 AI 獲獎者','41AI 得獎策略解密｜散戶的交易實錄與策略思維','投資理念 / 名師經驗',629,469,75,69,4.74],
+  [38,'2025-04-26','KK','選擇權決勝關鍵','主觀交易 / 操作技巧',658,475,72,40,4.10],
+  [39,'2025-05-03','院長','多空判斷指標｜專屬策略','看盤工具 / 介面建構',555,394,71,70,4.13],
+  [40,'2025-05-10','G 股團長','Vibe Coding 實戰｜讓 AI 寫交易策略','策略開發 / 優化',588,431,73,46,4.49],
+  [41,'2025-05-17','41 AI 獲獎者','41AI 得獎策略解密','投資理念 / 名師經驗',629,469,75,69,4.74],
   [42,'2025-05-24','蘭弦','財報結合技術面｜用財報與線圖找進場點','主觀交易 / 操作技巧',540,403,75,70,4.48],
   [43,'2025-06-07','歐特','選股排行解密｜全新函數，鎖定趨勢龍頭','自動交易 / 程式交易',621,461,74,26,4.19],
-  [44,'2025-06-14','查理哥','AI 機器人實作｜教你用 AI 開發 XS 程式小幫手','自動交易 / 程式交易',702,512,73,73,4.80],
-  [45,'2025-06-21','鄧哥','公開高勝率分點如何找｜教你抓出分點進場線索','籌碼分析 / 主力追蹤',761,560,74,47,4.67],
-  [46,'2025-06-28','張教授','從籌碼數據開發策略｜主力行為寫出可驗證的策略邏輯','籌碼分析 / 主力追蹤',781,523,67,91,4.52],
-  [47,'2025-07-05','江加宏','當沖因子挖掘｜打造輔助交易程式，捕捉短線進出場','策略開發 / 優化',794,582,73,83,4.63],
-  [48,'2025-07-12','溫首盛','主噴段信號雷達｜用黃綠紅五階段找出主力啟動點','看盤工具 / 介面建構',706,515,73,76,4.45],
+  [44,'2025-06-14','查理哥','AI 機器人實作｜教你用 AI 開發 XS 程式','自動交易 / 程式交易',702,512,73,73,4.80],
+  [45,'2025-06-21','鄧哥','公開高勝率分點如何找','籌碼分析 / 主力追蹤',761,560,74,47,4.67],
+  [46,'2025-06-28','張教授','從籌碼數據開發策略','籌碼分析 / 主力追蹤',781,523,67,91,4.52],
+  [47,'2025-07-05','江加宏','當沖因子挖掘｜打造輔助交易程式','策略開發 / 優化',794,582,73,83,4.63],
+  [48,'2025-07-12','溫首盛','主噴段信號雷達','看盤工具 / 介面建構',706,515,73,76,4.45],
   [49,'2025-07-19','James','成長股雷達｜彼得林區的 10 倍股獵人術','策略開發 / 優化',606,457,75,59,4.42],
   [50,'2025-07-26','XQ 雨青','籌碼狙擊手｜選股中心揭露潛力籌碼股','籌碼分析 / 主力追蹤',767,531,69,66,4.51],
-  [51,'2025-08-02','尼克萊','攻防選股術｜用相對強度抓出下一波強勢股','主觀交易 / 操作技巧',611,467,76,69,4.71],
-  [52,'2025-08-09','貓老大','飆股軌跡解密｜從 K 線看出主力進場的蛛絲馬跡','主觀交易 / 操作技巧',728,550,76,51,4.76],
-  [53,'2025-08-16','James','看穿假財報｜結合證券分析與 AI 的選股法','策略開發 / 優化',581,438,75,28,4.44],
-  [54,'2025-08-23','蘭弦','策略檢視｜財報出爐後，如何調整策略順勢而為？','策略開發 / 優化',561,383,68,65,4.72],
-  [55,'2025-08-30','Alan','交易聖杯：論文揭示法說與增資的佈局密碼','策略開發 / 優化',621,443,71,34,4.40],
-  [56,'2025-09-06','三寶爸','關稅風暴下的價值投資｜發掘被低估的績優黑馬','策略開發 / 優化',505,407,81,38,4.63],
-  [57,'2025-09-13','KK','選擇權策略實戰｜建構 × 回測 × 自動交易','自動交易 / 程式交易',603,446,74,29,3.67],
-  [58,'2025-09-20','院長','飆股的長相｜從價量數據看出主力動能與潛力','主觀交易 / 操作技巧',714,532,75,38,4.41],
-  [59,'2025-09-27','G 股團長','從回測到報表｜AI 打造選股策略資料庫的核心流程','策略開發 / 優化',571,414,73,36,4.48],
-  [60,'2025-10-04','溫首盛','極短線飆噴實戰｜權證操作掌握飆股起漲點','主觀交易 / 操作技巧',543,415,76,56,4.64],
-  [61,'2025-10-18','Vincent','現貨 × 期貨｜從防禦避險到主動獲利的祕密','主觀交易 / 操作技巧',624,439,70,53,4.52],
-  [62,'2025-11-01','斜槓姐姐','什麼是量化？｜主觀交易者也能上手的量化入門課','量化體驗',530,396,75,34,4.29],
-  [63,'2025-11-08','三寶爸','策略不求人｜用量化積木拼出你的交易 SOP','量化體驗',598,432,72,34,4.63],
-  [64,'2025-11-15','老墨','看懂回測報告｜主觀交易者必學的關鍵指標解析','量化體驗',608,431,71,29,4.07],
-  [65,'2025-11-22','查理哥','把策略變現｜量化積木如何執行、自動化、控風險','量化體驗',617,431,70,28,4.52],
-  [66,'2025-11-29','江加宏','台指期印鈔機｜交易策略擬定與自動化','策略開發 / 優化',771,527,68,55,4.76],
-  [67,'2025-12-06','尼克萊','相對強度全攻略｜用 RS 精準選股、攻守兼備','主觀交易 / 操作技巧',620,461,74,157,4.42],
-  [68,'2025-12-13','鄧哥','跟著交易行事曆找節奏｜一頁掌握波動標的與進場時機','主觀交易 / 操作技巧',630,456,72,138,4.20],
-  [69,'2025-12-20','斜槓姐姐','台美股雙市場策略實作｜動能選股 X 資產輪動完整教學','策略開發 / 優化',572,429,75,106,4.35],
-  [70,'2025-12-27','Vincent','策略濾網實戰｜精準進場、避開雙八風險','策略開發 / 優化',655,468,71,123,4.36],
-  [71,'2026-01-03','許江河','程式卡卡怎麼辦？從執行效率看懂 XS 寫法關鍵','策略開發 / 優化',538,411,76,91,4.58],
-  [72,'2026-01-10','XQ 雨青','跟著主力走｜用籌碼分點打造 XS 自動交易邏輯','籌碼分析 / 主力追蹤',588,455,77,132,4.62],
-  [73,'2026-01-17','三寶爸','散戶熱買＝警訊？｜用「巴逆逆」指標識破主力出貨','主觀交易 / 操作技巧',689,517,75,180,4.21],
-  [74,'2026-01-24','子溥老師','XQ 藏寶圖 (1)｜高勝率抄底策略這樣練出來','策略開發 / 優化',675,478,71,158,4.43],
-  [75,'2026-01-31','老墨','解鎖你的交易超能力：AI x XQ 策略生成實戰','策略開發 / 優化',868,623,72,262,4.82],
-  [76,'2026-02-07','蘭弦','策略不只是想法｜帶你實作回測、自動交易一次到位','策略開發 / 優化',600,437,73,165,4.62],
-  [77,'2026-03-14','KK','當沖交易全觀｜從多空思維到時間價值的實戰框架','策略開發 / 優化',629,443,70,83,4.27],
-  [78,'2026-03-21','貓老大','主力怎麼玩｜從 K 線軌跡看懂有價無市的真相','主觀交易 / 操作技巧',601,431,72,104,4.33],
-  [79,'2026-03-28','IL','故事會騙人，數字也不一定對｜一套真正能用的估值方法','投資理念 / 名師經驗',526,380,72,84,4.45],
-  [80,'2026-04-11','溫首盛','主噴股偵測術｜整理、轉強到噴出的完整流程','主觀交易 / 操作技巧',542,413,76,88,4.23],
+  [51,'2025-08-02','尼克萊','攻防選股術｜用相對強度抓強勢股','主觀交易 / 操作技巧',611,467,76,69,4.71],
+  [52,'2025-08-09','貓老大','飆股軌跡解密｜從 K 線看主力進場','主觀交易 / 操作技巧',728,550,76,51,4.76],
+  [53,'2025-08-16','James','看穿假財報｜結合證券分析與 AI 選股','策略開發 / 優化',581,438,75,28,4.44],
+  [54,'2025-08-23','蘭弦','策略檢視｜財報出爐後如何調整策略','策略開發 / 優化',561,383,68,65,4.72],
+  [55,'2025-08-30','Alan','交易聖杯：論文揭示法說與增資的布局密碼','策略開發 / 優化',621,443,71,34,4.40],
+  [56,'2025-09-06','三寶爸','關稅風暴下的價值投資','策略開發 / 優化',505,407,81,38,4.63],
+  [57,'2025-09-13','KK','選擇權策略實戰','自動交易 / 程式交易',603,446,74,29,3.67],
+  [58,'2025-09-20','院長','飆股的長相｜從價量看主力動能','主觀交易 / 操作技巧',714,532,75,38,4.41],
+  [59,'2025-09-27','G 股團長','從回測到報表｜AI 打造選股策略資料庫','策略開發 / 優化',571,414,73,36,4.48],
+  [60,'2025-10-04','溫首盛','極短線飆噴實戰｜權證操作','主觀交易 / 操作技巧',543,415,76,56,4.64],
+  [61,'2025-10-18','Vincent','現貨 × 期貨｜從防禦避險到主動獲利','主觀交易 / 操作技巧',624,439,70,53,4.52],
+  [62,'2025-11-01','斜槓姐姐','什麼是量化？｜量化入門課','量化體驗',530,396,75,34,4.29],
+  [63,'2025-11-08','三寶爸','策略不求人｜用量化積木拼出交易 SOP','量化體驗',598,432,72,34,4.63],
+  [64,'2025-11-15','老墨','看懂回測報告｜主觀交易者必學指標','量化體驗',608,431,71,29,4.07],
+  [65,'2025-11-22','查理哥','把策略變現｜量化積木自動化控風險','量化體驗',617,431,70,28,4.52],
+  [66,'2025-11-29','江加宏','台指期印鈔機｜策略擬定與自動化','策略開發 / 優化',771,527,68,55,4.76],
+  [67,'2025-12-06','尼克萊','相對強度全攻略｜用 RS 精準選股','主觀交易 / 操作技巧',620,461,74,157,4.42],
+  [68,'2025-12-13','鄧哥','跟著交易行事曆找節奏','主觀交易 / 操作技巧',630,456,72,138,4.20],
+  [69,'2025-12-20','斜槓姐姐','台美股雙市場策略實作','策略開發 / 優化',572,429,75,106,4.35],
+  [70,'2025-12-27','Vincent','策略濾網實戰｜精準進場避開風險','策略開發 / 優化',655,468,71,123,4.36],
+  [71,'2026-01-03','許江河','程式卡卡怎麼辦？XS 寫法關鍵','策略開發 / 優化',538,411,76,91,4.58],
+  [72,'2026-01-10','XQ 雨青','跟著主力走｜籌碼分點打造自動交易','籌碼分析 / 主力追蹤',588,455,77,132,4.62],
+  [73,'2026-01-17','三寶爸','散戶熱買＝警訊？｜巴逆逆指標','主觀交易 / 操作技巧',689,517,75,180,4.21],
+  [74,'2026-01-24','子溥老師','XQ 藏寶圖 (1)｜高勝率抄底策略','策略開發 / 優化',675,478,71,158,4.43],
+  [75,'2026-01-31','老墨','解鎖交易超能力：AI x XQ 策略生成','策略開發 / 優化',868,623,72,262,4.82],
+  [76,'2026-02-07','蘭弦','策略不只是想法｜回測自動交易一次到位','策略開發 / 優化',600,437,73,165,4.62],
+  [77,'2026-03-14','KK','當沖交易全觀｜多空思維到時間價值','策略開發 / 優化',629,443,70,83,4.27],
+  [78,'2026-03-21','貓老大','主力怎麼玩｜K 線軌跡看有價無市的真相','主觀交易 / 操作技巧',601,431,72,104,4.33],
+  [79,'2026-03-28','IL','故事會騙人，數字也不一定對｜真正能用的估值方法','投資理念 / 名師經驗',526,380,72,84,4.45],
+  [80,'2026-04-11','溫首盛','主噴股偵測術｜整理轉強到噴出完整流程','主觀交易 / 操作技巧',542,413,76,88,4.23],
   [81,'2026-04-18','江加宏','策略拓荒｜從交易因子開始建立自動化優勢','主觀交易 / 操作技巧',551,426,77,87,4.62],
   [82,'2026-04-25','院長','程式不難，難的是你沒找對門｜新手也能寫出第一支程式','策略開發 / 優化',559,408,73,103,4.72],
 ];
-const SESSIONS = RAW.map(r=>({ no:r[0],date:r[1],expert:r[2],topic:r[3],category:r[4],registered:r[5],attended:r[6],rate:r[7],surveyed:r[8],score:r[9] }));
+const SESSIONS = RAW.map(r=>({no:r[0],date:r[1],expert:r[2],topic:r[3],category:r[4],registered:r[5],attended:r[6],rate:r[7],surveyed:r[8],score:r[9]}));
 
-// ══ State ══
-let filtered=[...SESSIONS], sortCol='no', sortDir=1, activePreset=0;
+let filtered=[...SESSIONS], sortCol='no', sortDir=-1, activePreset=0;
 
-// ══ Sidebar scroll spy ══
-const NAV_MAP = {
-  'sec-current':'nav-current','sec-survey':'nav-survey','sec-filter':'nav-filter',
-  'sec-trend':'nav-trend','sec-score':'nav-score','sec-table':'nav-table','sec-update':'nav-update'
-};
-function jumpTo(id){
-  event.preventDefault();
-  document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+// ══ Mobile drawer ══
+const burger=document.getElementById('burgerBtn'), drawer=document.getElementById('drawer'), overlay=document.getElementById('drawerOverlay');
+burger.addEventListener('click',()=>{ drawer.classList.toggle('open'); overlay.style.display=drawer.classList.contains('open')?'block':'none'; });
+overlay.addEventListener('click',()=>{ drawer.classList.remove('open'); overlay.style.display='none'; });
+function drawerJump(id){ drawer.classList.remove('open'); overlay.style.display='none'; smoothScroll(id); }
+
+// ══ Tab nav ══
+function jumpTo(id, btn){
+  if(btn){ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+  smoothScroll(id);
 }
+function smoothScroll(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const offset = el.getBoundingClientRect().top + window.scrollY - 180;
+  window.scrollTo({top: offset, behavior:'smooth'});
+}
+
+// ══ Scroll spy ══
+const SPY_MAP = { 'sec-current':0,'sec-trend':1,'sec-score':2,'sec-survey':3,'sec-table':4 };
 window.addEventListener('scroll',()=>{
-  const sections = Object.keys(NAV_MAP);
-  let current = sections[0];
-  sections.forEach(id=>{
-    const el = document.getElementById(id);
-    if(el && el.getBoundingClientRect().top < 100) current = id;
-  });
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const navEl = document.getElementById(NAV_MAP[current]);
-  if(navEl) navEl.classList.add('active');
+  const keys=Object.keys(SPY_MAP); let cur=keys[0];
+  keys.forEach(id=>{ const el=document.getElementById(id); if(el&&el.getBoundingClientRect().top<180) cur=id; });
+  const tabs=document.querySelectorAll('.tab-btn');
+  tabs.forEach((t,i)=>t.classList.toggle('active',i===SPY_MAP[cur]));
 },{passive:true});
 
 // ══ Dropdowns ══
@@ -548,8 +609,7 @@ function setPreset(n,btn){
   applyFilter();
 }
 function applyFilter(){
-  const cat=document.getElementById('sel-cat').value;
-  const exp=document.getElementById('sel-exp').value;
+  const cat=document.getElementById('sel-cat').value, exp=document.getElementById('sel-exp').value;
   let base=[...SESSIONS];
   if(cat) base=base.filter(s=>s.category===cat);
   if(exp) base=base.filter(s=>s.expert===exp);
@@ -558,103 +618,114 @@ function applyFilter(){
   renderAll();
 }
 
-// ══ KPI ══
-function renderKPI(){
-  if(!filtered.length) return;
-  document.getElementById('filter-count').textContent = filtered.length;
-
-  // ── 摘要列 ──
-  const totReg  = filtered.reduce((a,s)=>a+s.registered,0);
-  const totAtt  = filtered.reduce((a,s)=>a+s.attended,0);
-  const totSurv = filtered.reduce((a,s)=>a+s.surveyed,0);
-  const scored  = filtered.filter(s=>s.score!==null);
-  const avgReg  = Math.round(totReg/filtered.length);
-  const avgAtt  = Math.round(totAtt/filtered.length);
-  const avgRate = Math.round(totAtt/totReg*100);
-  const avgScore = scored.length ? (scored.reduce((a,s)=>a+s.score,0)/scored.length).toFixed(2) : '—';
-  const cat = document.getElementById('sel-cat').value;
-  const exp = document.getElementById('sel-exp').value;
-  const label = exp ? exp : cat ? cat : '全部 81 期';
-  const period = `${filtered[0].date.slice(0,7)} — ${filtered[filtered.length-1].date.slice(0,7)}`;
-  document.getElementById('summaryBar').innerHTML = `
-    <span class="s-item"><span class="s-val">${label}</span></span>
-    <span class="s-div">▸</span>
-    <span class="s-item">共 <span class="s-val">${filtered.length}</span> 期</span>
-    <span class="s-div">|</span>
-    <span class="s-item">平均報名 <span class="s-val">${avgReg.toLocaleString()} 人</span></span>
-    <span class="s-div">|</span>
-    <span class="s-item">平均到課 <span class="s-val">${avgAtt.toLocaleString()} 人</span>（<span class="s-val">${avgRate}%</span>）</span>
-    <span class="s-div">|</span>
-    <span class="s-item">平均滿意度 <span class="s-val">${avgScore}</span></span>
-    <span class="s-div">|</span>
-    <span class="s-item" style="color:#a0aec0;">${period}</span>`;
+// ══ Summary ══
+function renderSummary(){
+  document.getElementById('filter-count').textContent=filtered.length;
+  if(!filtered.length){ document.getElementById('summaryBar').innerHTML=''; return; }
+  const totReg=filtered.reduce((a,s)=>a+s.registered,0);
+  const totAtt=filtered.reduce((a,s)=>a+s.attended,0);
+  const scored=filtered.filter(s=>s.score!==null);
+  const avgReg=Math.round(totReg/filtered.length), avgAtt=Math.round(totAtt/filtered.length);
+  const avgRate=Math.round(totAtt/totReg*100);
+  const avgScore=scored.length?(scored.reduce((a,s)=>a+s.score,0)/scored.length).toFixed(2):'—';
+  const cat=document.getElementById('sel-cat').value, exp=document.getElementById('sel-exp').value;
+  const label=exp?exp:cat?cat:'全部 81 期';
+  const period=`${filtered[0].date.slice(0,7)} — ${filtered[filtered.length-1].date.slice(0,7)}`;
+  document.getElementById('summaryBar').innerHTML=`
+    <span>📌 <span class="ss-val">${label}</span></span><span class="ss-sep">|</span>
+    <span>共 <span class="ss-val">${filtered.length}</span> 期</span><span class="ss-sep">|</span>
+    <span>平均報名 <span class="ss-val">${avgReg.toLocaleString()}</span> 人</span><span class="ss-sep">|</span>
+    <span>平均到課 <span class="ss-val">${avgAtt.toLocaleString()}</span> 人（<span class="ss-val">${avgRate}%</span>）</span><span class="ss-sep">|</span>
+    <span>平均滿意度 <span class="ss-val">${avgScore}</span></span><span class="ss-sep">|</span>
+    <span style="color:#93c5fd;">${period}</span>`;
 }
 
 // ══ Charts ══
 let trendChart, scoreChart, catChart;
+Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
+
 function renderTrendChart(){
-  document.getElementById('trend-subtitle').textContent=`（${filtered.length} 期，${filtered[0]?.date.slice(0,7)} — ${filtered[filtered.length-1]?.date.slice(0,7)}）`;
+  document.getElementById('trend-subtitle').textContent=`（${filtered.length} 期）`;
   if(trendChart) trendChart.destroy();
   trendChart=new Chart(document.getElementById('trendChart'),{
     data:{
-      labels:filtered.map(s=>s.date.slice(5).replace('-','/')+'\n'+s.expert),
+      labels: filtered.map(s=>s.date.slice(5).replace('-','/')),
       datasets:[
         { type:'bar', label:'到課人數', data:filtered.map(s=>s.attended),
-          backgroundColor:filtered.map(s=>s.no===81?'rgba(233,69,96,0.85)':'rgba(76,110,245,0.65)'),
-          borderRadius:3, yAxisID:'y' },
+          backgroundColor: filtered.map(s=>s.no===81?'rgba(233,69,96,0.85)':'rgba(37,99,235,0.6)'),
+          borderRadius:3, yAxisID:'y', borderSkipped:false },
         { type:'line', label:'到課率(%)', data:filtered.map(s=>s.rate),
-          borderColor:'#2b9e7a', backgroundColor:'rgba(56,161,105,0.07)',
-          pointBackgroundColor:filtered.map(s=>s.no===81?'#e94560':'#2b9e7a'),
-          pointRadius:filtered.length>30?2:4, tension:0.4, yAxisID:'y2', fill:false }
+          borderColor:'#059669', backgroundColor:'rgba(5,150,105,0.06)',
+          pointBackgroundColor: filtered.map(s=>s.no===81?'#e94560':'#059669'),
+          pointBorderColor:'#fff', pointBorderWidth:2,
+          pointRadius: filtered.length>40?2:4, tension:0.4, yAxisID:'y2', fill:true }
       ]
     },
     options:{
-      responsive:true, interaction:{mode:'index'},
+      responsive:true, animation:{duration:600},
+      interaction:{mode:'index', intersect:false},
       scales:{
-        y:{beginAtZero:false,min:100,grid:{color:'#f0f2f5'},title:{display:true,text:'到課人數',color:'#718096',font:{size:10}}},
-        y2:{position:'right',min:40,max:90,grid:{drawOnChartArea:false},ticks:{color:'#2b9e7a',callback:v=>v+'%'},title:{display:true,text:'到課率(%)',color:'#2b9e7a',font:{size:10}}},
-        x:{grid:{display:false},ticks:{font:{size:9},maxRotation:50}}
+        y:{ beginAtZero:false, min:80, grid:{color:'#f1f5f9'}, ticks:{color:'#94a3b8',font:{size:11}}, title:{display:true,text:'到課人數',color:'#94a3b8',font:{size:10}} },
+        y2:{ position:'right', min:40, max:90, grid:{drawOnChartArea:false}, ticks:{color:'#059669',font:{size:11},callback:v=>v+'%'}, title:{display:true,text:'到課率',color:'#059669',font:{size:10}} },
+        x:{ grid:{display:false}, ticks:{color:'#94a3b8',font:{size:10},maxRotation:50, callback(v,i){ return filtered.length>40 ? (i%10===0?this.getLabelForValue(v):'') : this.getLabelForValue(v); } } }
       },
-      plugins:{legend:{position:'top',labels:{font:{size:11}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?` 到課率: ${ctx.raw}%`:` 到課人數: ${ctx.raw} 人`}}}
+      plugins:{
+        legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?` 到課率: ${ctx.raw}%`:` 到課人數: ${ctx.raw} 人`}}
+      }
     }
   });
 }
 function renderScoreChart(){
   const sc=filtered.filter(s=>s.score!==null);
   const data=sc.map(s=>s.score);
-  const avg=data.reduce((a,v)=>a+v,0)/data.length;
+  const avg=data.length?data.reduce((a,v)=>a+v,0)/data.length:0;
   if(scoreChart) scoreChart.destroy();
   scoreChart=new Chart(document.getElementById('scoreChart'),{
     type:'line',
     data:{
       labels:sc.map(s=>s.date.slice(2,7).replace('-','/')),
       datasets:[
-        { label:'滿意度', data, borderColor:'#7048e8', backgroundColor:'rgba(128,90,213,0.07)',
-          pointBackgroundColor:sc.map(s=>s.no===81?'#e94560':'#7048e8'),
-          pointRadius:sc.length>30?2:4, tension:0.4, fill:true },
-        { label:`平均 ${avg.toFixed(2)}`, data:data.map(()=>+avg.toFixed(2)),
-          borderColor:'#fc8181', borderDash:[5,4], pointRadius:0, fill:false }
+        { label:'滿意度', data, borderColor:'#7c3aed', backgroundColor:'rgba(124,58,237,0.06)',
+          pointBackgroundColor:sc.map(s=>s.no===81?'#e94560':'#7c3aed'),
+          pointBorderColor:'#fff', pointBorderWidth:2,
+          pointRadius:sc.length>40?2:4, tension:0.4, fill:true },
+        { label:`均值 ${avg.toFixed(2)}`, data:data.map(()=>+avg.toFixed(2)),
+          borderColor:'#fbbf24', borderDash:[5,4], pointRadius:0, fill:false, borderWidth:1.5 }
       ]
     },
     options:{
-      responsive:true,
+      responsive:true, animation:{duration:600},
       scales:{
-        y:{min:3,max:5.2,grid:{color:'#f0f2f5'},ticks:{font:{size:10}}},
-        x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45,callback(v,i){return i%Math.ceil(sc.length/8)===0?sc[i]?.date.slice(2,7).replace('-','/'):''}}}
+        y:{ min:3.2, max:5.2, grid:{color:'#f1f5f9'}, ticks:{color:'#94a3b8',font:{size:11}} },
+        x:{ grid:{display:false}, ticks:{color:'#94a3b8',font:{size:10},maxRotation:45,
+          callback(v,i){ return i%Math.ceil(sc.length/8)===0?sc[i]?.date.slice(2,7).replace('-','/'):''; }} }
       },
-      plugins:{legend:{position:'top',labels:{font:{size:11}}}}
+      plugins:{legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8}}}
     }
   });
 }
 function renderCatChart(){
   const m={};
-  filtered.forEach(s=>{if(!m[s.category])m[s.category]={sum:0,cnt:0};m[s.category].sum+=s.attended;m[s.category].cnt++;});
+  filtered.forEach(s=>{ if(!m[s.category])m[s.category]={sum:0,cnt:0}; m[s.category].sum+=s.attended; m[s.category].cnt++; });
   const cats=Object.keys(m).sort((a,b)=>m[b].sum/m[b].cnt-m[a].sum/m[a].cnt);
   if(catChart) catChart.destroy();
   catChart=new Chart(document.getElementById('catChart'),{
     type:'bar',
-    data:{labels:cats.map(c=>c.replace(' / ','\n')),datasets:[{label:'平均到課',data:cats.map(c=>Math.round(m[c].sum/m[c].cnt)),backgroundColor:cats.map(c=>(CAT_STYLE[c]||{}).color||'#4361ee'),borderRadius:4}]},
-    options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#f0f2f5'},beginAtZero:true,ticks:{font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}
+    data:{
+      labels:cats.map(c=>c.replace(' / ','\n')),
+      datasets:[{label:'平均到課',data:cats.map(c=>Math.round(m[c].sum/m[c].cnt)),
+        backgroundColor:cats.map((c,i)=>CAT_COLORS[i%CAT_COLORS.length]+'cc'),
+        borderRadius:6, borderSkipped:false}]
+    },
+    options:{
+      indexAxis:'y', responsive:true, animation:{duration:600},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` 平均 ${ctx.raw} 人`}}},
+      scales:{
+        x:{grid:{color:'#f1f5f9'},beginAtZero:true,ticks:{color:'#94a3b8',font:{size:11}}},
+        y:{grid:{display:false},ticks:{color:'#475569',font:{size:11}}}
+      }
+    }
   });
 }
 
@@ -674,21 +745,21 @@ function renderTable(){
     return(av>bv?1:av<bv?-1:0)*sortDir;
   });
   document.getElementById('tableBody').innerHTML=sorted.map(s=>{
-    const cs=CAT_STYLE[s.category]||{bg:'#edf2ff',color:'#4361ee'};
+    const cs=CAT_STYLE[s.category]||{bg:'#eff6ff',color:'#2563eb'};
     const scorePill=s.score===null?'<span class="pill pill-gray">—</span>'
-      :s.score>=4.7?`<span class="pill pill-green">${s.score}</span>`
+      :s.score>=4.7?`<span class="pill pill-green">${s.score.toFixed(2)}</span>`
       :s.score>=4.3?`<span class="pill pill-yellow">${s.score.toFixed(2)}</span>`
       :`<span class="pill pill-red">${s.score.toFixed(2)}</span>`;
     return`<tr class="${s.no===81?'latest-row':''}">
-      <td style="color:#a0aec0;font-size:10px;">#${s.no}</td>
-      <td style="white-space:nowrap;">${s.date.replace(/-/g,'/')}</td>
-      <td><strong>${s.expert}</strong>${s.no===81?'<span class="latest-badge">NEW</span>':''}</td>
-      <td style="max-width:280px;color:#4a5568;">${s.topic}</td>
+      <td style="color:var(--text-3);font-size:11px;font-weight:600;">#${s.no}</td>
+      <td style="white-space:nowrap;color:var(--text-2);font-size:12px;">${s.date.replace(/-/g,'/')}</td>
+      <td><strong style="font-size:13px;">${s.expert}</strong>${s.no===81?'<span class="latest-badge">NEW</span>':''}</td>
+      <td style="max-width:260px;color:var(--text-2);font-size:12px;">${s.topic}</td>
       <td><span class="cat-tag" style="--cat-bg:${cs.bg};--cat-color:${cs.color};">${s.category}</span></td>
-      <td style="text-align:right;">${s.registered.toLocaleString()}</td>
+      <td style="text-align:right;font-size:12px;">${s.registered.toLocaleString()}</td>
       <td style="text-align:right;font-weight:700;">${s.attended.toLocaleString()}</td>
-      <td><div class="rate-bar"><div class="rate-fill" style="width:${Math.min(s.rate,85)}px;"></div>${s.rate}%</div></td>
-      <td style="text-align:right;">${s.surveyed}</td>
+      <td><div class="rate-bar"><div class="rate-fill" style="width:${Math.min(s.rate,85)*0.8}px;"></div><span style="font-size:12px;">${s.rate}%</span></div></td>
+      <td style="text-align:right;font-size:12px;">${s.surveyed}</td>
       <td>${scorePill}</td></tr>`;
   }).join('');
 }
@@ -697,27 +768,45 @@ function renderTable(){
 function initSurvey(){
   new Chart(document.getElementById('ratingChart'),{
     type:'doughnut',
-    data:{labels:['5分 幫助很大','4分 有些啟發','3分 普通'],
-      datasets:[{data:[85,17,1],backgroundColor:['#7048e8','#b794f4','#e9d8fd'],borderWidth:2,borderColor:'#fff'}]},
-    options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} 人`}}}}
+    data:{
+      labels:['5分 幫助很大','4分 有些啟發','3分 普通'],
+      datasets:[{data:[85,17,1],backgroundColor:['#7c3aed','#a78bfa','#ddd6fe'],borderWidth:3,borderColor:'#fff',hoverOffset:6}]
+    },
+    options:{cutout:'65%',animation:{animateRotate:true,duration:800},
+      plugins:{legend:{position:'bottom',labels:{font:{size:12},usePointStyle:true,boxWidth:8,padding:12}},
+        tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} 人`}}}}
   });
   new Chart(document.getElementById('topicChart'),{
     type:'bar',
-    data:{labels:['策略開發(交易)','XS 編譯能力','基本功能操作','看盤介面設定','自訂指標開發','策略開發(選股)'],
-      datasets:[{data:[5,3,3,6,22,62],backgroundColor:['#dbe4ff','#bac8ff','#bac8ff','#9775fa','#748ffc','#4361ee'],borderRadius:4}]},
-    options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#f0f2f5'},ticks:{font:{size:11}}},y:{grid:{display:false},ticks:{font:{size:12}}}}}
+    data:{
+      labels:['策略開發(交易)','XS 編譯能力','基本功能操作','看盤介面設定','自訂指標開發','策略開發(選股)'],
+      datasets:[{data:[5,3,3,6,22,62],backgroundColor:['#dbeafe','#bfdbfe','#bfdbfe','#93c5fd','#60a5fa','#2563eb'],borderRadius:6,borderSkipped:false}]
+    },
+    options:{indexAxis:'y',animation:{duration:700},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} 人`}}},
+      scales:{x:{grid:{color:'#f1f5f9'},ticks:{color:'#94a3b8',font:{size:12}}},y:{grid:{display:false},ticks:{color:'#475569',font:{size:12}}}}}
   });
-  const sources=[{name:'XQ 電腦版廣告',count:60,color:'#e94560'},{name:'官方 EDM',count:37,color:'#4361ee'},{name:'官方 FB 粉專',count:13,color:'#2b9e7a'},{name:'達人的自媒體',count:3,color:'#dd6b20'},{name:'XQ 手機版廣告',count:3,color:'#7048e8'}];
+  const sources=[
+    {name:'XQ 電腦版廣告',count:60,color:'#e94560'},
+    {name:'官方 EDM',count:37,color:'#2563eb'},
+    {name:'官方 FB 粉專',count:13,color:'#059669'},
+    {name:'達人的自媒體',count:3,color:'#d97706'},
+    {name:'XQ 手機版廣告',count:3,color:'#7c3aed'},
+  ];
   const el=document.getElementById('sourceList');
-  sources.forEach(s=>{ el.innerHTML+=`<div class="src-row"><div class="src-name">${s.name}</div><div class="src-bg"><div class="src-fill" style="width:${Math.round(s.count/60*100)}%;background:${s.color};opacity:.8;"></div></div><div class="src-ct">${s.count}</div></div>`; });
-  const tags=[{t:'策略開發',s:'lg'},{t:'主觀交易經驗分享',s:'lg'},{t:'自製看盤介面',s:'lg'},{t:'策略優化',s:'md'},{t:'多策略管理',s:'md'},{t:'風險控管',s:'sm'},{t:'回測報告解讀',s:'sm'},{t:'資金控管',s:'xs'}];
-  const ts={lg:'background:#4361ee;color:#fff;font-size:15px;',md:'background:#748ffc;color:#fff;font-size:13px;',sm:'background:#bac8ff;color:#364fc7;font-size:12px;',xs:'background:#e7edff;color:#748ffc;font-size:11px;'};
+  sources.forEach(s=>{
+    el.innerHTML+=`<div class="src-row"><div class="src-name">${s.name}</div><div class="src-bg"><div class="src-fill" style="width:${Math.round(s.count/60*100)}%;background:${s.color};opacity:.75;"></div></div><div class="src-ct">${s.count}</div></div>`;
+  });
+  const tags=[{t:'策略開發',s:18},{t:'主觀交易經驗分享',s:16},{t:'自製看盤介面',s:15},{t:'策略優化',s:14},{t:'多策略管理',s:13},{t:'風險控管',s:11},{t:'回測報告解讀',s:11},{t:'資金控管',s:11}];
   const cl=document.getElementById('tagCloud');
-  tags.forEach(({t,s})=>{ cl.innerHTML+=`<span class="tag" style="${ts[s]}">${t}</span>`; });
+  const palette=['#2563eb','#e94560','#059669','#7c3aed','#d97706','#0e7490'];
+  tags.forEach(({t,s},i)=>{
+    cl.innerHTML+=`<span class="tag" style="background:${palette[i%palette.length]}15;color:${palette[i%palette.length]};font-size:${s}px;">${t}</span>`;
+  });
 }
 
 // ══ Render all ══
-function renderAll(){ renderKPI(); renderTrendChart(); renderScoreChart(); renderCatChart(); renderTable(); }
+function renderAll(){ renderSummary(); renderTrendChart(); renderScoreChart(); renderCatChart(); renderTable(); }
 initDropdowns(); initSurvey(); applyFilter();
 </script>
 </body>

@@ -750,10 +750,10 @@ function renderTable(){
       :s.score>=4.7?`<span class="pill pill-green">${s.score.toFixed(2)}</span>`
       :s.score>=4.3?`<span class="pill pill-yellow">${s.score.toFixed(2)}</span>`
       :`<span class="pill pill-red">${s.score.toFixed(2)}</span>`;
-    return`<tr class="${s.no===81?'latest-row':''}">
+    return`<tr class="${s.no===82?'latest-row':''}">
       <td style="color:var(--text-3);font-size:11px;font-weight:600;">#${s.no}</td>
       <td style="white-space:nowrap;color:var(--text-2);font-size:12px;">${s.date.replace(/-/g,'/')}</td>
-      <td><strong style="font-size:13px;">${s.expert}</strong>${s.no===81?'<span class="latest-badge">NEW</span>':''}</td>
+      <td><strong style="font-size:13px;">${s.expert}</strong>${s.no===82?'<span class="latest-badge">NEW</span>':''}</td>
       <td style="max-width:260px;color:var(--text-2);font-size:12px;">${s.topic}</td>
       <td><span class="cat-tag" style="--cat-bg:${cs.bg};--cat-color:${cs.color};">${s.category}</span></td>
       <td style="text-align:right;font-size:12px;">${s.registered.toLocaleString()}</td>

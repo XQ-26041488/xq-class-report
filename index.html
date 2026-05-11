@@ -379,17 +379,11 @@ table.dt tr.latest-row td { background: #fff7f7; }
     <canvas id="trendChart" height="70"></canvas>
   </div>
 
-  <!-- 滿意度 + 分類 -->
-  <div class="sec-heading" id="sec-score">滿意度走勢 ＆ 分類分析</div>
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title">滿意度趨勢 <span class="sub">（各期，含平均線）</span></div>
-      <canvas id="scoreChart" height="170"></canvas>
-    </div>
-    <div class="card">
-      <div class="card-title">各分類平均到課人數 <span class="sub">（篩選範圍）</span></div>
-      <canvas id="catChart" height="170"></canvas>
-    </div>
+  <!-- 滿意度 -->
+  <div class="sec-heading" id="sec-score">滿意度走勢</div>
+  <div class="card grid-full">
+    <div class="card-title">滿意度趨勢 <span class="sub">（各期，含平均線）</span></div>
+    <canvas id="scoreChart" height="100"></canvas>
   </div>
 
   <!-- 問卷分析 -->
@@ -407,16 +401,6 @@ table.dt tr.latest-row td { background: #fff7f7; }
         <div class="bs-stars">★★★★★</div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">課程收穫面向</div>
-      <canvas id="topicChart" height="220"></canvas>
-    </div>
-    <div class="card">
-      <div class="card-title">學員得知管道</div>
-      <div id="sourceList" style="margin-top:8px;"></div>
-    </div>
-  </div>
-  <div class="grid-2">
     <div class="card">
       <div class="card-title">希望增開課程類型 <span class="sub">（字體大小 = 需求熱度）</span></div>
       <div class="tag-cloud" id="tagCloud" style="margin-top:10px;"></div>

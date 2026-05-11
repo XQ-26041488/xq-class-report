@@ -549,6 +549,7 @@ const RAW = [
 const SESSIONS = RAW.map(r=>({no:r[0],date:r[1],expert:r[2],topic:r[3],category:r[4],registered:r[5],attended:r[6],rate:r[7],surveyed:r[8],score:r[9]}));
 
 let filtered=[...SESSIONS], sortCol='no', sortDir=-1, activePreset=0;
+const latestNo=Math.max(...SESSIONS.map(s=>s.no));
 
 // ══ Mobile drawer ══
 const burger=document.getElementById('burgerBtn'), drawer=document.getElementById('drawer'), overlay=document.getElementById('drawerOverlay');
@@ -633,15 +634,16 @@ function renderTrendChart(){
   document.getElementById('trend-subtitle').textContent=`（${filtered.length} 期）`;
   if(trendChart) trendChart.destroy();
   trendChart=new Chart(document.getElementById('trendChart'),{
+    type:'bar',
     data:{
       labels: filtered.map(s=>s.date.slice(5).replace('-','/')),
       datasets:[
         { type:'bar', label:'到課人數', data:filtered.map(s=>s.attended),
-          backgroundColor: filtered.map(s=>s.no===81?'rgba(233,69,96,0.85)':'rgba(37,99,235,0.6)'),
+          backgroundColor: filtered.map(s=>s.no===latestNo?'rgba(233,69,96,0.85)':'rgba(37,99,235,0.6)'),
           borderRadius:3, yAxisID:'y', borderSkipped:false },
         { type:'line', label:'到課率(%)', data:filtered.map(s=>s.rate),
           borderColor:'#059669', backgroundColor:'rgba(5,150,105,0.06)',
-          pointBackgroundColor: filtered.map(s=>s.no===81?'#e94560':'#059669'),
+          pointBackgroundColor: filtered.map(s=>s.no===latestNo?'#e94560':'#059669'),
           pointBorderColor:'#fff', pointBorderWidth:2,
           pointRadius: filtered.length>40?2:4, tension:0.4, yAxisID:'y2', fill:true }
       ]
@@ -672,7 +674,7 @@ function renderScoreChart(){
       labels:sc.map(s=>s.date.slice(2,7).replace('-','/')),
       datasets:[
         { label:'滿意度', data, borderColor:'#7c3aed', backgroundColor:'rgba(124,58,237,0.06)',
-          pointBackgroundColor:sc.map(s=>s.no===81?'#e94560':'#7c3aed'),
+          pointBackgroundColor:sc.map(s=>s.no===latestNo?'#e94560':'#7c3aed'),
           pointBorderColor:'#fff', pointBorderWidth:2,
           pointRadius:sc.length>40?2:4, tension:0.4, fill:true },
         { label:`均值 ${avg.toFixed(2)}`, data:data.map(()=>+avg.toFixed(2)),

@@ -626,7 +626,7 @@ function renderSummary(){
 }
 
 // ══ Charts ══
-let trendChart, scoreChart, catChart;
+let trendChart, scoreChart;
 Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
 
 function renderTrendChart(){
@@ -690,29 +690,6 @@ function renderScoreChart(){
     }
   });
 }
-function renderCatChart(){
-  const m={};
-  filtered.forEach(s=>{ if(!m[s.category])m[s.category]={sum:0,cnt:0}; m[s.category].sum+=s.attended; m[s.category].cnt++; });
-  const cats=Object.keys(m).sort((a,b)=>m[b].sum/m[b].cnt-m[a].sum/m[a].cnt);
-  if(catChart) catChart.destroy();
-  catChart=new Chart(document.getElementById('catChart'),{
-    type:'bar',
-    data:{
-      labels:cats.map(c=>c.replace(' / ','\n')),
-      datasets:[{label:'平均到課',data:cats.map(c=>Math.round(m[c].sum/m[c].cnt)),
-        backgroundColor:cats.map((c,i)=>CAT_COLORS[i%CAT_COLORS.length]+'cc'),
-        borderRadius:6, borderSkipped:false}]
-    },
-    options:{
-      indexAxis:'y', responsive:true, animation:{duration:600},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` 平均 ${ctx.raw} 人`}}},
-      scales:{
-        x:{grid:{color:'#f1f5f9'},beginAtZero:true,ticks:{color:'#94a3b8',font:{size:11}}},
-        y:{grid:{display:false},ticks:{color:'#475569',font:{size:11}}}
-      }
-    }
-  });
-}
 
 // ══ Table ══
 function sortTable(col){
@@ -761,27 +738,6 @@ function initSurvey(){
       plugins:{legend:{position:'bottom',labels:{font:{size:12},usePointStyle:true,boxWidth:8,padding:12}},
         tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} 人`}}}}
   });
-  new Chart(document.getElementById('topicChart'),{
-    type:'bar',
-    data:{
-      labels:['自訂指標開發','看盤介面設定','基本功能操作','策略開發(交易)','策略開發(選股)'],
-      datasets:[{data:[1,1,2,4,66],backgroundColor:['#dbeafe','#bfdbfe','#93c5fd','#60a5fa','#2563eb'],borderRadius:6,borderSkipped:false}]
-    },
-    options:{indexAxis:'y',animation:{duration:700},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} 人`}}},
-      scales:{x:{grid:{color:'#f1f5f9'},ticks:{color:'#94a3b8',font:{size:12}}},y:{grid:{display:false},ticks:{color:'#475569',font:{size:12}}}}}
-  });
-  const sources=[
-    {name:'XQ 電腦版廣告',count:51,color:'#e94560'},
-    {name:'官方 EDM',count:21,color:'#2563eb'},
-    {name:'官方 FB 粉專',count:16,color:'#059669'},
-    {name:'XQ 手機版廣告',count:7,color:'#7c3aed'},
-    {name:'達人的自媒體',count:1,color:'#d97706'},
-  ];
-  const el=document.getElementById('sourceList');
-  sources.forEach(s=>{
-    el.innerHTML+=`<div class="src-row"><div class="src-name">${s.name}</div><div class="src-bg"><div class="src-fill" style="width:${Math.round(s.count/51*100)}%;background:${s.color};opacity:.75;"></div></div><div class="src-ct">${s.count}</div></div>`;
-  });
   const tags=[{t:'策略開發',s:18},{t:'策略優化',s:15},{t:'主觀交易經驗分享',s:15},{t:'多策略管理',s:13},{t:'回測報告解讀',s:12},{t:'自製看盤介面',s:12},{t:'風險控管',s:11},{t:'資金控管',s:11}];
   const cl=document.getElementById('tagCloud');
   const palette=['#2563eb','#e94560','#059669','#7c3aed','#d97706','#0e7490'];
@@ -791,7 +747,7 @@ function initSurvey(){
 }
 
 // ══ Render all ══
-function renderAll(){ renderSummary(); renderTrendChart(); renderScoreChart(); renderCatChart(); renderTable(); }
+function renderAll(){ renderSummary(); renderTrendChart(); renderScoreChart(); renderTable(); }
 initDropdowns(); initSurvey(); applyFilter();
 </script>
 </body>

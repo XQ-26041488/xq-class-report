@@ -412,6 +412,7 @@ table.dt tr.latest-row td { background: #fff7f7; }
         <li>「這次團長課程教了用數據跟AI的應用，講了如何補足資訊落差，還有找到領頭或還沒起漲的邏輯，相當實用的實務教學。」</li>
         <li>「G團長分享看美股-台股-港股 選股方式很好」</li>
         <li>「綜合投資經驗及AI工具，非常有價值，希望多排AI 相關課程」</li>
+        <li>「講師的 AI 教學值得學習，但選股邏輯需謹慎評估——名單中下跌股偏多，舉例多為事後論，落後補漲觀念也有待商榷。」</li>
       </ul>
     </div>
   </div>
@@ -739,8 +740,8 @@ function initSurvey(){
   new Chart(document.getElementById('ratingChart'),{
     type:'doughnut',
     data:{
-      labels:['5分 幫助很大','4分 有些啟發','3分 普通'],
-      datasets:[{data:[57,19,3],backgroundColor:['#7c3aed','#a78bfa','#ddd6fe'],borderWidth:3,borderColor:'#fff',hoverOffset:6}]
+      labels:['5分 幫助很大','4分 有些啟發','3分 普通','2分 失望'],
+      datasets:[{data:[57,19,2,1],backgroundColor:['#7c3aed','#a78bfa','#ddd6fe','#fca5a5'],borderWidth:3,borderColor:'#fff',hoverOffset:6}]
     },
     options:{cutout:'65%',animation:{animateRotate:true,duration:800},
       plugins:{legend:{position:'bottom',labels:{font:{size:12},usePointStyle:true,boxWidth:8,padding:12}},

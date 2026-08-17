@@ -242,34 +242,24 @@ button, select { touch-action: manipulation; }
 .kpi-score .kpi-val { color: #c4b5fd; } .kpi-score .kpi-tag { background: rgba(196,181,253,.15); color: #c4b5fd; }
 .kpi-total .kpi-val { color: #fcd34d; } .kpi-total .kpi-tag { background: rgba(252,211,77,.15); color: #fcd34d; }
 
-/* ══ 觀看組成：直播 × 回放 雙列對齊交集圖 ══ */
+/* ══ 觀看組成：100% 堆疊 Bar ＋ 段落標註 ══ */
 .watch-mix { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
 .wm-title { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.65); letter-spacing: 1px; margin-bottom: 10px; }
 .wm-title .wm-total { color: #fcd34d; margin: 0 2px; }
-.wm-grid { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; }
-.wm-labels { display: flex; flex-direction: column; gap: 6px; }
-.wm-label {
-  height: 26px; display: flex; align-items: center; gap: 4px;
-  font-size: 12px; color: rgba(255,255,255,.7); white-space: nowrap;
+.wm-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; }
+.wm-seg { height: 100%; min-width: 6px; }
+.wm-caps { display: flex; gap: 2px; margin-top: 8px; }
+.wm-cap { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.wm-cap strong { font-size: 14px; font-weight: 800; color: #fff; white-space: nowrap; }
+.wm-cap span { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wm-formula {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px;
+  font-size: 11px; color: rgba(255,255,255,.6);
 }
-.wm-label strong { color: #fff; font-weight: 700; }
-.wm-tracks { position: relative; display: flex; flex-direction: column; gap: 6px; }
-/* 交集光帶：貫穿兩列，標示「都看」上下對齊 */
-.wm-band {
-  position: absolute; top: -4px; bottom: -4px; z-index: 0;
-  background: rgba(252,211,77,.10); border: 1px dashed rgba(252,211,77,.45);
-  border-radius: 8px;
-}
-.wm-track { position: relative; height: 26px; z-index: 1; }
-.wm-seg {
-  position: absolute; top: 0; height: 100%; border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden;
-}
-.wm-note { margin-top: 12px; font-size: 11px; color: rgba(255,255,255,.55); }
+.wm-formula strong { color: #fff; font-weight: 700; }
 @media (max-width: 640px) {
-  .wm-seg { font-size: 9px; }
-  .wm-label { font-size: 11px; }
+  .wm-cap strong { font-size: 12px; }
+  .wm-cap span { font-size: 9px; }
 }
 
 /* ══ TABLE ══ */
@@ -505,27 +495,23 @@ tr.era-divider:hover td { background:var(--notice-bg); }
         <div class="kpi-tag">滿分 5 分</div>
       </div>
     </div>
-    <!-- 觀看組成：直播 × 回放 雙列對齊交集圖（新制） -->
+    <!-- 觀看組成：100% 堆疊 Bar ＋ 段落標註（新制） -->
     <div class="watch-mix">
       <div class="wm-title">總出席 <span class="wm-total">680 人</span> 的觀看組成</div>
-      <div class="wm-grid" role="img" aria-label="總出席 680 人：直播到課 499 人（其中 342 人只看直播、157 人直播回放都看），回放觀看 338 人（其中 157 人為直播後複習、181 人只看回放）">
-        <div class="wm-labels">
-          <div class="wm-label">直播 <strong>499</strong></div>
-          <div class="wm-label">回放 <strong>338</strong></div>
-        </div>
-        <div class="wm-tracks">
-          <div class="wm-band" style="left:50.3%;width:23.1%;"></div>
-          <div class="wm-track">
-            <div class="wm-seg" style="left:0;width:50.3%;background:#7dd3fc;" title="只看直播 342 人（50%）">只看直播 342</div>
-            <div class="wm-seg" style="left:50.3%;width:23.1%;background:#fcd34d;" title="直播＋回放都看 157 人（23%）">都看 157</div>
-          </div>
-          <div class="wm-track">
-            <div class="wm-seg" style="left:50.3%;width:23.1%;background:#fcd34d;" title="直播＋回放都看 157 人（23%）">都看 157</div>
-            <div class="wm-seg" style="left:73.4%;width:26.6%;background:#c4b5fd;" title="只看回放 181 人（27%）">只看回放 181</div>
-          </div>
-        </div>
+      <div class="wm-bar" role="img" aria-label="總出席 680 人：只看直播 342 人（50.3%）、直播加回放 157 人（23.1%）、只看回放 181 人（26.6%）">
+        <div class="wm-seg" style="width:50.3%;background:#7dd3fc;" title="只看直播 342 人（50.3%）"></div>
+        <div class="wm-seg" style="width:23.1%;background:#fcd34d;" title="直播＋回放 157 人（23.1%）"></div>
+        <div class="wm-seg" style="width:26.6%;background:#c4b5fd;" title="只看回放 181 人（26.6%）"></div>
       </div>
-      <div class="wm-note">兩列的黃色「都看」上下對齊＝同一批 157 人（直播後再看回放複習）；三種顏色合計即總出席 680 人</div>
+      <div class="wm-caps">
+        <div class="wm-cap" style="width:50.3%;"><strong>342 人</strong><span style="color:#7dd3fc;">只看直播（50.3%）</span></div>
+        <div class="wm-cap" style="width:23.1%;"><strong>157 人</strong><span style="color:#fcd34d;">直播＋回放（23.1%）</span></div>
+        <div class="wm-cap" style="width:26.6%;"><strong>181 人</strong><span style="color:#c4b5fd;">只看回放（26.6%）</span></div>
+      </div>
+      <div class="wm-formula">
+        <span>直播觀看 <strong>499 人</strong>＝342＋157</span>
+        <span>回放觀看 <strong>338 人</strong>＝157＋181</span>
+      </div>
     </div>
   </div>
 

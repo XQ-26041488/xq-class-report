@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XQ 週末特訓班 成效概況</title>
+<meta name="description" content="XQ 實戰特訓班成效監控看板：各期出席人數、直播回放觸及、滿意度與問卷分析">
+<meta name="theme-color" id="metaTheme" content="#f1f5f9">
+<title>XQ 實戰特訓班 成效概況</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -71,6 +73,12 @@
 :root[data-theme="dark"] .pill-gray   { background:#243247; color:#64748b; }
 :root[data-theme="dark"] .cat-tag     { background: color-mix(in srgb, var(--cat-color) 16%, transparent); }
 html { scroll-behavior: smooth; }
+.skip-link {
+  position: absolute; left: -9999px; top: 8px; z-index: 999;
+  background: var(--primary); color: #fff; padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { left: 8px; }
 body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
 body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .survey-notice, .comment-list li {
   transition: background-color .25s ease, color .25s ease, border-color .25s ease;
@@ -79,6 +87,13 @@ body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .surv
   html { scroll-behavior: auto; }
   body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .survey-notice, .comment-list li { transition: none; }
 }
+/* 數字等寬，避免排序/切換時跳動 */
+.kpi-val, table.dt td, .big-score .bs-num, .summary-strip, .wm-legend { font-variant-numeric: tabular-nums; }
+/* 鍵盤操作可見焦點 */
+button:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px;
+}
+button, select { touch-action: manipulation; }
 
 /* ══ HEADER ══ */
 .site-header {
@@ -137,7 +152,7 @@ body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .surv
 }
 .tab-btn:hover { color: var(--primary); }
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
-.tab-btn .tab-icon { font-size: 14px; }
+.nav-icon { width: 15px; height: 15px; flex-shrink: 0; }
 
 /* ══ FILTER BAR ══ */
 .filter-bar {
@@ -175,6 +190,7 @@ body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .surv
 }
 .summary-strip .ss-val { font-weight: 700; }
 .summary-strip .ss-sep { color: #93c5fd; margin: 0 3px; }
+.summary-strip .ss-spacer { flex: 1; min-width: 12px; }
 
 /* ══ LAYOUT ══ */
 .main-wrap { max-width: 1320px; margin: 0 auto; padding: 24px 20px 40px; }
@@ -187,7 +203,8 @@ body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .surv
 .sec-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* ══ CARD ══ */
-.card { background: var(--card); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); }
+.card { background: var(--card); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); transition: box-shadow .2s ease, background-color .25s ease; }
+.card:hover { box-shadow: var(--shadow-md); }
 .card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: baseline; gap: 8px; }
 .card-title .sub { font-size: 11px; font-weight: 400; color: var(--text-3); }
 
@@ -326,6 +343,8 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   .main-wrap { padding: 16px 12px 32px; }
   .site-header { padding: 0 16px; }
   .filter-bar { padding: 10px 16px; gap: 8px; }
+  .preset-btn { padding: 8px 14px; }
+  .filter-select { padding: 8px 28px 8px 10px; }
   .hero-banner { padding: 18px 16px; }
   .hero-title  { font-size: 15px; }
   .kpi-grid    { grid-template-columns: repeat(2,1fr); gap: 8px; }
@@ -347,17 +366,21 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   try { t = localStorage.getItem('xq-theme'); } catch(e){}
   if(!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', t);
+  var m = document.getElementById('metaTheme') || document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute('content', t==='dark' ? '#0b1220' : '#f1f5f9');
 })();
 </script>
 </head>
 <body>
+
+<a class="skip-link" href="#sec-current">跳至主要內容</a>
 
 <!-- ══ HEADER ══ -->
 <header class="site-header">
   <div class="header-logo">
     <div class="logo-mark">XQ</div>
     <div class="logo-text">
-      <div class="t1">週末特訓班</div>
+      <div class="t1">實戰特訓班</div>
       <div class="t2">成效監控看板</div>
     </div>
   </div>
@@ -379,23 +402,23 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 <div class="drawer-overlay" id="drawerOverlay"></div>
 <nav class="drawer" id="drawer">
   <div class="drawer-logo">
-    <div class="t1">XQ 週末特訓班</div>
+    <div class="t1">XQ 實戰特訓班</div>
     <div class="t2">共 93 期 ▪ 資料截至 2026/08/05</div>
   </div>
-  <button class="drawer-item active" onclick="drawerJump('sec-current')">★ 本期焦點</button>
-  <button class="drawer-item" onclick="drawerJump('sec-trend')">📈 長期趨勢</button>
-  <button class="drawer-item" onclick="drawerJump('sec-score')">⭐ 滿意度走勢</button>
-  <button class="drawer-item" onclick="drawerJump('sec-survey')">📋 問卷分析</button>
-  <button class="drawer-item" onclick="drawerJump('sec-table')">📊 數據表格</button>
+  <button class="drawer-item active" onclick="drawerJump('sec-current')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>本期焦點</button>
+  <button class="drawer-item" onclick="drawerJump('sec-trend')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>長期趨勢</button>
+  <button class="drawer-item" onclick="drawerJump('sec-score')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>滿意度走勢</button>
+  <button class="drawer-item" onclick="drawerJump('sec-survey')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg>問卷分析</button>
+  <button class="drawer-item" onclick="drawerJump('sec-table')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 9h18M3 15h18"/></svg>數據表格</button>
 </nav>
 
 <!-- ══ TAB NAV ══ -->
 <nav class="tab-nav" id="tabNav">
-  <button class="tab-btn active" onclick="jumpTo('sec-current',this)"><span class="tab-icon">★</span>本期焦點</button>
-  <button class="tab-btn" onclick="jumpTo('sec-trend',this)"><span class="tab-icon">📈</span>長期趨勢</button>
-  <button class="tab-btn" onclick="jumpTo('sec-score',this)"><span class="tab-icon">⭐</span>滿意度走勢</button>
-  <button class="tab-btn" onclick="jumpTo('sec-survey',this)"><span class="tab-icon">📋</span>問卷分析</button>
-  <button class="tab-btn" onclick="jumpTo('sec-table',this)"><span class="tab-icon">📊</span>數據表格</button>
+  <button class="tab-btn active" onclick="jumpTo('sec-current',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>本期焦點</button>
+  <button class="tab-btn" onclick="jumpTo('sec-trend',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>長期趨勢</button>
+  <button class="tab-btn" onclick="jumpTo('sec-score',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>滿意度走勢</button>
+  <button class="tab-btn" onclick="jumpTo('sec-survey',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg>問卷分析</button>
+  <button class="tab-btn" onclick="jumpTo('sec-table',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 9h18M3 15h18"/></svg>數據表格</button>
 </nav>
 
 <!-- ══ FILTER BAR ══ -->
@@ -412,11 +435,11 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   <div class="filter-sep"></div>
   <div class="filter-group">
     <span class="filter-label">分類</span>
-    <select class="filter-select" id="sel-cat" onchange="applyFilter()"><option value="">全部</option></select>
+    <select class="filter-select" id="sel-cat" onchange="applyFilter()" aria-label="依分類篩選"><option value="">全部</option></select>
   </div>
   <div class="filter-group">
     <span class="filter-label">達人</span>
-    <select class="filter-select" id="sel-exp" onchange="applyFilter()"><option value="">全部</option></select>
+    <select class="filter-select" id="sel-exp" onchange="applyFilter()" aria-label="依達人篩選"><option value="">全部</option></select>
   </div>
   <div class="filter-result">篩選結果：<strong id="filter-count">—</strong> 期</div>
 </div>
@@ -483,14 +506,14 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   <div class="sec-heading" id="sec-trend">到課趨勢</div>
   <div class="card grid-full">
     <div class="card-title">實際到課人數 ＆ 到課率 <span class="sub" id="trend-subtitle"></span></div>
-    <canvas id="trendChart" height="70"></canvas>
+    <canvas id="trendChart" height="70" role="img" aria-label="各期到課人數柱狀圖與到課率折線圖"></canvas>
   </div>
 
   <!-- 滿意度 -->
   <div class="sec-heading" id="sec-score">滿意度走勢</div>
   <div class="card grid-full">
     <div class="card-title">滿意度趨勢 <span class="sub">（各期，含平均線）</span></div>
-    <canvas id="scoreChart" height="100"></canvas>
+    <canvas id="scoreChart" height="100" role="img" aria-label="各期滿意度走勢折線圖，含平均線"></canvas>
   </div>
 
   <!-- 問卷分析 -->
@@ -502,7 +525,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   <div class="grid-3">
     <div class="card">
       <div class="card-title">滿意度分佈</div>
-      <canvas id="ratingChart" height="180"></canvas>
+      <canvas id="ratingChart" height="180" role="img" aria-label="本期滿意度分佈圓環圖：5分 62 人、4分 15 人、3分 1 人"></canvas>
       <div class="big-score">
         <div><span class="bs-num">4.74</span><span class="bs-den"> / 5.0</span></div>
         <div class="bs-stars">★★★★★</div>
@@ -551,7 +574,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 </div><!-- /main-wrap -->
 
 <footer style="text-align:center;padding:20px;color:var(--text-3);font-size:11px;">
-  XQ 週末特訓班 成效監控看板 ▪ 資料截至 2026/08/05 ▪ 共 93 期
+  XQ 實戰特訓班 成效監控看板 ▪ 資料截至 2026/08/05 ▪ 共 93 期
 </footer>
 
 <script>
@@ -736,11 +759,11 @@ function renderSummary(){
   const avgRate=Math.round(totAtt/totReg*100);
   const avgScore=scored.length?(scored.reduce((a,s)=>a+s.score,0)/scored.length).toFixed(2):'—';
   const cat=document.getElementById('sel-cat').value, exp=document.getElementById('sel-exp').value;
-  const label=exp?exp:cat?cat:'全部 81 期';
+  const label=exp?exp:cat?cat:'全部';
   const period=`${filtered[0].date.slice(0,7)} — ${filtered[filtered.length-1].date.slice(0,7)}`;
   document.getElementById('summaryBar').innerHTML=`
-    <span>📌 <span class="ss-val">${label}</span></span><span class="ss-sep">|</span>
-    <span>共 <span class="ss-val">${filtered.length}</span> 期</span><span class="ss-sep">|</span>
+    <span>📌 <span class="ss-val">${label}</span> ▪ 共 <span class="ss-val">${filtered.length}</span> 期</span>
+    <span class="ss-spacer"></span>
     <span>平均報名 <span class="ss-val">${avgReg.toLocaleString()}</span> 人</span><span class="ss-sep">|</span>
     <span>平均到課 <span class="ss-val">${avgAtt.toLocaleString()}</span> 人（<span class="ss-val">${avgRate}%</span>）</span><span class="ss-sep">|</span>
     <span>平均滿意度 <span class="ss-val">${avgScore}</span></span><span class="ss-sep">|</span>
@@ -751,11 +774,15 @@ function renderSummary(){
 const themeBtn = document.getElementById('themeToggle');
 const REDUCED_MOTION = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function currentTheme(){ return document.documentElement.getAttribute('data-theme')||'light'; }
+function syncMetaTheme(){
+  const m=document.getElementById('metaTheme');
+  if(m) m.setAttribute('content', currentTheme()==='dark' ? '#0b1220' : '#f1f5f9');
+}
 themeBtn.addEventListener('click', ()=>{
   const t = currentTheme()==='dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', t);
   try { localStorage.setItem('xq-theme', t); } catch(e){}
-  renderAll(); renderRating();
+  syncMetaTheme(); renderAll(); renderRating();
 });
 // 未手動選擇時跟隨系統變化
 if(window.matchMedia){
@@ -764,7 +791,7 @@ if(window.matchMedia){
     try { stored = localStorage.getItem('xq-theme'); } catch(err){}
     if(!stored){
       document.documentElement.setAttribute('data-theme', e.matches?'dark':'light');
-      renderAll(); renderRating();
+      syncMetaTheme(); renderAll(); renderRating();
     }
   });
 }
@@ -886,11 +913,28 @@ function sortTable(col){
   if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=1;}
   document.querySelectorAll('table.dt th').forEach(th=>{
     th.classList.remove('sorted-asc','sorted-desc');
-    if(th.dataset.col===col) th.classList.add(sortDir===1?'sorted-asc':'sorted-desc');
+    th.removeAttribute('aria-sort');
+    if(th.dataset.col===col){
+      th.classList.add(sortDir===1?'sorted-asc':'sorted-desc');
+      th.setAttribute('aria-sort', sortDir===1?'ascending':'descending');
+    }
   });
   renderTable();
 }
+// 可排序表頭支援鍵盤操作
+document.querySelectorAll('table.dt th[data-col]').forEach(th=>{
+  th.setAttribute('tabindex','0');
+  th.setAttribute('role','button');
+  th.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); sortTable(th.dataset.col); }
+  });
+});
 function renderTable(){
+  if(!filtered.length){
+    document.getElementById('tableBody').innerHTML=
+      `<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text-3);">沒有符合篩選條件的場次，請調整時間範圍、分類或達人條件</td></tr>`;
+    return;
+  }
   const sorted=[...filtered].sort((a,b)=>{
     const av=a[sortCol],bv=b[sortCol];
     if(av===null&&bv===null)return 0; if(av===null)return 1; if(bv===null)return -1;

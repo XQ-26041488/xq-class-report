@@ -249,6 +249,12 @@ table.dt tr.latest-row td { background: var(--latest-row); }
 .rate-bar { display:flex; align-items:center; gap:6px; }
 .rate-fill { height:4px; border-radius:2px; background: linear-gradient(90deg,var(--primary),#93c5fd); min-width:2px; }
 .latest-badge { background:var(--accent); color:#fff; font-size:9px; padding:1px 6px; border-radius:3px; margin-left:5px; font-weight:700; }
+tr.era-divider td {
+  padding:6px 12px; text-align:center; border-top:2px dashed #f59e0b; border-bottom:none;
+  background:var(--notice-bg);
+}
+tr.era-divider td span { font-size:10px; font-weight:700; color:#d97706; letter-spacing:1px; }
+tr.era-divider:hover td { background:var(--notice-bg); }
 .cat-tag { display:inline-block; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:600; background:var(--cat-bg); color:var(--cat-color); }
 
 /* ══ SURVEY ══ */
@@ -415,7 +421,7 @@ table.dt tr.latest-row td { background: var(--latest-row); }
   <div class="hero-banner">
     <div class="hero-meta">
       <span class="hero-no">第 93 期</span>
-      <span class="hero-date">2026 / 08 / 05（三）09:00 — 11:00</span>
+      <span class="hero-date">2026 / 08 / 05（三）19:00 — 21:00</span>
       <span class="hero-cat">基本面 / 產業分析</span>
     </div>
     <div class="hero-title"><span class="expert">老墨</span> ▪ 產業輪動雷達｜透過產業輪動找到下一個飆股</div>
@@ -753,6 +759,35 @@ function chartTheme(){
 let trendChart, scoreChart, ratingChart;
 Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
 
+// 第 93 期（2026/08/05）起為新制：週三晚間場＋直播/回放雙軌統計
+const ERA_START = 93;
+// 在圖表上畫新制分隔虛線
+function eraLinePlugin(getList){
+  return {
+    id:'eraLine',
+    afterDraw(chart){
+      const list = getList();
+      const i = list.findIndex(s=>s.no>=ERA_START);
+      if(i<1) return; // 無新制資料或整段都是新制時不畫
+      const xs = chart.scales.x;
+      const x = (xs.getPixelForValue(i) + xs.getPixelForValue(i-1)) / 2;
+      const {top,bottom} = chart.chartArea;
+      const ctx = chart.ctx;
+      ctx.save();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.setLineDash([5,4]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,bottom); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = "700 10px 'Noto Sans TC', sans-serif";
+      ctx.textAlign = 'left';
+      ctx.fillText('新制 →', x+5, top+12);
+      ctx.restore();
+    }
+  };
+}
+
 function renderTrendChart(){
   const th=chartTheme();
   Chart.defaults.color=th.legend;
@@ -785,7 +820,8 @@ function renderTrendChart(){
         legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8}},
         tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?` 到課率: ${ctx.raw}%`:` 到課人數: ${ctx.raw} 人`}}
       }
-    }
+    },
+    plugins:[eraLinePlugin(()=>filtered)]
   });
 }
 function renderScoreChart(){
@@ -815,7 +851,8 @@ function renderScoreChart(){
           callback(v,i){ return i%Math.ceil(sc.length/8)===0?sc[i]?.date.slice(2,7).replace('-','/'):''; }} }
       },
       plugins:{legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8}}}
-    }
+    },
+    plugins:[eraLinePlugin(()=>filtered.filter(s=>s.score!==null))]
   });
 }
 
@@ -834,7 +871,18 @@ function renderTable(){
     if(av===null&&bv===null)return 0; if(av===null)return 1; if(bv===null)return -1;
     return(av>bv?1:av<bv?-1:0)*sortDir;
   });
-  document.getElementById('tableBody').innerHTML=sorted.map(s=>{
+  // 依期次排序時，在新舊制交界插入分隔列
+  const eraDivider = `<tr class="era-divider"><td colspan="11"><span>—— 新制開始（第 ${ERA_START} 期起：週三晚間場 ▪ 直播＋回放雙軌統計）——</span></td></tr>`;
+  document.getElementById('tableBody').innerHTML=sorted.map((s,idx)=>{
+    let divider='';
+    if(sortCol==='no'||sortCol==='date'){
+      const prev=sorted[idx-1];
+      if(prev&&((prev.no<ERA_START&&s.no>=ERA_START)||(prev.no>=ERA_START&&s.no<ERA_START))) divider=eraDivider;
+    }
+    return divider+rowHTML(s);
+  }).join('');
+}
+function rowHTML(s){
     const cs=CAT_STYLE[s.category]||{bg:'#eff6ff',color:'#2563eb'};
     const scorePill=s.score===null?'<span class="pill pill-gray">—</span>'
       :s.score>=4.7?`<span class="pill pill-green">${s.score.toFixed(2)}</span>`
@@ -852,7 +900,6 @@ function renderTable(){
       <td style="text-align:right;font-size:12px;${s.total?'font-weight:700;color:#d97706;':'color:var(--text-3);'}">${s.total?s.total.toLocaleString():'—'}</td>
       <td style="text-align:right;font-size:12px;">${s.surveyed}</td>
       <td>${scorePill}</td></tr>`;
-  }).join('');
 }
 
 // ══ Survey (fixed) ══

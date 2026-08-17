@@ -225,6 +225,17 @@ body, .card, .site-header, .tab-nav, .filter-bar, .drawer, .summary-strip, .surv
 .kpi-score .kpi-val { color: #c4b5fd; } .kpi-score .kpi-tag { background: rgba(196,181,253,.15); color: #c4b5fd; }
 .kpi-total .kpi-val { color: #fcd34d; } .kpi-total .kpi-tag { background: rgba(252,211,77,.15); color: #fcd34d; }
 
+/* ══ 觀看組成堆疊橫條 ══ */
+.watch-mix { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
+.wm-title { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.65); letter-spacing: 1px; margin-bottom: 8px; }
+.wm-title .wm-total { color: #fcd34d; margin-left: 4px; }
+.wm-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; gap: 2px; }
+.wm-seg { height: 100%; min-width: 6px; transition: width .4s ease; }
+.wm-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; font-size: 11px; color: rgba(255,255,255,.75); }
+.wm-legend strong { color: #fff; font-weight: 700; }
+.wm-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+@media (prefers-reduced-motion: reduce) { .wm-seg { transition: none; } }
+
 /* ══ TABLE ══ */
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table.dt { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -432,12 +443,12 @@ tr.era-divider:hover td { background:var(--notice-bg); }
         <div class="kpi-tag">本期</div>
       </div>
       <div class="kpi-card kpi-att">
-        <div class="kpi-val">500</div>
+        <div class="kpi-val">499</div>
         <div class="kpi-lbl">直播到課人數</div>
         <div class="kpi-tag">到課率 53%</div>
       </div>
       <div class="kpi-card kpi-total">
-        <div class="kpi-val">681</div>
+        <div class="kpi-val">680</div>
         <div class="kpi-lbl">直播＋回放總出席</div>
         <div class="kpi-tag">觸及率 72%</div>
       </div>
@@ -450,6 +461,20 @@ tr.era-divider:hover td { background:var(--notice-bg); }
         <div class="kpi-val">4.74</div>
         <div class="kpi-lbl">課程滿意度</div>
         <div class="kpi-tag">滿分 5 分</div>
+      </div>
+    </div>
+    <!-- 觀看組成堆疊橫條（新制：直播 × 回放交集） -->
+    <div class="watch-mix">
+      <div class="wm-title">觀看組成 <span class="wm-total">680 人</span></div>
+      <div class="wm-bar" role="img" aria-label="觀看組成：只看直播 342 人、直播回放都看 157 人、只看回放 181 人">
+        <div class="wm-seg" style="width:50.3%;background:#7dd3fc;" title="只看直播 342 人"></div>
+        <div class="wm-seg" style="width:23.1%;background:#fcd34d;" title="直播＋回放都看 157 人"></div>
+        <div class="wm-seg" style="width:26.6%;background:#c4b5fd;" title="只看回放 181 人"></div>
+      </div>
+      <div class="wm-legend">
+        <span><i class="wm-dot" style="background:#7dd3fc;"></i>只看直播 <strong>342</strong>（50%）</span>
+        <span><i class="wm-dot" style="background:#fcd34d;"></i>直播＋回放都看 <strong>157</strong>（23%）</span>
+        <span><i class="wm-dot" style="background:#c4b5fd;"></i>只看回放 <strong>181</strong>（27%）</span>
       </div>
     </div>
   </div>
@@ -639,7 +664,7 @@ const RAW = [
   [90,'2026-07-11','蘭弦','你的策略真的能賺錢嗎？｜XQ 回測驗證全攻略','策略開發 / 優化',608,434,71,90,4.59],
   [91,'2026-07-18','尼克萊','強中選強，也要懂風控｜RS 實戰應用全解析','主觀交易 / 操作技巧',657,459,70,64,4.53],
   [92,'2026-07-25','查理哥','不猜漲跌也能賺｜網格交易實戰攻略','策略開發 / 優化',704,488,69,65,4.54],
-  [93,'2026-08-05','老墨','產業輪動雷達｜透過產業輪動找到下一個飆股','基本面 / 產業分析',948,500,53,78,4.74,681],
+  [93,'2026-08-05','老墨','產業輪動雷達｜透過產業輪動找到下一個飆股','基本面 / 產業分析',948,499,53,78,4.74,680],
 ];
 // r[10] = 直播＋回放總出席（第 93 期起才有資料，舊期為 null）
 const SESSIONS = RAW.map(r=>({no:r[0],date:r[1],expert:r[2],topic:r[3],category:r[4],registered:r[5],attended:r[6],rate:r[7],surveyed:r[8],score:r[9],total:r[10]!==undefined?r[10]:null}));

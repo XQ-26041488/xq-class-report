@@ -297,13 +297,15 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 /* ══ SURVEY ══ */
 .big-score { text-align:center; margin-top:12px; }
 .big-score .bs-num { font-size:36px; font-weight:800; color:var(--purple); line-height:1; }
-.score-note {
-  margin-top: 14px; padding: 10px 12px; border-left: 3px solid #f59e0b;
-  background: var(--notice-bg); border-radius: 0 8px 8px 0;
+.hero-note {
+  margin-top: 14px; padding: 10px 14px;
+  background: rgba(245,158,11,.10); border: 1px solid rgba(245,158,11,.35);
+  border-left: 3px solid #f59e0b; border-radius: 8px;
 }
-.score-note .sn-title { font-size: 11px; font-weight: 700; color: #d97706; margin-bottom: 6px; }
-.score-note ul { margin: 0; padding-left: 16px; }
-.score-note li { font-size: 11px; color: var(--text-2); line-height: 1.7; }
+.hero-note .hn-title { font-size: 11px; font-weight: 700; color: #fcd34d; margin-bottom: 6px; letter-spacing: .5px; }
+.hero-note ul { margin: 0; padding-left: 16px; }
+.hero-note li { font-size: 11px; color: rgba(255,255,255,.8); line-height: 1.7; }
+.hero-note li strong { color: #fff; }
 .big-score .bs-den { font-size:14px; color:var(--text-3); }
 .big-score .bs-stars { font-size:20px; margin-top:6px; }
 
@@ -520,6 +522,17 @@ tr.era-divider:hover td { background:var(--notice-bg); }
         <span>回放觀看 <strong>316 人</strong>＝88＋228</span>
       </div>
     </div>
+    <!-- 本期數據偏低變因（視每期狀況增刪） -->
+    <div class="hero-note">
+      <div class="hn-title">本期滿意度與到課偏低的變因（從學員留言歸納）</div>
+      <ul>
+        <li><strong>課前通知信的進入連結失效</strong>，學員需自行翻找兩天前的核准信才能進場，影響到課與觀課體驗（「當日通知信沒有加入按鈕，有點嚇到，花了些時間」）</li>
+        <li>內容量大、節奏偏快：「材料巨多速度巨快」「時間太短講太快」</li>
+        <li>未提供程式碼與實作素材，學員難以跟著操作</li>
+        <li>新手占比高，籌碼主題門檻較高：「我是新手，所以會難懂」</li>
+        <li>部分學員反映直播中途連線不穩</li>
+      </ul>
+    </div>
   </div>
 
   <!-- 長期趨勢 -->
@@ -553,16 +566,6 @@ tr.era-divider:hover td { background:var(--notice-bg); }
       <div class="big-score">
         <div><span class="bs-num">4.24</span><span class="bs-den"> / 5.0</span></div>
         <div class="bs-stars">★★★★★</div>
-      </div>
-      <div class="score-note">
-        <div class="sn-title">本期偏低的可能變因（從留言歸納）</div>
-        <ul>
-          <li><strong>課前通知信的進入連結失效</strong>，學員需自行翻找兩天前的核准信才能進場，影響到課與觀課體驗（留言：「當日通知信沒有加入按鈕，有點嚇到，花了些時間」）</li>
-          <li>內容量大、節奏偏快：「材料巨多速度巨快」「時間太短講太快」</li>
-          <li>未提供程式碼與實作素材，學員難以跟著操作</li>
-          <li>新手占比高，籌碼主題門檻較高：「我是新手，所以會難懂」</li>
-          <li>部分學員反映直播中途連線不穩</li>
-        </ul>
       </div>
     </div>
     <div class="card">

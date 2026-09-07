@@ -543,7 +543,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   </div>
   <div class="card grid-full" style="margin-top:14px;">
     <div class="card-title">新制觀看組成趨勢 <span class="sub">（第 93 期起 ▪ 直播與回放的消長）</span></div>
-    <canvas id="mixChart" height="70" role="img" aria-label="新制各期觀看組成堆疊圖：只看直播、直播加回放、只看回放，加上只看回放占比折線"></canvas>
+    <canvas id="mixChart" height="70" role="img" aria-label="新制各期觀看組成堆疊圖：只看直播、直播加回放、只看回放，加上直播觀看占比與只看回放占比折線"></canvas>
   </div>
 
   <!-- 滿意度 -->
@@ -1058,6 +1058,8 @@ function renderMixChart(){
         {label:'只看直播',data:NEW_MIX.map(r=>r.lo),backgroundColor:'rgba(14,165,233,.75)',stack:'mix'},
         {label:'直播＋回放',data:NEW_MIX.map(r=>r.b),backgroundColor:'rgba(245,158,11,.8)',stack:'mix'},
         {label:'只看回放',data:NEW_MIX.map(r=>r.ro),backgroundColor:'rgba(139,92,246,.7)',stack:'mix'},
+        {type:'line',label:'直播觀看占比',yAxisID:'y2',data:NEW_MIX.map(r=>+((r.lo+r.b)/tot(r)*100).toFixed(1)),
+         borderColor:'#0ea5e9',backgroundColor:'#0ea5e9',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#0ea5e9',tension:.3},
         {type:'line',label:'只看回放占比',yAxisID:'y2',data:NEW_MIX.map(r=>+(r.ro/tot(r)*100).toFixed(1)),
          borderColor:'#7c3aed',backgroundColor:'#7c3aed',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#7c3aed',tension:.3}
       ]
@@ -1067,11 +1069,11 @@ function renderMixChart(){
       scales:{
         x:{stacked:true,grid:{display:false},ticks:{color:th.tick,font:{size:11}}},
         y:{stacked:true,grid:{color:th.grid},ticks:{color:th.tick},title:{display:true,text:'人數',color:th.tick,font:{size:10}}},
-        y2:{position:'right',min:0,max:50,grid:{drawOnChartArea:false},ticks:{color:'#7c3aed',callback:v=>v+'%'},title:{display:true,text:'只看回放占比',color:'#7c3aed',font:{size:10}}}
+        y2:{position:'right',min:0,max:100,grid:{drawOnChartArea:false},ticks:{color:th.tick,callback:v=>v+'%'},title:{display:true,text:'占比',color:th.tick,font:{size:10}}}
       },
       plugins:{
         legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8,color:th.legend}},
-        tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?` 只看回放占比: ${ctx.raw}%`:` ${ctx.dataset.label}: ${ctx.raw} 人（總出席 ${tot(NEW_MIX[ctx.dataIndex])}）`}}
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?` ${ctx.dataset.label}: ${ctx.raw}%`:` ${ctx.dataset.label}: ${ctx.raw} 人（總出席 ${tot(NEW_MIX[ctx.dataIndex])}）`}}
       }
     }
   });

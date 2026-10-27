@@ -296,6 +296,10 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 
 /* ══ SURVEY ══ */
 .big-score { text-align:center; margin-top:12px; }
+.survey-stale[hidden] { display: none !important; }
+.survey-empty { text-align: center; padding: 36px 20px; }
+.survey-empty .se-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.survey-empty .se-text { font-size: 12.5px; color: var(--text-3); line-height: 1.7; }
 .conclusion { margin-top: 14px; }
 .cn-head { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
 .cn-head .cn-sub { font-size:11px; color:var(--text-3); font-weight:400; }
@@ -540,7 +544,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
       <div class="cn-item"><h4>出席與觸及</h4><p>報名 751 人（新制平均 949，排第 10／11）。直播到課 <strong>302 人（40%）</strong>，低於平均 409 人（43%）；總出席 <strong>514 人</strong>（平均 634，<strong>新制最低</strong>）。觸及率 68%（平均 67%），報名者的觸達與平均相當，主要是基數偏小。</p></div>
       <div class="cn-item"><h4>直播與回放的消長</h4><p>直播觀看 302 人（58.8%）、回放觀看 297 人。<strong>只看回放 212 人（41.2%）</strong>，為新制第 3 高占比（平均 35.8%）；<strong>直播回放都看 85 人（16.5%）</strong>，高於平均 15.2%，排第 4。只看直播 217 人為新制最低。</p></div>
       <div class="cn-item"><h4>回放的補課效果</h4><p>未到直播的 449 人中有 212 人靠回放補上，<strong>補課率 47%</strong>（上一期 53%、再上一期 43%）。</p></div>
-      <div class="cn-item"><h4>滿意度與口碑</h4><p><strong>本期無學員填寫問卷</strong>，無滿意度與學員留言。新制已有評分的 10 期平均 4.55。問卷區暫時顯示最近一次有問卷的第 102 期。</p></div>
+      <div class="cn-item"><h4>滿意度與口碑</h4><p><strong>本期無學員填寫問卷</strong>，無滿意度與學員留言。新制已有評分的 10 期平均 4.55。</p></div>
       <div class="cn-item"><h4>學員想學什麼</h4><p>本期無問卷資料，需求排行請參考第 102 期：策略開發、主觀交易經驗分享、策略優化。</p></div>
       <div class="cn-item"><h4>後續建議</h4><p>① 問卷回收率近期偏低（第 102 期 7.6%，本期為 0），可考慮在直播尾聲加強提醒填寫，避免整期缺少滿意度與需求資料。② 新制連續兩期報名偏低（716、751），可檢視宣傳曝光與主題吸引力。③ 這期的「都看」占比不低，仍有一批學員直播後回頭複習，顯示 ETF 配置主題有再看價值。</p></div>
     </div>
@@ -567,10 +571,10 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   <!-- 問卷分析 -->
   <div class="sec-heading" id="sec-survey">
     問卷分析
-    <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3);">顯示最近一次有學員填寫問卷的一期：第 102 期 ▪ 查理哥 ▪ 2026/10/07（23 份）</span>
+    <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3);">第 103 期 ▪ G 股團長 ▪ 2026/10/14（無學員填寫）</span>
   </div>
-  <div class="survey-notice">ℹ️ 第 103 期（G 股團長）無學員填寫問卷，本區暫時顯示最近一次有問卷的第 102 期數據，不受上方篩選器影響。</div>
-  <div class="grid-3">
+  <div class="card survey-empty"><div class="se-title">本期無學員填寫問卷</div><div class="se-text">第 103 期沒有收到問卷回覆，因此沒有滿意度分佈、課程需求與學員留言可顯示。</div></div>
+  <div class="grid-3 survey-stale" hidden>
     <div class="card">
       <div class="card-title">滿意度分佈</div>
       <canvas id="ratingChart" height="180" role="img" aria-label="本期滿意度分佈圓環圖：5分 13 人、4分 10 人"></canvas>

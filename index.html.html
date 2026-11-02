@@ -236,6 +236,14 @@ button, select { touch-action: manipulation; }
 .kpi-val   { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
 .kpi-lbl   { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 8px; }
 .kpi-tag   { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.kpi-delta { margin-top:10px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; font-size:11px; color:rgba(255,255,255,.62); }
+.kpi-delta .kd { display:flex; align-items:center; gap:6px; }
+.kpi-delta .kd b { font-weight:700; font-variant-numeric:tabular-nums; padding:1px 7px; border-radius:20px; background:rgba(255,255,255,.08); color:rgba(255,255,255,.75); }
+.kpi-delta .kd b.up { background:rgba(110,231,183,.16); color:#6ee7b7; }
+.kpi-delta .kd b.dn { background:rgba(252,165,165,.16); color:#fca5a5; }
+.kpi-link { margin-top:2px; font-size:11px; font-weight:600; color:rgba(255,255,255,.7); text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.35); cursor:pointer; }
+.kpi-link:hover, .kpi-link:focus-visible { color:#fff; border-bottom-color:#fff; outline:none; }
+#card-reg, #card-mix { scroll-margin-top:130px; }
 .kpi-reg   .kpi-val { color: #fca5a5; } .kpi-reg   .kpi-tag { background: rgba(252,165,165,.15); color: #fca5a5; }
 .kpi-att   .kpi-val { color: #7dd3fc; } .kpi-att   .kpi-tag { background: rgba(125,211,252,.15); color: #7dd3fc; }
 .kpi-surv  .kpi-val { color: #6ee7b7; } .kpi-surv  .kpi-tag { background: rgba(110,231,183,.15); color: #6ee7b7; }
@@ -522,26 +530,31 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
         <div class="kpi-val">708</div>
         <div class="kpi-lbl">報名人數</div>
         <div class="kpi-tag">本期</div>
+        <div class="kpi-delta" data-k="reg" data-t="card-reg"></div>
       </div>
       <div class="kpi-card kpi-att">
         <div class="kpi-val">286</div>
         <div class="kpi-lbl">直播到課人數</div>
         <div class="kpi-tag">到課率 40%</div>
+        <div class="kpi-delta" data-k="att" data-t="sec-trend"></div>
       </div>
       <div class="kpi-card kpi-total">
         <div class="kpi-val">492</div>
         <div class="kpi-lbl">直播＋回放總出席</div>
         <div class="kpi-tag">觸及率 69%</div>
+        <div class="kpi-delta" data-k="tot" data-t="card-mix"></div>
       </div>
       <div class="kpi-card kpi-surv">
         <div class="kpi-val">31</div>
         <div class="kpi-lbl">回覆問卷人數</div>
         <div class="kpi-tag">回收率 10.8%</div>
+        <div class="kpi-delta" data-k="sv" data-t="sec-survey"></div>
       </div>
       <div class="kpi-card kpi-score">
         <div class="kpi-val">4.31</div>
         <div class="kpi-lbl">課程滿意度</div>
         <div class="kpi-tag">滿分 5 分</div>
+        <div class="kpi-delta" data-k="sc" data-t="sec-score"></div>
       </div>
     </div>
     <!-- 觀看組成：100% 堆疊 Bar ＋ 段落標註（新制） -->
@@ -591,12 +604,12 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
     <div class="card-title">實際到課人數 ＆ 到課率 <span class="sub" id="trend-subtitle"></span></div>
     <canvas id="trendChart" height="70" role="img" aria-label="各期到課人數柱狀圖與到課率折線圖"></canvas>
   </div>
-  <div class="card grid-full" style="margin-top:14px;">
+  <div class="card grid-full" id="card-reg" style="margin-top:14px;">
     <div class="card-title">報名人數趨勢 <span class="sub">（各期報名 ＋ 3 期移動平均）</span></div>
     <div class="reg-note" id="regNote"></div>
     <canvas id="regChart" height="70" role="img" aria-label="各期報名人數折線圖，含 3 期移動平均與 800 人參考線"></canvas>
   </div>
-  <div class="card grid-full" style="margin-top:14px;">
+  <div class="card grid-full" id="card-mix" style="margin-top:14px;">
     <div class="card-title">新制觀看組成趨勢 <span class="sub">（第 93 期起 ▪ 直播與回放的消長）</span></div>
     <canvas id="mixChart" height="70" role="img" aria-label="新制各期觀看組成堆疊圖：只看直播、直播加回放、只看回放，加上直播觀看占比與只看回放占比折線"></canvas>
   </div>
@@ -979,6 +992,31 @@ function renderTrendChart(){
     plugins:[eraLinePlugin(()=>filtered)]
   });
 }
+// ══ 本期焦點 KPI：較上期／較前 4 期平均 ＋ 看走勢 ══
+function renderKpiDelta(){
+  const all=SESSIONS.slice().sort((a,b)=>a.no-b.no);
+  const cur=all[all.length-1], prev=all[all.length-2], p4=all.slice(-5,-1);
+  const F={reg:x=>x.registered, att:x=>x.attended, tot:x=>x.total, sv:x=>x.surveyed||null, sc:x=>x.score};
+  const chip=(c,b,isScore)=>{
+    if(c==null||b==null) return '<b>—</b>';
+    const d=isScore?c-b:(c-b)/b*100;
+    const txt=isScore?Math.abs(d).toFixed(2):Math.abs(d).toFixed(1)+'%';
+    if(Math.abs(d)<(isScore?0.02:1)) return '<b>≈ 持平</b>';
+    return d>0?`<b class="up">▲ ${txt}</b>`:`<b class="dn">▼ ${txt}</b>`;
+  };
+  document.querySelectorAll('.kpi-delta').forEach(el=>{
+    const f=F[el.dataset.k], sc=el.dataset.k==='sc';
+    const c=f(cur), pv=f(prev);
+    const v=p4.map(f).filter(z=>z!=null), a4=v.length?v.reduce((a,b)=>a+b,0)/v.length:null;
+    el.innerHTML=`<div class="kd">較上期 ${chip(c,pv,sc)}</div><div class="kd">較前 4 期均 ${chip(c,a4,sc)}</div><a class="kpi-link" tabindex="0" role="button" data-t="${el.dataset.t}">看走勢 →</a>`;
+  });
+}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('.kpi-link'); if(!a) return;
+  const t=document.getElementById(a.dataset.t); if(t) t.scrollIntoView({behavior:REDUCED_MOTION?'auto':'smooth',block:'start'});
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('kpi-link')) e.target.click(); });
+
 // ══ 與過去比較（本期 vs 前 4 期／前 8 期平均，不受篩選器影響）══
 function renderCompare(){
   const all=SESSIONS.slice().sort((a,b)=>a.no-b.no);
@@ -1229,7 +1267,7 @@ function renderMixChart(){
     }
   });
 }
-function renderAll(){ renderSummary(); renderCompare(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); }
+function renderAll(){ renderSummary(); renderKpiDelta(); renderCompare(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); }
 initDropdowns(); initTags(); renderRating(); applyFilter();
 </script>
 </body>

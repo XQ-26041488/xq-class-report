@@ -307,6 +307,14 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .cn-item h4 { margin:0 0 4px; font-size:12px; font-weight:700; color:var(--primary); }
 .cn-item p { margin:0; font-size:12.5px; line-height:1.75; color:var(--text-2); }
 .cn-item p strong { color:var(--text); }
+.cn-flags { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
+.cn-flag { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; font-size:12.5px; font-weight:600; line-height:1.4; border:1px solid; }
+.cn-flag.warn { background:rgba(245,158,11,.14); border-color:rgba(245,158,11,.45); color:#b45309; }
+.cn-flag.good { background:rgba(5,150,105,.12); border-color:rgba(5,150,105,.4); color:#047857; }
+:root[data-theme="dark"] .cn-flag.warn { color:#fcd34d; }
+:root[data-theme="dark"] .cn-flag.good { color:#6ee7b7; }
+.reg-note { margin:2px 0 10px; font-size:12.5px; line-height:1.7; color:var(--text-2,var(--text-3)); }
+.reg-note strong { color:var(--text); }
 .cn-summary { margin:0 0 14px; padding:10px 14px; border-left:3px solid var(--primary); background:var(--surface-2); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:var(--text); }
 .big-score .bs-num { font-size:36px; font-weight:800; color:var(--purple); line-height:1; }
 .hero-note {
@@ -540,6 +548,10 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   <div class="card conclusion">
     <div class="cn-head"><div class="card-title" style="margin:0;">本期結論</div><span class="cn-sub">對照基準：新制 12 期（第 93–104 期）平均</span></div>
     <p class="cn-summary"><strong>規模為新制最低，但回放補課效果佳；進階主題偏難，滿意度偏低：</strong>本期報名 708 人、直播 286 人、總出席 492 人，三項皆為新制最低。觸及率 69% 高於平均 67%，回放補課率 49% 為新制第 2 高。滿意度 4.31 為新制第 2 低，31 份問卷中多則留言提到內容偏難、需要時間消化。</p>
+    <div class="cn-flags">
+      <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
+      <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
+    </div>
     <div class="cn-grid">
       <div class="cn-item"><h4>出席與觸及</h4><p>報名 708 人（新制平均 929，<strong>新制最低</strong>，且連續三期低於 800）。直播到課 <strong>286 人（40%）</strong>，低於平均 399 人（43%），為新制最低；總出席 <strong>492 人</strong>（平均 622，<strong>新制最低</strong>）。觸及率 69%（平均 67%，排第 4／12），報名者的觸達不差，主要是基數偏小。</p></div>
       <div class="cn-item"><h4>直播與回放的消長</h4><p>直播觀看 286 人（58.1%）、回放觀看 265 人。<strong>只看回放 206 人（41.9%）</strong>，為新制第 3 高占比（平均 36.3%）；<strong>直播回放都看 59 人（12.0%）為新制最低</strong>（平均 14.9%）；只看直播 227 人（46.1%），平均 48.8%。</p></div>
@@ -555,6 +567,11 @@ tr.era-divider:hover td { background:var(--notice-bg); }
   <div class="card grid-full">
     <div class="card-title">實際到課人數 ＆ 到課率 <span class="sub" id="trend-subtitle"></span></div>
     <canvas id="trendChart" height="70" role="img" aria-label="各期到課人數柱狀圖與到課率折線圖"></canvas>
+  </div>
+  <div class="card grid-full" style="margin-top:14px;">
+    <div class="card-title">報名人數趨勢 <span class="sub">（各期報名 ＋ 3 期移動平均）</span></div>
+    <div class="reg-note" id="regNote"></div>
+    <canvas id="regChart" height="70" role="img" aria-label="各期報名人數折線圖，含 3 期移動平均與 800 人參考線"></canvas>
   </div>
   <div class="card grid-full" style="margin-top:14px;">
     <div class="card-title">新制觀看組成趨勢 <span class="sub">（第 93 期起 ▪ 直播與回放的消長）</span></div>
@@ -871,7 +888,7 @@ function chartTheme(){
 }
 
 // ══ Charts ══
-let trendChart, scoreChart, ratingChart;
+let trendChart, scoreChart, ratingChart, regChart;
 Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
 
 // 第 93 期（2026/08/05）起為新制：週三晚間場＋直播/回放雙軌統計
@@ -934,6 +951,51 @@ function renderTrendChart(){
       plugins:{
         legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8}},
         tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?` 到課率: ${ctx.raw}%`:` 到課人數: ${ctx.raw} 人`}}
+      }
+    },
+    plugins:[eraLinePlugin(()=>filtered)]
+  });
+}
+const REG_WARN=800;
+function renderRegChart(){
+  const th=chartTheme();
+  Chart.defaults.color=th.legend;
+  // 說明文字：永遠以全部期數計算，不受篩選器影響
+  const all=SESSIONS.slice().sort((a,b)=>a.no-b.no);
+  let k=0; while(k<all.length && all[all.length-1-k].registered<REG_WARN) k++;
+  const avg=a=>a.reduce((x,s)=>x+s.registered,0)/a.length;
+  const recent=all.slice(-4), prev=all.slice(-8,-4);
+  const note=document.getElementById('regNote');
+  let t='';
+  if(k>=2) t+=`<strong>報名已連續 ${k} 期低於 ${REG_WARN}</strong>（${all.slice(-k).map(s=>s.registered).join('、')}）；`;
+  else t+=`最新一期報名 <strong>${all[all.length-1].registered}</strong> 人；`;
+  if(prev.length===4){ const r=avg(recent),p=avg(prev),d=(r-p)/p*100;
+    t+=`近 4 期平均 <strong>${Math.round(r)}</strong> 人，前 4 期平均 ${Math.round(p)} 人（${d>=0?'+':'−'}${Math.abs(d).toFixed(1)}%）。`; }
+  note.innerHTML=t;
+  const ma=filtered.map(s=>{ const i=all.findIndex(x=>x.no===s.no); const w=all.slice(Math.max(0,i-2),i+1); return Math.round(avg(w)); });
+  if(regChart) regChart.destroy();
+  regChart=new Chart(document.getElementById('regChart'),{
+    type:'line',
+    data:{
+      labels: filtered.map(s=>s.date.slice(5).replace('-','/')),
+      datasets:[
+        { label:'報名人數', data:filtered.map(s=>s.registered), borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.06)',
+          pointBackgroundColor:filtered.map(s=>s.no===latestNo?'#e94560':'#2563eb'), pointBorderColor:th.ring, pointBorderWidth:2,
+          pointRadius:filtered.length>40?2:4, tension:0.3, fill:true },
+        { label:'3 期移動平均', data:ma, borderColor:'#f59e0b', borderDash:[6,4], borderWidth:2, pointRadius:0, tension:0.3, fill:false },
+        { label:`${REG_WARN} 人參考線`, data:filtered.map(()=>REG_WARN), borderColor:'#e94560', borderDash:[2,4], borderWidth:1.2, pointRadius:0, fill:false }
+      ]
+    },
+    options:{
+      responsive:true, animation:{duration:REDUCED_MOTION?0:600},
+      interaction:{mode:'index', intersect:false},
+      scales:{
+        y:{ grid:{color:th.grid}, ticks:{color:th.tick,font:{size:11}}, title:{display:true,text:'報名人數',color:th.tick,font:{size:10}} },
+        x:{ grid:{display:false}, ticks:{color:th.tick,font:{size:10},maxRotation:50, callback(v,i){ return filtered.length>40 ? (i%10===0?this.getLabelForValue(v):'') : this.getLabelForValue(v); } } }
+      },
+      plugins:{
+        legend:{position:'top',labels:{font:{size:12},usePointStyle:true,boxWidth:8}},
+        tooltip:{callbacks:{title:items=>{const s=filtered[items[0].dataIndex];return `第 ${s.no} 期 ▪ ${s.expert} ▪ ${s.date}`;}, label:ctx=>` ${ctx.dataset.label}: ${ctx.raw} 人`}}
       }
     },
     plugins:[eraLinePlugin(()=>filtered)]
@@ -1108,7 +1170,7 @@ function renderMixChart(){
     }
   });
 }
-function renderAll(){ renderSummary(); renderTrendChart(); renderScoreChart(); renderMixChart(); renderTable(); }
+function renderAll(){ renderSummary(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); }
 initDropdowns(); initTags(); renderRating(); applyFilter();
 </script>
 </body>

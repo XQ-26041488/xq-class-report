@@ -311,13 +311,13 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .cn-insight { display:grid; grid-template-columns:1fr; padding-top:16px; border-top:1px solid var(--border); }
 .cn-insight .ci-col + .ci-col { border-left:1px solid var(--border); padding-left:32px; }
 @media (max-width:760px){ .cn-insight { grid-template-columns:1fr; gap:18px; } .cn-insight .ci-col + .ci-col { border-left:0; padding-left:0; border-top:1px solid var(--border); padding-top:16px; } }
-.ci-label { font-size:11.5px; font-weight:700; color:var(--text-3); margin:0 0 10px; }
-.ci { margin:0 0 14px; }
+.ci-label { font-size:12.5px; font-weight:700; color:var(--text-3); margin:0 0 10px; }
+.ci { margin:0 0 16px; }
 .ci:last-child { margin-bottom:0; }
-.ci h4 { margin:0 0 3px; font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+.ci h4 { margin:0 0 3px; font-size:15.5px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
 .ci h4::before { content:''; flex:none; width:8px; height:8px; border-radius:50%; background:var(--text-3); }
 .ci.warn h4::before { background:#f59e0b; } .ci.good h4::before { background:#059669; } .ci.info h4::before { background:#2563eb; }
-.ci p { margin:0; padding-left:16px; font-size:12.5px; line-height:1.7; color:var(--text-2); }
+.ci p { margin:0; padding-left:16px; font-size:13.5px; line-height:1.7; color:var(--text-2); }
 .ci p strong { color:var(--text); }
 .cn-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px 28px; padding-top:14px; border-top:1px solid var(--border); }
 @media (max-width:900px){ .cn-grid { grid-template-columns:1fr 1fr; } }
@@ -325,7 +325,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .cn-item h4 { margin:0 0 4px; font-size:12px; font-weight:700; color:var(--primary); }
 .cn-item p { margin:0; font-size:12.5px; line-height:1.75; color:var(--text-2); }
 .cn-item p strong { color:var(--text); }
-.cn-top { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:16px; align-items:start; margin:0 0 16px; }
+.cn-top { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:28px; align-items:start; margin:0 0 16px; }
 @media (max-width:760px){ .cn-top { grid-template-columns:1fr; } }
 .cn-flags { display:flex; flex-direction:column; gap:8px; margin:0; }
 .cn-flag { display:flex; align-items:flex-start; gap:6px; padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; line-height:1.4; border:1px solid; }
@@ -336,11 +336,11 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .reg-note { margin:2px 0 10px; font-size:12.5px; line-height:1.7; color:var(--text-2,var(--text-3)); }
 .reg-note strong { color:var(--text); }
 .cmp { margin:0; }
-.cmp-title { font-size:12px; font-weight:700; color:var(--text-3); margin:0 0 6px; }
+.cmp-title { font-size:12.5px; font-weight:700; color:var(--text-3); margin:0 0 6px; }
 .cmp-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
-table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-variant-numeric:tabular-nums; min-width:340px; }
-.cmp-t th, .cmp-t td { padding:6px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border); }
-.cmp-t th { background:var(--surface-2); font-size:11.5px; font-weight:700; color:var(--text-3); }
+table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-variant-numeric:tabular-nums; min-width:340px; }
+.cmp-t th, .cmp-t td { padding:11px 14px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border); }
+.cmp-t th { background:var(--surface-2); font-size:12.5px; font-weight:700; color:var(--text-3); }
 .cmp-t th:first-child, .cmp-t td:first-child { text-align:left; font-weight:600; color:var(--text); }
 .cmp-t tr:last-child td { border-bottom:0; }
 .cmp-t .cur { font-weight:700; color:var(--text); }
@@ -349,8 +349,8 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
 .cmp-t .eq { color:var(--text-3); }
 :root[data-theme="dark"] .cmp-t .up { color:#6ee7b7; }
 :root[data-theme="dark"] .cmp-t .dn { color:#fca5a5; }
-.cmp-t .avg { color:var(--text-3); font-weight:400; font-size:11px; margin-left:4px; }
-.cmp-foot { font-size:11px; color:var(--text-3); margin:6px 0 0; }
+.cmp-t .avg { color:var(--text-3); font-weight:400; font-size:12px; margin-left:4px; }
+.cmp-foot { font-size:11.5px; color:var(--text-3); margin:6px 0 0; }
 .cn-summary { margin:0 0 14px; padding:10px 14px; border-left:3px solid var(--primary); background:var(--surface-2); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:var(--text); }
 .big-score .bs-num { font-size:36px; font-weight:800; color:var(--purple); line-height:1; }
 .hero-note {
@@ -591,12 +591,6 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
     <p class="cn-summary"><strong>規模為新制最低，但回放補課效果佳；進階主題偏難，滿意度偏低：</strong>本期報名 708 人、直播 286 人、總出席 492 人，三項皆為新制最低。觸及率 69% 高於平均 67%，回放補課率 49% 為新制第 2 高。滿意度 4.31 為新制第 2 低，31 份問卷中多則留言提到內容偏難、需要時間消化。</p>
     <div class="cn-top">
       <div class="cmp" id="cmpBox"></div>
-      <div class="cn-flags">
-        <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
-        <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
-      </div>
-    </div>
-    <div class="cn-insight">
       <div class="ci-col">
         <div class="ci-label">重點觀察</div>
         <div class="ci warn"><h4>報名連三期低於 800，為新制最低</h4><p>本期 708 人，較前 4 期平均下降 <strong>14.8%</strong>；直播 286、總出席 492 也都是新制最低。</p></div>

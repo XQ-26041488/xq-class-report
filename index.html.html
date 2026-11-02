@@ -308,6 +308,17 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .conclusion { margin-top: 14px; }
 .cn-head { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
 .cn-head .cn-sub { font-size:11px; color:var(--text-3); font-weight:400; }
+.cn-insight { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:0 32px; padding-top:16px; border-top:1px solid var(--border); }
+.cn-insight .ci-col + .ci-col { border-left:1px solid var(--border); padding-left:32px; }
+@media (max-width:760px){ .cn-insight { grid-template-columns:1fr; gap:18px; } .cn-insight .ci-col + .ci-col { border-left:0; padding-left:0; border-top:1px solid var(--border); padding-top:16px; } }
+.ci-label { font-size:11.5px; font-weight:700; color:var(--text-3); margin:0 0 10px; }
+.ci { margin:0 0 14px; }
+.ci:last-child { margin-bottom:0; }
+.ci h4 { margin:0 0 3px; font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+.ci h4::before { content:''; flex:none; width:8px; height:8px; border-radius:50%; background:var(--text-3); }
+.ci.warn h4::before { background:#f59e0b; } .ci.good h4::before { background:#059669; } .ci.info h4::before { background:#2563eb; }
+.ci p { margin:0; padding-left:16px; font-size:12.5px; line-height:1.7; color:var(--text-2); }
+.ci p strong { color:var(--text); }
 .cn-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px 28px; padding-top:14px; border-top:1px solid var(--border); }
 @media (max-width:900px){ .cn-grid { grid-template-columns:1fr 1fr; } }
 @media (max-width:600px){ .cn-grid { grid-template-columns:1fr; } }
@@ -585,13 +596,21 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
         <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
       </div>
     </div>
-    <div class="cn-grid">
-      <div class="cn-item"><h4>出席與觸及</h4><p>報名 708、直播 286、總出席 492，<strong>三項皆為新制最低</strong>；觸及率 69% 仍高於平均 67%。</p></div>
-      <div class="cn-item"><h4>直播與回放的消長</h4><p><strong>只看回放占 41.9%</strong>（平均 36.3%）；直播回放都看僅 12.0%，為新制最低。</p></div>
-      <div class="cn-item"><h4>回放的補課效果</h4><p>未到直播的 422 人中 206 人靠回放補上，<strong>補課率 49%</strong>，新制第 2 高。</p></div>
-      <div class="cn-item"><h4>滿意度與口碑</h4><p><strong>4.31</strong>（平均 4.50），新制第 2 低。31 份問卷中 7 則提到「偏難、燒腦」，但肯定內容實用。</p></div>
-      <div class="cn-item"><h4>學員想學什麼</h4><p><strong>策略開發（20）、策略優化（16）、主觀交易經驗分享（14）</strong>。</p></div>
-      <div class="cn-item"><h4>後續建議</h4><p>① 進階主題課前附名詞對照表，課中先講定義再舉例。② 報名連三期低於 800，檢視宣傳與主題。③ 規劃 SDT 進階續集。</p></div>
+    <div class="cn-insight">
+      <div class="ci-col">
+        <div class="ci-label">重點觀察</div>
+        <div class="ci warn"><h4>報名連三期低於 800，為新制最低</h4><p>本期 708 人，較前 4 期平均下降 <strong>14.8%</strong>；直播 286、總出席 492 也都是新制最低。</p></div>
+        <div class="ci info"><h4>回放分流持續，都看的人最少</h4><p>只看回放占 <strong>41.9%</strong>（新制平均 36.3%）；直播回放都看僅 12.0%，為新制最低。</p></div>
+        <div class="ci good"><h4>回放補課效果好</h4><p>未到直播的 422 人中 206 人靠回放補上，補課率 <strong>49%</strong>，新制第 2 高；觸及率 69% 高於平均 67%。</p></div>
+        <div class="ci warn"><h4>滿意度偏低，留言指向內容偏難</h4><p><strong>4.31</strong>（新制平均 4.50），新制第 2 低；31 份問卷中 7 則提到「偏難、燒腦」，但肯定內容實用。</p></div>
+        <div class="ci info"><h4>學員想學策略開發與優化</h4><p>策略開發 <strong>20 票</strong>、策略優化 16 票、主觀交易經驗分享 14 票。</p></div>
+      </div>
+      <div class="ci-col">
+        <div class="ci-label">下週聚焦</div>
+        <div class="ci"><h4>報名能否止跌</h4><p>本期 708、近 4 期均 831；建議檢視宣傳曝光與主題吸引力。</p></div>
+        <div class="ci"><h4>滿意度能否回升</h4><p>目前 4.31、平均 4.50；進階主題課前附名詞對照表，課中先講定義再舉例。</p></div>
+        <div class="ci"><h4>補課率能否維持</h4><p>本期 49%、上一期 47%；偏難主題可在回放頁附講義與範例，並規劃 SDT 進階續集。</p></div>
+      </div>
     </div>
   </div>
 

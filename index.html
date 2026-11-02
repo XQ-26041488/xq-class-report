@@ -316,9 +316,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .cn-item p strong { color:var(--text); }
 .cn-top { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:16px; align-items:start; margin:0 0 16px; }
 @media (max-width:760px){ .cn-top { grid-template-columns:1fr; } }
-.cn-side { display:flex; flex-direction:column; gap:14px; }
 .cn-flags { display:flex; flex-direction:column; gap:8px; margin:0; }
-.cn-todo ol { margin:0; padding-left:18px; font-size:12.5px; line-height:1.75; color:var(--text-2); }
 .cn-flag { display:flex; align-items:flex-start; gap:6px; padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; line-height:1.4; border:1px solid; }
 .cn-flag.warn { background:rgba(245,158,11,.14); border-color:rgba(245,158,11,.45); color:#b45309; }
 .cn-flag.good { background:rgba(5,150,105,.12); border-color:rgba(5,150,105,.4); color:#047857; }
@@ -579,21 +577,21 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
   <!-- 本期結論（每期更新；對照基準＝新制第 93 期起） -->
   <div class="card conclusion">
     <div class="cn-head"><div class="card-title" style="margin:0;">本期結論</div><span class="cn-sub">對照基準：新制 12 期（第 93–104 期）平均</span></div>
-    <p class="cn-summary"><strong>規模為新制最低，但回放補課效果佳；進階主題偏難，滿意度偏低。</strong>報名、直播、總出席三項皆為新制最低，觸及率與補課率仍高於平均；滿意度 4.31 為新制第 2 低，留言反映內容偏難。</p>
+    <p class="cn-summary"><strong>規模為新制最低，但回放補課效果佳；進階主題偏難，滿意度偏低：</strong>本期報名 708 人、直播 286 人、總出席 492 人，三項皆為新制最低。觸及率 69% 高於平均 67%，回放補課率 49% 為新制第 2 高。滿意度 4.31 為新制第 2 低，31 份問卷中多則留言提到內容偏難、需要時間消化。</p>
     <div class="cn-top">
       <div class="cmp" id="cmpBox"></div>
-      <div class="cn-side">
-        <div class="cn-flags">
-          <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
-          <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
-        </div>
-        <div class="cn-item cn-todo"><h4>後續建議</h4><ol><li>進階主題課前附名詞對照表，課中先講定義再舉例。</li><li>報名連三期低於 800，檢視宣傳與主題。</li><li>規劃 SDT 進階續集。</li></ol></div>
+      <div class="cn-flags">
+        <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
+        <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
       </div>
     </div>
     <div class="cn-grid">
+      <div class="cn-item"><h4>出席與觸及</h4><p>報名 708、直播 286、總出席 492，<strong>三項皆為新制最低</strong>；觸及率 69% 仍高於平均 67%。</p></div>
       <div class="cn-item"><h4>直播與回放的消長</h4><p><strong>只看回放占 41.9%</strong>（平均 36.3%）；直播回放都看僅 12.0%，為新制最低。</p></div>
-      <div class="cn-item"><h4>滿意度與口碑</h4><p><strong>4.31</strong>（平均 4.50）。31 份問卷中 7 則提到「偏難、燒腦」，但肯定內容實用。</p></div>
+      <div class="cn-item"><h4>回放的補課效果</h4><p>未到直播的 422 人中 206 人靠回放補上，<strong>補課率 49%</strong>，新制第 2 高。</p></div>
+      <div class="cn-item"><h4>滿意度與口碑</h4><p><strong>4.31</strong>（平均 4.50），新制第 2 低。31 份問卷中 7 則提到「偏難、燒腦」，但肯定內容實用。</p></div>
       <div class="cn-item"><h4>學員想學什麼</h4><p><strong>策略開發（20）、策略優化（16）、主觀交易經驗分享（14）</strong>。</p></div>
+      <div class="cn-item"><h4>後續建議</h4><p>① 進階主題課前附名詞對照表，課中先講定義再舉例。② 報名連三期低於 800，檢視宣傳與主題。③ 規劃 SDT 進階續集。</p></div>
     </div>
   </div>
 
@@ -1045,7 +1043,7 @@ function renderCompare(){
   document.getElementById('cmpBox').innerHTML=
     `<div class="cmp-title">與過去比較｜第 ${cur.no} 期 vs 前 4／8 期平均</div>`+
     `<div class="cmp-wrap"><table class="cmp-t"><thead><tr><th>指標</th><th>第 ${cur.no} 期</th><th>較前 4 期</th><th>較前 8 期</th></tr></thead><tbody>${h}</tbody></table></div>`+
-    `<p class="cmp-foot">人數為百分比差異，比率與滿意度為絕對差距。前 4 期＝第 ${p4[0].no}–${p4[p4.length-1].no} 期，前 8 期＝第 ${p8[0].no}–${p8[p8.length-1].no} 期，無問卷的期數不計入滿意度平均。</p>`;
+    `<p class="cmp-foot">人數為百分比差異，比率與滿意度為絕對差距；前 4 期＝第 ${p4[0].no}–${p4[p4.length-1].no} 期，前 8 期＝第 ${p8[0].no}–${p8[p8.length-1].no} 期；無問卷的期數不納入滿意度平均。</p>`;
 }
 const REG_WARN=800;
 function renderRegChart(){

@@ -315,6 +315,21 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 :root[data-theme="dark"] .cn-flag.good { color:#6ee7b7; }
 .reg-note { margin:2px 0 10px; font-size:12.5px; line-height:1.7; color:var(--text-2,var(--text-3)); }
 .reg-note strong { color:var(--text); }
+.cmp { margin:0 0 14px; }
+.cmp-title { font-size:12px; font-weight:700; color:var(--text-3); margin:0 0 6px; }
+.cmp-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
+table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-variant-numeric:tabular-nums; min-width:520px; }
+.cmp-t th, .cmp-t td { padding:7px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border); }
+.cmp-t th { background:var(--surface-2); font-size:11.5px; font-weight:700; color:var(--text-3); }
+.cmp-t th:first-child, .cmp-t td:first-child { text-align:left; font-weight:600; color:var(--text); }
+.cmp-t tr:last-child td { border-bottom:0; }
+.cmp-t .cur { font-weight:700; color:var(--text); }
+.cmp-t .up { color:#047857; font-weight:600; }
+.cmp-t .dn { color:#b91c1c; font-weight:600; }
+.cmp-t .eq { color:var(--text-3); }
+:root[data-theme="dark"] .cmp-t .up { color:#6ee7b7; }
+:root[data-theme="dark"] .cmp-t .dn { color:#fca5a5; }
+.cmp-foot { font-size:11px; color:var(--text-3); margin:6px 0 0; }
 .cn-summary { margin:0 0 14px; padding:10px 14px; border-left:3px solid var(--primary); background:var(--surface-2); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:var(--text); }
 .big-score .bs-num { font-size:36px; font-weight:800; color:var(--purple); line-height:1; }
 .hero-note {
@@ -552,6 +567,7 @@ tr.era-divider:hover td { background:var(--notice-bg); }
       <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
       <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
     </div>
+    <div class="cmp" id="cmpBox"></div>
     <div class="cn-grid">
       <div class="cn-item"><h4>出席與觸及</h4><p>報名 708 人（新制平均 929，<strong>新制最低</strong>，且連續三期低於 800）。直播到課 <strong>286 人（40%）</strong>，低於平均 399 人（43%），為新制最低；總出席 <strong>492 人</strong>（平均 622，<strong>新制最低</strong>）。觸及率 69%（平均 67%，排第 4／12），報名者的觸達不差，主要是基數偏小。</p></div>
       <div class="cn-item"><h4>直播與回放的消長</h4><p>直播觀看 286 人（58.1%）、回放觀看 265 人。<strong>只看回放 206 人（41.9%）</strong>，為新制第 3 高占比（平均 36.3%）；<strong>直播回放都看 59 人（12.0%）為新制最低</strong>（平均 14.9%）；只看直播 227 人（46.1%），平均 48.8%。</p></div>
@@ -956,6 +972,42 @@ function renderTrendChart(){
     plugins:[eraLinePlugin(()=>filtered)]
   });
 }
+// ══ 與過去比較（本期 vs 前 4 期／前 8 期平均，不受篩選器影響）══
+function renderCompare(){
+  const all=SESSIONS.slice().sort((a,b)=>a.no-b.no);
+  const cur=all[all.length-1];
+  const mix=Object.fromEntries(NEW_MIX.map(m=>[m.no,m]));
+  const M=[
+    {n:'報名人數',  f:x=>x.registered, t:'n'},
+    {n:'直播到課',  f:x=>x.attended,   t:'n'},
+    {n:'總出席',    f:x=>x.total,      t:'n'},
+    {n:'觸及率',    f:x=>x.total==null?null:x.total/x.registered*100, t:'p'},
+    {n:'回放補課率',f:x=>{const m=mix[x.no];return m?m.ro/(x.registered-x.attended)*100:null;}, t:'p'},
+    {n:'滿意度',    f:x=>x.score, t:'s'}
+  ];
+  const avgOf=(f,arr)=>{const v=arr.map(f).filter(z=>z!=null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null;};
+  const p4=all.slice(-5,-1), p8=all.slice(-9,-1);
+  const fmt=(v,t)=>v==null?'—':t==='n'?Math.round(v).toLocaleString():t==='p'?v.toFixed(1)+'%':v.toFixed(2);
+  const diff=(c,b,t)=>{
+    if(c==null||b==null) return '<span class="eq">—</span>';
+    let d,txt;
+    if(t==='n'){ d=(c-b)/b*100; txt=Math.abs(d).toFixed(1)+'%'; }
+    else if(t==='p'){ d=c-b; txt=Math.abs(d).toFixed(1)+' pt'; }
+    else { d=c-b; txt=Math.abs(d).toFixed(2); }
+    const flat=Math.abs(d)<(t==='n'?1:t==='p'?0.5:0.02);
+    if(flat) return '<span class="eq">≈ 持平</span>';
+    return d>0?`<span class="up">▲ ${txt}</span>`:`<span class="dn">▼ ${txt}</span>`;
+  };
+  let h='';
+  M.forEach(m=>{
+    const c=m.f(cur), a4=avgOf(m.f,p4), a8=avgOf(m.f,p8);
+    h+=`<tr><td>${m.n}</td><td class="cur">${fmt(c,m.t)}</td><td>${fmt(a4,m.t)}</td><td>${diff(c,a4,m.t)}</td><td>${fmt(a8,m.t)}</td><td>${diff(c,a8,m.t)}</td></tr>`;
+  });
+  document.getElementById('cmpBox').innerHTML=
+    `<div class="cmp-title">與過去比較｜第 ${cur.no} 期 vs 前 4 期、前 8 期平均</div>`+
+    `<div class="cmp-wrap"><table class="cmp-t"><thead><tr><th>指標</th><th>第 ${cur.no} 期</th><th>前 4 期平均</th><th>差異</th><th>前 8 期平均</th><th>差異</th></tr></thead><tbody>${h}</tbody></table></div>`+
+    `<p class="cmp-foot">人數以百分比差異呈現，比率與滿意度以絕對差距呈現。前 4 期＝第 ${p4[0].no}–${p4[p4.length-1].no} 期，前 8 期＝第 ${p8[0].no}–${p8[p8.length-1].no} 期；無問卷的期數不納入滿意度平均。</p>`;
+}
 const REG_WARN=800;
 function renderRegChart(){
   const th=chartTheme();
@@ -1170,7 +1222,7 @@ function renderMixChart(){
     }
   });
 }
-function renderAll(){ renderSummary(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); }
+function renderAll(){ renderSummary(); renderCompare(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); }
 initDropdowns(); initTags(); renderRating(); applyFilter();
 </script>
 </body>

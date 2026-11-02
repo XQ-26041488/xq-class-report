@@ -303,23 +303,27 @@ tr.era-divider:hover td { background:var(--notice-bg); }
 .conclusion { margin-top: 14px; }
 .cn-head { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
 .cn-head .cn-sub { font-size:11px; color:var(--text-3); font-weight:400; }
-.cn-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px 24px; }
+.cn-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px 28px; padding-top:14px; border-top:1px solid var(--border); }
+@media (max-width:900px){ .cn-grid { grid-template-columns:1fr 1fr; } }
+@media (max-width:600px){ .cn-grid { grid-template-columns:1fr; } }
 .cn-item h4 { margin:0 0 4px; font-size:12px; font-weight:700; color:var(--primary); }
 .cn-item p { margin:0; font-size:12.5px; line-height:1.75; color:var(--text-2); }
 .cn-item p strong { color:var(--text); }
-.cn-flags { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
-.cn-flag { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; font-size:12.5px; font-weight:600; line-height:1.4; border:1px solid; }
+.cn-top { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:16px; align-items:start; margin:0 0 16px; }
+@media (max-width:760px){ .cn-top { grid-template-columns:1fr; } }
+.cn-flags { display:flex; flex-direction:column; gap:8px; margin:0; }
+.cn-flag { display:flex; align-items:flex-start; gap:6px; padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; line-height:1.4; border:1px solid; }
 .cn-flag.warn { background:rgba(245,158,11,.14); border-color:rgba(245,158,11,.45); color:#b45309; }
 .cn-flag.good { background:rgba(5,150,105,.12); border-color:rgba(5,150,105,.4); color:#047857; }
 :root[data-theme="dark"] .cn-flag.warn { color:#fcd34d; }
 :root[data-theme="dark"] .cn-flag.good { color:#6ee7b7; }
 .reg-note { margin:2px 0 10px; font-size:12.5px; line-height:1.7; color:var(--text-2,var(--text-3)); }
 .reg-note strong { color:var(--text); }
-.cmp { margin:0 0 14px; }
+.cmp { margin:0; }
 .cmp-title { font-size:12px; font-weight:700; color:var(--text-3); margin:0 0 6px; }
 .cmp-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
-table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-variant-numeric:tabular-nums; min-width:520px; }
-.cmp-t th, .cmp-t td { padding:7px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border); }
+table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-variant-numeric:tabular-nums; min-width:340px; }
+.cmp-t th, .cmp-t td { padding:6px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border); }
 .cmp-t th { background:var(--surface-2); font-size:11.5px; font-weight:700; color:var(--text-3); }
 .cmp-t th:first-child, .cmp-t td:first-child { text-align:left; font-weight:600; color:var(--text); }
 .cmp-t tr:last-child td { border-bottom:0; }
@@ -329,6 +333,7 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
 .cmp-t .eq { color:var(--text-3); }
 :root[data-theme="dark"] .cmp-t .up { color:#6ee7b7; }
 :root[data-theme="dark"] .cmp-t .dn { color:#fca5a5; }
+.cmp-t .avg { color:var(--text-3); font-weight:400; font-size:11px; margin-left:4px; }
 .cmp-foot { font-size:11px; color:var(--text-3); margin:6px 0 0; }
 .cn-summary { margin:0 0 14px; padding:10px 14px; border-left:3px solid var(--primary); background:var(--surface-2); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:var(--text); }
 .big-score .bs-num { font-size:36px; font-weight:800; color:var(--purple); line-height:1; }
@@ -563,11 +568,13 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:12.5px; font-varia
   <div class="card conclusion">
     <div class="cn-head"><div class="card-title" style="margin:0;">本期結論</div><span class="cn-sub">對照基準：新制 12 期（第 93–104 期）平均</span></div>
     <p class="cn-summary"><strong>規模為新制最低，但回放補課效果佳；進階主題偏難，滿意度偏低：</strong>本期報名 708 人、直播 286 人、總出席 492 人，三項皆為新制最低。觸及率 69% 高於平均 67%，回放補課率 49% 為新制第 2 高。滿意度 4.31 為新制第 2 低，31 份問卷中多則留言提到內容偏難、需要時間消化。</p>
-    <div class="cn-flags">
-      <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
-      <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
+    <div class="cn-top">
+      <div class="cmp" id="cmpBox"></div>
+      <div class="cn-flags">
+        <span class="cn-flag warn">⚠ 報名已連續三期低於 800（716、751、708）</span>
+        <span class="cn-flag good">✓ 回放補課效果好：補課率 49%，新制第 2 高</span>
+      </div>
     </div>
-    <div class="cmp" id="cmpBox"></div>
     <div class="cn-grid">
       <div class="cn-item"><h4>出席與觸及</h4><p>報名 708 人（新制平均 929，<strong>新制最低</strong>，且連續三期低於 800）。直播到課 <strong>286 人（40%）</strong>，低於平均 399 人（43%），為新制最低；總出席 <strong>492 人</strong>（平均 622，<strong>新制最低</strong>）。觸及率 69%（平均 67%，排第 4／12），報名者的觸達不差，主要是基數偏小。</p></div>
       <div class="cn-item"><h4>直播與回放的消長</h4><p>直播觀看 286 人（58.1%）、回放觀看 265 人。<strong>只看回放 206 人（41.9%）</strong>，為新制第 3 高占比（平均 36.3%）；<strong>直播回放都看 59 人（12.0%）為新制最低</strong>（平均 14.9%）；只看直播 227 人（46.1%），平均 48.8%。</p></div>
@@ -1001,12 +1008,12 @@ function renderCompare(){
   let h='';
   M.forEach(m=>{
     const c=m.f(cur), a4=avgOf(m.f,p4), a8=avgOf(m.f,p8);
-    h+=`<tr><td>${m.n}</td><td class="cur">${fmt(c,m.t)}</td><td>${fmt(a4,m.t)}</td><td>${diff(c,a4,m.t)}</td><td>${fmt(a8,m.t)}</td><td>${diff(c,a8,m.t)}</td></tr>`;
+    h+=`<tr><td>${m.n}</td><td class="cur">${fmt(c,m.t)}</td><td>${diff(c,a4,m.t)}<span class="avg">均 ${fmt(a4,m.t)}</span></td><td>${diff(c,a8,m.t)}<span class="avg">均 ${fmt(a8,m.t)}</span></td></tr>`;
   });
   document.getElementById('cmpBox').innerHTML=
-    `<div class="cmp-title">與過去比較｜第 ${cur.no} 期 vs 前 4 期、前 8 期平均</div>`+
-    `<div class="cmp-wrap"><table class="cmp-t"><thead><tr><th>指標</th><th>第 ${cur.no} 期</th><th>前 4 期平均</th><th>差異</th><th>前 8 期平均</th><th>差異</th></tr></thead><tbody>${h}</tbody></table></div>`+
-    `<p class="cmp-foot">人數以百分比差異呈現，比率與滿意度以絕對差距呈現。前 4 期＝第 ${p4[0].no}–${p4[p4.length-1].no} 期，前 8 期＝第 ${p8[0].no}–${p8[p8.length-1].no} 期；無問卷的期數不納入滿意度平均。</p>`;
+    `<div class="cmp-title">與過去比較｜第 ${cur.no} 期 vs 前 4／8 期平均</div>`+
+    `<div class="cmp-wrap"><table class="cmp-t"><thead><tr><th>指標</th><th>第 ${cur.no} 期</th><th>較前 4 期</th><th>較前 8 期</th></tr></thead><tbody>${h}</tbody></table></div>`+
+    `<p class="cmp-foot">人數為百分比差異，比率與滿意度為絕對差距；前 4 期＝第 ${p4[0].no}–${p4[p4.length-1].no} 期，前 8 期＝第 ${p8[0].no}–${p8[p8.length-1].no} 期；無問卷的期數不納入滿意度平均。</p>`;
 }
 const REG_WARN=800;
 function renderRegChart(){

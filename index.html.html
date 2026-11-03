@@ -609,9 +609,9 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
     <canvas id="trendChart" height="70" role="img" aria-label="各期到課人數柱狀圖與到課率折線圖"></canvas>
   </div>
   <div class="card grid-full" style="margin-top:14px;">
-    <div class="card-title">報名人數趨勢 <span class="sub">（各期報名 ＋ 3 期移動平均）</span></div>
+    <div class="card-title">報名人數趨勢 <span class="sub">（各期報名人數）</span></div>
     <div class="reg-note" id="regNote"></div>
-    <canvas id="regChart" height="70" role="img" aria-label="各期報名人數折線圖，含 3 期移動平均與 800 人參考線"></canvas>
+    <canvas id="regChart" height="70" role="img" aria-label="各期報名人數折線圖，含 800 人參考線"></canvas>
   </div>
   <div class="card grid-full" style="margin-top:14px;">
     <div class="card-title">新制觀看組成趨勢 <span class="sub">（第 93 期起 ▪ 直播與回放的消長）</span></div>
@@ -1068,7 +1068,6 @@ function renderRegChart(){
   if(prev.length===4){ const r=avg(recent),p=avg(prev),d=(r-p)/p*100;
     t+=`近 4 期平均 <strong>${Math.round(r)}</strong> 人，前 4 期平均 ${Math.round(p)} 人（${d>=0?'+':'−'}${Math.abs(d).toFixed(1)}%）。`; }
   note.innerHTML=t;
-  const ma=filtered.map(s=>{ const i=all.findIndex(x=>x.no===s.no); const w=all.slice(Math.max(0,i-2),i+1); return Math.round(avg(w)); });
   if(regChart) regChart.destroy();
   regChart=new Chart(document.getElementById('regChart'),{
     type:'line',
@@ -1078,7 +1077,6 @@ function renderRegChart(){
         { label:'報名人數', data:filtered.map(s=>s.registered), borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.06)',
           pointBackgroundColor:filtered.map(s=>s.no===latestNo?'#e94560':'#2563eb'), pointBorderColor:th.ring, pointBorderWidth:2,
           pointRadius:filtered.length>40?2:4, tension:0.3, fill:true },
-        { label:'3 期移動平均', data:ma, borderColor:'#f59e0b', borderDash:[6,4], borderWidth:2, pointRadius:0, tension:0.3, fill:false },
         { label:`${REG_WARN} 人參考線`, data:filtered.map(()=>REG_WARN), borderColor:'#e94560', borderDash:[2,4], borderWidth:1.2, pointRadius:0, fill:false }
       ]
     },

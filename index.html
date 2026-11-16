@@ -506,9 +506,17 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 .am-stats-t { margin:18px 0 8px; font-size:14px; font-weight:700; color:var(--text); }
 .am-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:18px; }
 .am-stat { background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+.am-prow { display:flex; align-items:center; gap:12px; margin:6px 0; }
+.am-who { width:84px; flex:none; font-size:13px; color:var(--text-2); font-weight:600; }
+.am-dots { display:flex; gap:5px; flex:1; }
+.am-dots i { width:20px; height:20px; border-radius:50%; background:var(--surface-3); border:1px solid var(--border); }
+.am-dots i.on { background:#cbd5e1; border-color:#cbd5e1; }
+.am-dots.a i.on { background:var(--primary); border-color:var(--primary); }
+.am-pct { width:48px; text-align:right; font-size:20px; font-weight:800; color:var(--text-2); font-variant-numeric:tabular-nums; }
+.am-pct.a { color:var(--primary); }
 .am-sv { font-size:22px; font-weight:800; color:var(--text); line-height:1.1; }
-.am-sl { font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
-.am-sc { font-size:12px; color:var(--text-3); }
+.am-sl { font-size:15px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.am-sc { font-size:12.5px; color:var(--text-2); margin-top:8px; }
 .am-foot { margin:14px 0 0; font-size:12px; line-height:1.7; color:var(--text-3); }
 @media (max-width:760px){
   .am-head { display:none; }
@@ -754,8 +762,8 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
         </div>
     </div>
     <p class="am-foot">怎麼看：藍條比灰條長，代表這個模組的會員特別愛來上課；倍數大於 1 就是比一般會員更常來。相關係數越接近 +1 越容易到課，接近 0 代表沒關係（會員約 12,179 人、到課者僅約 228 人，數值偏小，請看相對高低）。</p>
-    <div class="am-stats-t">來上課的人，付費意願和投入程度也比較高：</div>
-    <div class="am-stats"><div class="am-stat"><div class="am-sl">年訂閱</div><div class="am-sv">每 2 人就有 1 人</div><div class="am-sc">可報名會員：每 4 人才有 1 人</div></div><div class="am-stat"><div class="am-sl">持有 2 個以上模組</div><div class="am-sv">每 3 人就有 1 人</div><div class="am-sc">可報名會員：每 5 人才有 1 人</div></div></div>
+    <div class="am-stats-t">來上課的人，付費意願和投入程度也比較高（每格代表 10 人）：</div>
+    <div class="am-stats"><div class="am-stat"><div class="am-sl">是年訂閱</div><div class="am-prow"><span class="am-who">到課者</span><span class="am-dots a"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span><span class="am-pct a">50%</span></div><div class="am-prow"><span class="am-who">可報名會員</span><span class="am-dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="am-pct">24%</span></div><div class="am-sc">到課的 100 人裡約 50 人，可報名會員 100 人裡只有約 24 人</div></div><div class="am-stat"><div class="am-sl">買了 2 個以上模組</div><div class="am-prow"><span class="am-who">到課者</span><span class="am-dots a"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="am-pct a">36%</span></div><div class="am-prow"><span class="am-who">可報名會員</span><span class="am-dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="am-pct">19%</span></div><div class="am-sc">到課的 100 人裡約 36 人，可報名會員 100 人裡只有約 19 人</div></div></div>
   </div>
 <!-- ATT-MIX:END -->
   <!-- ATT-HIST:START -->

@@ -476,6 +476,18 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 .dr-c { text-align:right; font-weight:800; color:var(--text); }
 .dr-all { border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:2px; } .dr-all .dr-bar i { background:var(--primary); }
 @media (max-width:760px){ .dr-row { grid-template-columns:1fr auto; } .dr-v { grid-column:1; } .dr-bar { grid-column:1 / -1; } }
+/* 降最多／相對穩 */
+.lw-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.lw-col { border:1px solid var(--border); border-radius:10px; padding:14px 16px; background:var(--surface-2); }
+.lw-h { font-size:14px; font-weight:800; margin-bottom:6px; color:var(--text); display:flex; align-items:center; gap:8px; }
+.lw-h::before { content:''; width:10px; height:10px; border-radius:50%; background:#f59e0b; }
+.lw-ok .lw-h::before { background:#2563eb; }
+.lw-col ul { list-style:none; margin:0; padding:0; }
+.lw-col li { display:grid; grid-template-columns:1fr auto 56px; gap:12px; align-items:baseline; padding:9px 0; border-top:1px solid var(--border); font-size:14px; font-variant-numeric:tabular-nums; }
+.lw-col li:first-child { border-top:0; }
+.lw-col .gn { font-weight:700; color:var(--text); } .lw-col .gv { color:var(--text-2); } .lw-col .gv strong { color:var(--text); }
+.lw-col .gc { text-align:right; font-weight:800; color:var(--text); }
+@media (max-width:760px){ .lw-grid { grid-template-columns:1fr; } }
 /* 到課者組成趨勢 */
 .ah-ctl { display:flex; flex-direction:column; gap:12px; margin-bottom:6px; }
 .ah-seg { display:inline-flex; align-self:flex-start; border:1px solid var(--border); border-radius:10px; padding:3px; background:var(--surface-2); }
@@ -833,43 +845,13 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 })();
 </script>
   <div class="card am-card" style="margin-top:14px;">
-    <div class="card-title">各群出席人數趨勢 <span class="sub">（哪一群的人變少了？）</span></div>
+    <div class="card-title">哪一群的人變少了？ <span class="sub">（前 5 期平均 vs 近 5 期平均；第 93–97 期 vs 第 102–106 期）</span></div>
     <p class="am-sum"><strong>出席人數從前 5 期平均 596 人降到近 5 期的 444 人（-26%），但可報名會員只變動 -1.7%，主因是出席率下降。</strong>每一群都在減少；降最多的是月訂閱（-31%）、13–24 個月（-31%），相對穩的是24 個月以上（-10%）、年訂閱（-18%）。</p>
-    <div class="ah-ctl">
-      <div class="ah-seg" id="agDims" role="group" aria-label="分群方式"></div>
-      <div class="ah-seg" id="agMetric" role="group" aria-label="指標"><button type="button" class="ah-b on" data-m="cnt">出席人數</button><button type="button" class="ah-b" data-m="rate">出席率（占該群會員）</button></div>
+    <div class="lw-grid">
+      <div class="lw-col lw-bad"><div class="lw-h">降最多</div><ul><li><span class="gn">月訂閱</span><span class="gv">339 → <strong>233</strong> 人</span><span class="gc">-31%</span></li><li><span class="gn">入會 13–24 個月</span><span class="gv">155 → <strong>107</strong> 人</span><span class="gc">-31%</span></li><li><span class="gn">入會 12 個月內</span><span class="gv">299 → <strong>209</strong> 人</span><span class="gc">-30%</span></li></ul></div>
+      <div class="lw-col lw-ok"><div class="lw-h">相對穩</div><ul><li><span class="gn">入會 24 個月以上</span><span class="gv">143 → <strong>128</strong> 人</span><span class="gc">-10%</span></li><li><span class="gn">年訂閱</span><span class="gv">257 → <strong>211</strong> 人</span><span class="gc">-18%</span></li><li><span class="gn">盤中量化交易</span><span class="gv">415 → <strong>321</strong> 人</span><span class="gc">-23%</span></li></ul></div>
     </div>
-    <div class="ah-hint" id="agHint"></div>
-    <div style="position:relative;height:340px;"><canvas id="agChart" role="img" aria-label="各群出席人數趨勢折線圖"></canvas></div>
   </div>
-  <script>
-(function(){
-  const D={"nos": [93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106], "ex": ["老墨", "溫首盛", "江加宏", "XQ 雨青", "KK", "Li 大", "貓老大", "子溥老師", "楊雲翔", "查理哥", "G 股團長", "歐特", "林昇", "許江河"], "cnt": {"模組": {"盤中量化交易": [406, 384, 474, 400, 411, 442, 434, 329, 406, 330, 327, 339, 306, 304], "盤後量化選股": [186, 173, 185, 177, 168, 179, 167, 142, 172, 137, 130, 142, 120, 120], "籌碼分析": [204, 195, 240, 223, 213, 229, 235, 162, 233, 168, 163, 133, 157, 136], "產業數據": [53, 41, 44, 49, 53, 60, 45, 32, 42, 40, 38, 40, 37, 29], "美股分析": [18, 12, 18, 13, 17, 18, 15, 9, 11, 8, 10, 12, 12, 11], "量化積木": [32, 26, 26, 20, 27, 19, 26, 18, 27, 15, 15, 16, 14, 11]}, "訂閱方式": {"年訂閱": [257, 237, 282, 261, 249, 279, 263, 205, 265, 224, 210, 221, 206, 195], "月訂閱": [341, 308, 376, 319, 352, 348, 368, 257, 340, 241, 247, 221, 238, 218]}, "年資": {"12 個月內": [289, 276, 323, 280, 326, 310, 325, 224, 312, 234, 212, 192, 218, 191], "13–24 個月": [162, 142, 173, 154, 142, 152, 138, 111, 137, 107, 113, 113, 103, 97], "24 個月以上": [147, 127, 162, 146, 133, 165, 168, 127, 156, 124, 132, 137, 123, 125]}, "模組數": {"單一模組": [381, 334, 413, 368, 396, 401, 417, 296, 398, 293, 293, 275, 302, 274], "2 個以上模組": [217, 211, 245, 212, 205, 226, 214, 166, 207, 172, 164, 167, 142, 139]}}, "bas": {"模組": {"盤中量化交易": [5136, 5157, 5175, 5152, 5174, 5199, 5197, 5219, 5207, 5209, 5183, 5157, 5157, 5141], "盤後量化選股": [2091, 2092, 2078, 2064, 2066, 2070, 2069, 2067, 2067, 2067, 2049, 2034, 2034, 2015], "籌碼分析": [5810, 5852, 5882, 5879, 5891, 5945, 5903, 5894, 5840, 5877, 5843, 5795, 5795, 5765], "產業數據": [870, 871, 857, 853, 857, 867, 849, 844, 839, 841, 839, 830, 830, 817], "美股分析": [362, 360, 359, 361, 362, 363, 360, 359, 356, 353, 357, 362, 362, 358], "量化積木": [995, 993, 961, 926, 932, 923, 914, 908, 894, 892, 891, 884, 884, 884]}, "訂閱方式": {"年訂閱": [2521, 2570, 2626, 2677, 2691, 2734, 2753, 2767, 2778, 2814, 2838, 2884, 2884, 2883], "月訂閱": [9982, 9964, 9900, 9761, 9782, 9801, 9724, 9687, 9593, 9580, 9501, 9359, 9359, 9296]}, "年資": {"12 個月內": [7350, 7310, 7217, 7046, 7276, 7265, 7148, 7084, 6977, 7177, 7121, 6962, 6962, 7012], "13–24 個月": [2535, 2575, 2599, 2566, 2437, 2393, 2335, 2344, 2321, 2180, 2187, 2228, 2228, 2140], "24 個月以上": [2618, 2649, 2710, 2826, 2760, 2877, 2994, 3026, 3073, 3037, 3031, 3053, 3053, 3027]}, "模組數": {"單一模組": [10213, 10216, 10217, 10152, 10172, 10217, 10150, 10112, 10039, 10055, 10024, 9946, 9946, 9894], "2 個以上模組": [2290, 2318, 2309, 2286, 2301, 2318, 2327, 2342, 2332, 2339, 2315, 2297, 2297, 2285]}}, "tot": [598, 545, 658, 580, 601, 627, 631, 462, 605, 465, 457, 442, 444, 413]};
-  const COL=['#2563eb','#ea580c','#059669','#7c3aed','#db2777','#ca8a04'];
-  let dim='模組', metric='cnt', chart=null;
-  const dimBox=document.getElementById('agDims');
-  Object.keys(D.cnt).forEach(k=>{const b=document.createElement('button');b.type='button';b.className='ah-b'+(k===dim?' on':'');b.textContent='按'+k;b.dataset.k=k;
-    b.onclick=()=>{dim=k;dimBox.querySelectorAll('.ah-b').forEach(x=>x.classList.toggle('on',x===b));render();};dimBox.appendChild(b);});
-  document.querySelectorAll('#agMetric .ah-b').forEach(b=>b.onclick=()=>{metric=b.dataset.m;document.querySelectorAll('#agMetric .ah-b').forEach(x=>x.classList.toggle('on',x===b));render();});
-  function render(){
-    const cs=getComputedStyle(document.documentElement);
-    const grid=cs.getPropertyValue('--chart-grid').trim(),tick=cs.getPropertyValue('--text-3').trim();
-    if(chart)chart.destroy();
-    const groups=Object.keys(D.cnt[dim]);
-    const ds=groups.map((g,i)=>({label:g,borderColor:COL[i],backgroundColor:COL[i],borderWidth:2.5,pointRadius:3,pointHoverRadius:5,tension:.25,
-      data:D.nos.map((n,k)=>metric==='cnt'?D.cnt[dim][g][k]:(D.bas[dim][g][k]?+(D.cnt[dim][g][k]/D.bas[dim][g][k]*100).toFixed(2):0))}));
-    document.getElementById('agHint').textContent=metric==='cnt'?'線的高度＝該群出席者人數（直播＋回放，可對應到訂閱名單者）。':'線的高度＝該群出席人數 ÷ 該群可報名會員數，代表「這群人裡有多少比例會來」。';
-    chart=new Chart(document.getElementById('agChart'),{type:'line',data:{labels:D.nos.map((n,i)=>['第'+n+'期',D.ex[i]]),datasets:ds},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{position:'top',align:'start',labels:{usePointStyle:true,boxWidth:8,color:cs.getPropertyValue('--text-2').trim()}},
-          tooltip:{callbacks:{title:it=>{const i=it[0].dataIndex;return '第'+D.nos[i]+'期 ▪ '+D.ex[i];},label:c=>c.dataset.label+'：'+c.parsed.y+(metric==='cnt'?' 人':'%')}}},
-        scales:{x:{grid:{display:false},ticks:{color:tick,font:{size:11},maxRotation:0,autoSkip:false}},
-          y:{beginAtZero:true,grid:{color:grid},ticks:{color:tick,callback:v=>metric==='cnt'?v:v+'%'}}}}});
-  }
-  const prev=window.renderAttChart; window.renderAttChart=function(){ if(prev)prev(); render(); };
-  render();
-})();
-</script>
 <!-- ATT-HIST:END -->
 
   <!-- 長期趨勢 -->

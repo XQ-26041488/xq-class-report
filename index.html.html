@@ -432,6 +432,78 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 @media (min-width: 641px) {
   .drawer-overlay, .drawer { display: none !important; }
 }
+/* ══ REDESIGN v2 ══ 乾淨版：淺底、白卡、細邊框、少陰影 */
+:root { --bg:#f6f7f9; --border:#e5e8ee; }
+.site-header, .filter-bar { box-shadow:none; }
+.summary-strip { background:var(--surface-2); color:var(--text-2); border-bottom:1px solid var(--border); }
+.summary-strip .ss-sep { color:var(--text-3); }
+.card { box-shadow:none; border:1px solid var(--border); border-radius:12px; }
+.card:hover { box-shadow:none; }
+.card-title { font-size:15px; }
+.sec-heading { font-size:20px; font-weight:700; letter-spacing:0; text-transform:none; color:var(--text); margin:32px 0 14px; }
+.sec-heading::after { display:none; }
+.hero-banner { background:var(--card); border:1px solid var(--border); box-shadow:none; border-radius:12px; padding:22px 24px 20px; }
+.hero-date { color:var(--text-3); }
+.hero-cat { color:var(--text-2); background:var(--surface-3); }
+.hero-title { color:var(--text); font-size:20px; margin-bottom:18px; }
+.hero-title .expert { color:var(--primary); }
+.hero-banner .kpi-card { background:var(--surface); border:1px solid var(--border); backdrop-filter:none; text-align:left; display:flex; flex-direction:column; align-items:flex-start; padding:16px 16px 14px; }
+.hero-banner .kpi-lbl { order:-1; color:var(--text-2); font-size:12.5px; font-weight:600; margin-bottom:10px; }
+.hero-banner .kpi-card .kpi-val { color:var(--text); font-size:36px; margin-bottom:10px; }
+.hero-banner .kpi-card .kpi-tag { background:var(--surface-3); color:var(--text-2); font-weight:600; }
+.hero-banner .kpi-delta { color:var(--text-2); margin-top:12px; }
+.hero-banner .kpi-delta .kd b { background:var(--surface-3); color:var(--text-2); }
+.hero-banner .kpi-delta .kd b.up { background:#d1fae5; color:#047857; }
+.hero-banner .kpi-delta .kd b.dn { background:#fee2e2; color:#b91c1c; }
+:root[data-theme="dark"] .hero-banner .kpi-delta .kd b.up { background:rgba(110,231,183,.16); color:#6ee7b7; }
+:root[data-theme="dark"] .hero-banner .kpi-delta .kd b.dn { background:rgba(252,165,165,.16); color:#fca5a5; }
+.watch-mix { border-top:1px solid var(--border); }
+.wm-title { color:var(--text-2); letter-spacing:0; font-size:12.5px; }
+.wm-title .wm-total { color:var(--text); }
+.wm-cap strong { color:var(--text); }
+.wm-cap span { color:var(--text-2) !important; }
+.wm-formula { color:var(--text-2); }
+.wm-formula strong { color:var(--text); }
+.wm-bar { height:12px; }
+/* 到課者組成 */
+.am-sum { margin:0 0 16px; font-size:15px; line-height:1.7; color:var(--text-2); }
+.am-sum strong { color:var(--text); }
+.am-grid { display:flex; flex-direction:column; }
+.am-head, .am-row { display:grid; grid-template-columns:110px minmax(0,1fr) 110px 80px; gap:20px; align-items:center; }
+.am-head { font-size:12px; font-weight:700; color:var(--text-3); padding:0 0 8px; border-bottom:1px solid var(--border); }
+.am-head > div:nth-child(3) { text-align:center; } .am-head > div:nth-child(4), .am-r { text-align:right; }
+.am-key { font-weight:500; }
+.am-key i { display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 5px 0 0; vertical-align:-1px; }
+.am-key .am-k1 { background:var(--primary); } .am-key .am-k2 { background:#cbd5e1; margin-left:16px; }
+.am-row { padding:12px 0; border-bottom:1px solid var(--surface-3); }
+.am-row:last-child { border-bottom:0; }
+.am-name { font-size:14.5px; font-weight:700; color:var(--text); }
+.am-pair { display:flex; flex-direction:column; gap:5px; }
+.am-line { display:flex; align-items:center; gap:10px; }
+.am-track { flex:1; height:12px; }
+.am-bar { display:block; height:100%; border-radius:4px; min-width:2px; }
+.am-bar.a { background:var(--primary); } .am-bar.b { background:#cbd5e1; }
+:root[data-theme="dark"] .am-bar.b, :root[data-theme="dark"] .am-key .am-k2 { background:#475569; }
+.am-v { width:110px; flex:none; font-size:13px; color:var(--text-3); font-variant-numeric:tabular-nums; }
+.am-v strong { color:var(--text); font-size:14px; } .am-v em { font-style:normal; color:var(--text-2); font-size:12px; margin-left:4px; }
+.am-lift { text-align:center; }
+.am-chip { display:inline-block; min-width:78px; padding:4px 10px; border-radius:20px; font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
+.am-chip.hi { background:#d1fae5; color:#047857; } .am-chip.lo, .am-chip.no { background:#fee2e2; color:#b91c1c; } .am-chip.eq { background:var(--surface-3); color:var(--text-2); }
+:root[data-theme="dark"] .am-chip.hi { background:rgba(110,231,183,.16); color:#6ee7b7; } :root[data-theme="dark"] .am-chip.lo, :root[data-theme="dark"] .am-chip.no { background:rgba(252,165,165,.16); color:#fca5a5; }
+.am-r { font-size:13px; color:var(--text-3); font-variant-numeric:tabular-nums; }
+.am-r .pos2, .am-r .pos1 { color:#047857; } .am-r .neg { color:#b91c1c; }
+.am-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
+.am-stat { background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+.am-sv { font-size:26px; font-weight:800; color:var(--text); line-height:1.1; }
+.am-sl { font-size:13px; font-weight:600; color:var(--text); margin-top:4px; }
+.am-sc { font-size:12px; color:var(--text-3); }
+.am-foot { margin:16px 0 0; font-size:12px; line-height:1.7; color:var(--text-3); }
+@media (max-width:760px){
+  .am-head { display:none; }
+  .am-row { grid-template-columns:1fr auto; gap:8px 12px; }
+  .am-pair { grid-column:1 / -1; order:3; } .am-r { display:none; }
+  .am-stats { grid-template-columns:1fr; }
+}
 </style>
 <script>
 // 提早套用主題避免閃爍：優先讀取使用者選擇，否則跟隨系統
@@ -601,6 +673,87 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
       </div>
     </div>
   </div>
+
+<!-- ATT-MIX:START -->
+  <div class="sec-heading" id="sec-attmix">到課者組成</div>
+  <div class="card am-card">
+    <div class="card-title">第 106 期到課者買了哪些模組 <span class="sub">分析對象：到課的尊榮會員 228 人（以 Email 對照 2026/11/05 訂閱名單；一人可持有多個模組，占比加總會超過 100%）</span></div>
+    <p class="am-sum"><strong>到課者以盤中量化交易為主：</strong>75% 持有（全體會員 25%，約 3.0 倍）；台股進階持有者本期沒有人到課。年訂閱占 50%（全體 14%）。</p>
+    <div class="am-grid">
+      <div class="am-head">
+        <div>模組</div>
+        <div><span class="am-key"><i class="am-k1"></i>到課者持有占比<i class="am-k2"></i>全體會員持有占比</span></div>
+        <div>到課者是全體的</div>
+        <div>相關係數</div>
+      </div>
+        <div class="am-row">
+          <div class="am-name">盤中量化交易</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:94.3%"></i></div><span class="am-v"><strong>75%</strong> <em>172 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:31.2%"></i></div><span class="am-v"><span>25%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip hi">3.0 倍</span></div>
+          <div class="am-r"><span class="pos2">+0.12</span></div>
+        </div>
+        <div class="am-row">
+          <div class="am-name">籌碼分析</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:43.9%"></i></div><span class="am-v"><strong>35%</strong> <em>80 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:34.9%"></i></div><span class="am-v"><span>28%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip eq">1.3 倍</span></div>
+          <div class="am-r"><span class="zero">+0.02</span></div>
+        </div>
+        <div class="am-row">
+          <div class="am-name">盤後量化選股</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:36.2%"></i></div><span class="am-v"><strong>29%</strong> <em>66 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:12.2%"></i></div><span class="am-v"><span>10%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip hi">3.0 倍</span></div>
+          <div class="am-r"><span class="pos1">+0.07</span></div>
+        </div>
+        <div class="am-row">
+          <div class="am-name">產業數據</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:7.1%"></i></div><span class="am-v"><strong>6%</strong> <em>13 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:5.0%"></i></div><span class="am-v"><span>4%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip hi">1.4 倍</span></div>
+          <div class="am-r"><span class="zero">+0.01</span></div>
+        </div>
+        <div class="am-row">
+          <div class="am-name">美股分析</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:2.7%"></i></div><span class="am-v"><strong>2%</strong> <em>5 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:2.2%"></i></div><span class="am-v"><span>2%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip eq">1.3 倍</span></div>
+          <div class="am-r"><span class="zero">+0.00</span></div>
+        </div>
+        <div class="am-row">
+          <div class="am-name">量化積木</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:2.2%"></i></div><span class="am-v"><strong>2%</strong> <em>4 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:5.4%"></i></div><span class="am-v"><span>4%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip lo">0.4 倍</span></div>
+          <div class="am-r"><span class="zero">-0.01</span></div>
+        </div>
+        <div class="am-row">
+          <div class="am-name">台股進階</div>
+          <div class="am-pair">
+            <div class="am-line"><div class="am-track"><i class="am-bar a" style="width:0.0%"></i></div><span class="am-v"><strong>0%</strong> <em>0 人</em></span></div>
+            <div class="am-line"><div class="am-track"><i class="am-bar b" style="width:51.4%"></i></div><span class="am-v"><span>41%</span></span></div>
+          </div>
+          <div class="am-lift"><span class="am-chip no">無人到課</span></div>
+          <div class="am-r"><span class="neg">-0.09</span></div>
+        </div>
+    </div>
+    <div class="am-stats"><div class="am-stat"><div class="am-sv">50%</div><div class="am-sl">年訂閱</div><div class="am-sc">全體會員 14%</div></div><div class="am-stat"><div class="am-sv">36%</div><div class="am-sl">持有 2 個以上模組</div><div class="am-sc">全體會員 11%</div></div><div class="am-stat"><div class="am-sv">100%</div><div class="am-sl">續訂中</div><div class="am-sc">全體會員 95%</div></div></div>
+    <p class="am-foot">怎麼看：藍條比灰條長，代表這個模組的會員特別愛來上課（倍數大於 1）；灰條比藍條長，代表比較少來。相關係數（φ，−1～+1）是同一件事的統計版本，越接近 +1 越容易到課、接近 0 代表沒關係；因為全體會員約 20,620 人、到課者僅約 228 人，數值偏小，請看相對高低。</p>
+  </div>
+<!-- ATT-MIX:END -->
 
   <!-- 長期趨勢 -->
   <div class="sec-heading" id="sec-trend">到課趨勢</div>

@@ -465,6 +465,17 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 .wm-formula { color:var(--text-2); }
 .wm-formula strong { color:var(--text); }
 .wm-bar { height:12px; }
+/* 到課者組成趨勢 */
+.ah-ctl { display:flex; flex-direction:column; gap:12px; margin-bottom:6px; }
+.ah-seg { display:inline-flex; align-self:flex-start; border:1px solid var(--border); border-radius:10px; padding:3px; background:var(--surface-2); }
+.ah-b { border:0; background:transparent; color:var(--text-2); font:inherit; font-size:13px; font-weight:600; padding:7px 14px; border-radius:7px; cursor:pointer; }
+.ah-b.on { background:var(--card); color:var(--text); box-shadow:0 1px 2px rgba(0,0,0,.08); }
+.ah-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.ah-c { display:inline-flex; align-items:center; gap:7px; border:1px solid var(--border); background:var(--card); color:var(--text-3); font:inherit; font-size:13px; font-weight:600; padding:6px 12px; border-radius:10px; cursor:pointer; }
+.ah-c i { width:14px; height:4px; border-radius:2px; opacity:.45; }
+.ah-c.on { color:var(--text); background:var(--surface-2); border-color:var(--text-3); } .ah-c.on i { opacity:1; }
+.ah-c.util { border-style:dashed; color:var(--text); }
+.ah-hint { font-size:12px; color:var(--text-3); margin:4px 0 10px; }
 /* 到課者組成 */
 .am-sum { margin:0 0 16px; font-size:15px; line-height:1.7; color:var(--text-2); }
 .am-sum strong { color:var(--text); }
@@ -754,6 +765,60 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
     <p class="am-foot">怎麼看：藍條比灰條長，代表這個模組的會員特別愛來上課（倍數大於 1）；灰條比藍條長，代表比較少來。相關係數（φ，−1～+1）是同一件事的統計版本，越接近 +1 越容易到課、接近 0 代表沒關係；因為全體會員約 20,620 人、到課者僅約 228 人，數值偏小，請看相對高低。</p>
   </div>
 <!-- ATT-MIX:END -->
+  <!-- ATT-HIST:START -->
+  <div class="card am-card" style="margin-top:14px;">
+    <div class="card-title">各期到課者組成趨勢 <span class="sub">（新制第 93 期起 ▪ 每期以到課當週最近的訂閱名單計算）</span></div>
+    <p class="am-sum"><strong>14 期（第 93–106 期）模式很穩定：</strong>到課者平均 72% 持有盤中量化交易，是全體會員（25%）的 2.9 倍；台股進階雖占全體約 41%，到課者幾乎都沒有。到課者的年訂閱占比從 44%（第 93 期）升到 50%（第 106 期），全體會員則是 12% → 14%。</p>
+    <div class="ah-ctl">
+      <div class="ah-seg" role="group" aria-label="指標切換">
+        <button type="button" class="ah-b on" data-metric="share">到課者持有占比</button>
+        <button type="button" class="ah-b" data-metric="lift">是全體會員的幾倍</button>
+      </div>
+      <div class="ah-chips" id="ahChips"></div>
+    </div>
+    <div class="ah-hint" id="ahHint"></div>
+    <div style="position:relative;height:340px;"><canvas id="attHistChart" role="img" aria-label="各期到課者持有各模組的占比趨勢折線圖"></canvas></div>
+  </div>
+  <script>
+(function(){
+  const D={"nos": [93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106], "mods": ["盤中量化交易", "盤後量化選股", "籌碼分析", "產業數據", "美股分析", "量化積木", "台股進階"], "a": {"盤中量化交易": [67.5, 71.5, 71.6, 70.0, 71.0, 72.4, 70.7, 74.4, 70.6, 74.4, 76.4, 79.1, 69.7, 75.4], "盤後量化選股": [30.0, 31.7, 28.6, 32.1, 28.0, 30.5, 29.3, 33.0, 29.2, 31.1, 31.1, 33.2, 26.3, 28.9], "籌碼分析": [34.8, 36.7, 37.9, 39.0, 35.9, 38.2, 38.1, 36.3, 38.6, 35.9, 33.7, 30.8, 35.9, 35.1], "產業數據": [8.4, 7.9, 7.1, 8.2, 8.8, 9.6, 6.0, 5.9, 6.9, 6.7, 7.5, 8.3, 8.0, 5.7], "美股分析": [3.4, 2.4, 2.4, 2.1, 2.0, 2.8, 2.1, 1.1, 1.9, 1.1, 2.2, 2.8, 2.8, 2.2], "量化積木": [5.0, 3.8, 3.7, 2.9, 3.5, 2.6, 3.6, 2.9, 4.2, 3.7, 2.6, 3.6, 3.2, 1.8], "台股進階": [0.2, 0.5, 0.2, 0.0, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.7, 0.0, 0.4, 0.0]}, "b": {"盤中量化交易": [24.2, 24.3, 24.3, 24.4, 24.4, 24.6, 24.7, 24.8, 24.9, 24.9, 24.9, 24.9, 24.9, 24.9], "盤後量化選股": [9.8, 9.8, 9.8, 9.8, 9.8, 9.8, 9.8, 9.8, 9.9, 9.9, 9.8, 9.8, 9.8, 9.8], "籌碼分析": [27.3, 27.5, 27.6, 27.8, 27.8, 28.1, 28.0, 28.0, 28.0, 28.1, 28.0, 27.9, 27.9, 28.0], "產業數據": [4.1, 4.1, 4.0, 4.0, 4.0, 4.1, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0], "美股分析": [1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7], "量化積木": [4.7, 4.7, 4.5, 4.4, 4.4, 4.4, 4.3, 4.3, 4.3, 4.3, 4.3, 4.3, 4.3, 4.3], "台股進階": [41.5, 41.3, 41.4, 41.3, 41.3, 41.1, 41.1, 41.1, 41.0, 40.9, 41.0, 41.1, 41.1, 41.1]}};
+  const COL=['#2563eb','#ea580c','#059669','#7c3aed','#db2777','#ca8a04','#64748b'];
+  const avg=D.mods.map(m=>D.a[m].reduce((x,y)=>x+y,0)/D.a[m].length);
+  const order=D.mods.map((m,i)=>i).sort((x,y)=>avg[y]-avg[x]);
+  let sel=new Set(order.slice(0,5)), metric='share', chart=null;
+  const chips=document.getElementById('ahChips');
+  function drawChips(){
+    chips.innerHTML='';
+    const mk=(t,fn)=>{const b=document.createElement('button');b.type='button';b.className='ah-c util';b.textContent=t;b.onclick=fn;chips.appendChild(b);};
+    mk('前 5 名',()=>{sel=new Set(order.slice(0,5));sync();});
+    mk('全部',()=>{sel=new Set(D.mods.map((m,i)=>i));sync();});
+    mk('清除',()=>{sel=new Set();sync();});
+    D.mods.forEach((m,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='ah-c'+(sel.has(i)?' on':'');
+      b.innerHTML='<i style="background:'+COL[i]+'"></i>'+m;
+      b.onclick=()=>{sel.has(i)?sel.delete(i):sel.add(i);sync();};chips.appendChild(b);
+    });
+    document.getElementById('ahHint').textContent='已選 '+sel.size+'／'+D.mods.length+' 個模組；'+(metric==='share'?'線的高度＝到課者中持有該模組的比例（%）。':'線的高度＝到課者持有占比 ÷ 全體會員持有占比；1 倍＝與全體相同，大於 1 代表特別愛來上課。');
+  }
+  function series(i){const m=D.mods[i];return D.nos.map((n,k)=>metric==='share'?D.a[m][k]:(D.b[m][k]?+(D.a[m][k]/D.b[m][k]).toFixed(2):0));}
+  function render(){
+    const cs=getComputedStyle(document.documentElement);
+    const grid=cs.getPropertyValue('--chart-grid').trim(),tick=cs.getPropertyValue('--text-3').trim();
+    if(chart)chart.destroy();
+    const ds=[...sel].sort((a,b)=>a-b).map(i=>({label:D.mods[i],data:series(i),borderColor:COL[i],backgroundColor:COL[i],borderWidth:2.5,pointRadius:3,pointHoverRadius:5,tension:.25}));
+    chart=new Chart(document.getElementById('attHistChart'),{type:'line',
+      data:{labels:D.nos.map(n=>'第'+n+'期'),datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+'：'+c.parsed.y+(metric==='share'?'%':' 倍')}}},
+        scales:{x:{grid:{display:false},ticks:{color:tick,font:{size:11}}},
+          y:{beginAtZero:true,grid:{color:grid},ticks:{color:tick,callback:v=>metric==='share'?v+'%':v+'倍'}}}}});
+  }
+  function sync(){drawChips();render();}
+  document.querySelectorAll('.ah-b').forEach(b=>b.onclick=()=>{metric=b.dataset.metric;document.querySelectorAll('.ah-b').forEach(x=>x.classList.toggle('on',x===b));sync();});
+  window.renderAttChart=render; sync();
+})();
+</script>
+<!-- ATT-HIST:END -->
 
   <!-- 長期趨勢 -->
   <div class="sec-heading" id="sec-trend">到課趨勢</div>
@@ -1421,7 +1486,7 @@ function renderMixChart(){
     }
   });
 }
-function renderAll(){ renderSummary(); renderKpiDelta(); renderCompare(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); }
+function renderAll(){ renderSummary(); renderKpiDelta(); renderCompare(); renderTrendChart(); renderRegChart(); renderScoreChart(); renderMixChart(); renderTable(); if(window.renderAttChart) renderAttChart(); }
 initDropdowns(); initTags(); renderRating(); applyFilter();
 </script>
 </body>

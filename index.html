@@ -374,6 +374,9 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 .tag-cloud { display:flex; flex-wrap:wrap; gap:7px; }
 .tag { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; }
 
+.comment-list li.flag { border-left:3px solid #f59e0b; background:rgba(245,158,11,.10); }
+.flag-tag { display:inline-block; margin-right:8px; padding:1px 8px; border-radius:20px; font-size:11px; font-weight:700; color:#b45309; background:rgba(245,158,11,.22); vertical-align:1px; }
+:root[data-theme="dark"] .flag-tag { color:#fcd34d; }
 .comment-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
 .comment-list li {
   padding:10px 14px; background:var(--surface-2); border-radius:8px;
@@ -716,7 +719,7 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
         <div class="ci warn"><h4>報名連六期低於 800，但較上期回升</h4><p>報名 765（上期 672，+13.8%；較前 4 期平均 +5.1%），仍未回到 800 以上。</p></div>
         <div class="ci good"><h4>直播與總出席同步回升</h4><p>直播 <strong>297</strong>（+16.9%）、總出席 <strong>544</strong>（+17.2%）；較前 4 期平均各高 6.4%、11.3%。</p></div>
         <div class="ci info"><h4>回放分流持續，補課效果好</h4><p>只看回放 <strong>45.4%</strong> 為新制新高，補課率 52.8% 為新制第 2 高；觸及率 71%（上期 69%、平均 67%）。</p></div>
-        <div class="ci info"><h4>滿意度持平，留言稱讚乾貨</h4><p><strong>4.46</strong>（上期 4.51、新制平均 4.49）；多則留言肯定內容與簡報，1 則反映 LINE 通知聲干擾直播。</p></div>
+        <div class="ci info"><h4>滿意度持平，留言稱讚乾貨</h4><p><strong>4.46</strong>（上期 4.51、新制平均 4.49）；多則留言肯定內容與簡報，<strong>1 則反映 LINE 通知聲干擾直播</strong>，需留意。</p></div>
         <div class="ci info"><h4>學員想學策略開發</h4><p>策略開發 <strong>21 票</strong>，其次主觀交易經驗分享 17 票、策略優化 16 票。</p></div>
       </div>
     </div>
@@ -903,7 +906,7 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
         <li>「院長的課程讓大盤抄底策略可以量化，很讚！」</li>
         <li>「院長每次都用心準備課程及簡報，雖然超時一些，能帶給學員滿滿的大平台，誠意十足，支持院長繼續來分享」</li>
         <li>「很棒！手把手教學，希望未來課程可持續教學如何利用 AI 寫程式」</li>
-        <li>「這次有 4～5 次突然被 LINE 通知聲嚇到，應該提醒院長關閉，很影響上課」</li>
+        <li class="flag"><span class="flag-tag">需留意</span>「這次有 4～5 次突然被 LINE 通知聲嚇到，應該提醒院長關閉，很影響上課」</li>
       </ul>
     </div>
   </div>

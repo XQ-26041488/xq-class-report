@@ -491,6 +491,25 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
 .lw-col .gn { font-weight:700; color:var(--text); } .lw-col .gv { color:var(--text-2); } .lw-col .gv strong { color:var(--text); }
 .lw-col .gc { text-align:right; font-weight:800; color:var(--text); }
 @media (max-width:760px){ .lw-grid { grid-template-columns:1fr; } }
+/* 出席者訂閱狀況 */
+.sb-box { margin-top:16px; padding:16px; border:1px solid var(--border); border-radius:10px; background:var(--surface-2); }
+.sb-t { font-size:14px; font-weight:700; color:var(--text); margin-bottom:12px; } .sb-t span { font-weight:400; font-size:12px; color:var(--text-3); }
+.sb-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.sb-h { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.sb-leg { display:flex; gap:12px; flex-wrap:wrap; font-size:11.5px; color:var(--text-2); margin-bottom:8px; min-height:18px; }
+.sb-lg i { display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:4px; vertical-align:-1px; }
+.sb-row { display:flex; align-items:center; gap:8px; margin:6px 0; }
+.sb-who { width:68px; flex:none; font-size:11.5px; font-weight:600; color:var(--text-3); }
+.sb-bar { flex:1; display:flex; height:26px; border-radius:6px; overflow:hidden; gap:2px; }
+.sb-seg { display:flex; align-items:center; justify-content:center; min-width:0; }
+.sb-seg b { font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; }
+.sb-seg.a.s0, .sb-lg .s0 { background:#2563eb; } .sb-seg.a.s1 { background:#60a5fa; } .sb-seg.a.s2 { background:#bfdbfe; }
+.sb-lg .s1 { background:#60a5fa; } .sb-lg .s2 { background:#bfdbfe; }
+.sb-seg.a.s0 b, .sb-seg.a.s1 b { color:#fff; } .sb-seg.a.s2 b { color:#1e3a8a; }
+.sb-seg.b.s0 { background:#64748b; } .sb-seg.b.s1 { background:#94a3b8; } .sb-seg.b.s2 { background:#cbd5e1; }
+.sb-seg.b.s0 b, .sb-seg.b.s1 b { color:#fff; } .sb-seg.b.s2 b { color:#1e293b; }
+.sb-sum { margin:14px 0 0; font-size:13.5px; line-height:1.75; color:var(--text-2); } .sb-sum strong { color:var(--text); }
+@media (max-width:900px){ .sb-grid { grid-template-columns:1fr; } }
 /* 到課者組成趨勢 */
 .ah-ctl { display:flex; flex-direction:column; gap:12px; margin-bottom:6px; }
 .ah-seg { display:inline-flex; align-self:flex-start; border:1px solid var(--border); border-radius:10px; padding:3px; background:var(--surface-2); }
@@ -793,6 +812,7 @@ table.cmp-t { width:100%; border-collapse:collapse; font-size:14.5px; font-varia
         </div>
     </div>
     <div class="am-read"><div class="am-read-t">怎麼解讀</div><ul><li><strong>占比</strong>看規模（來上課的人是誰）；<strong>倍數</strong>看偏好（扣掉可報名會員本來就多的影響）。</li><li><strong>特別愛來（1.3 倍以上）：</strong>盤中量化交易 1.6 倍、盤後量化選股 1.7 倍。這是主力客群，重點是留住與續訂。</li><li><strong>較少來（0.75 倍以下）：</strong>量化積木 0.5 倍。持有人不少但到課偏低，可考慮辦相關主題課拉近。</li><li class="mut">倍數只代表關聯、不是因果；小模組人數少，單期容易跳動，請看下方 14 期趨勢。</li></ul></div>
+    <div class="sb-box"><div class="sb-t">出席者的訂閱狀況 <span>（對比全部可報名會員）</span></div><div class="sb-grid"><div class="sb-item"><div class="sb-h">訂閱方式</div><div class="sb-leg"><span class="sb-lg"><i class="s0"></i>年訂閱</span><span class="sb-lg"><i class="s1"></i>月訂閱</span></div><div class="sb-row"><span class="sb-who">出席者</span><div class="sb-bar"><div class="sb-seg a s0" style="width:47.2%"><b>47%</b></div><div class="sb-seg a s1" style="width:52.8%"><b>53%</b></div></div></div><div class="sb-row"><span class="sb-who">可報名會員</span><div class="sb-bar"><div class="sb-seg b s0" style="width:23.9%"><b>24%</b></div><div class="sb-seg b s1" style="width:76.1%"><b>76%</b></div></div></div></div><div class="sb-item"><div class="sb-h">買了幾個模組</div><div class="sb-leg"><span class="sb-lg"><i class="s0"></i>1 個</span><span class="sb-lg"><i class="s1"></i>2 個以上</span></div><div class="sb-row"><span class="sb-who">出席者</span><div class="sb-bar"><div class="sb-seg a s0" style="width:65.5%"><b>65%</b></div><div class="sb-seg a s1" style="width:34.5%"><b>35%</b></div></div></div><div class="sb-row"><span class="sb-who">可報名會員</span><div class="sb-bar"><div class="sb-seg b s0" style="width:81.4%"><b>81%</b></div><div class="sb-seg b s1" style="width:18.6%"><b>19%</b></div></div></div></div><div class="sb-item"><div class="sb-h">入會多久</div><div class="sb-leg"><span class="sb-lg"><i class="s0"></i>12 個月內</span><span class="sb-lg"><i class="s1"></i>13–24 個月</span><span class="sb-lg"><i class="s2"></i>24 個月以上</span></div><div class="sb-row"><span class="sb-who">出席者</span><div class="sb-bar"><div class="sb-seg a s0" style="width:48.8%"><b>49%</b></div><div class="sb-seg a s1" style="width:23.3%"><b>23%</b></div><div class="sb-seg a s2" style="width:27.9%"><b>28%</b></div></div></div><div class="sb-row"><span class="sb-who">可報名會員</span><div class="sb-bar"><div class="sb-seg b s0" style="width:57.3%"><b>57%</b></div><div class="sb-seg b s1" style="width:17.8%"><b>18%</b></div><div class="sb-seg b s2" style="width:24.9%"><b>25%</b></div></div></div></div></div><p class="sb-sum"><strong>出席者的付費意願較高：</strong>年訂閱占 47%（可報名會員 24%），買 2 個以上模組占 35%（19%）；入會年資沒有明顯偏新或偏舊。續訂中的占 98%（95%），幾乎都在續訂。</p></div>
   </div>
 <!-- ATT-MIX:END -->
   <!-- ATT-HIST:START -->
